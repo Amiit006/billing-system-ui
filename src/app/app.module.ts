@@ -10,6 +10,12 @@ import { BillingComponent } from './billing/billing.component';
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
+import { BillingSummaryComponent } from './billing-summary/billing-summary.component';
+import { BillingClientComponent } from './billing-client/billing-client.component';
+import { AppRoutingModule } from './app-routing/app-routing.module';
+import { ClientsComponent } from './clients/clients.component';
+import { ReportsComponent } from './reports/reports.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +23,12 @@ import { HeaderComponent } from './header/header.component';
     PrintLayoutComponent,
     InvoiceComponent,
     BillingComponent,
-    HeaderComponent
+    HeaderComponent,
+    BillingSummaryComponent,
+    BillingClientComponent,
+    ClientsComponent,
+    ReportsComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,6 +37,7 @@ import { HeaderComponent } from './header/header.component';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

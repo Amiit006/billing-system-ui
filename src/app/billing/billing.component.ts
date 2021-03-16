@@ -17,15 +17,13 @@ export class BillingComponent implements OnInit {
     items: this.fb.array([this.addbillFormGroup()])
   })
   
-  
-  
   addbillFormGroup() {
     this.slNoCount += 1;
     return this.fb.group({
       'slNo': [{ value: this.slNoCount, disabled: true }],
       'perticularts': [''],
-      'amount': [0],
-      'quanity': [0],
+      'amount': [],
+      'quanity': [],
       'total': [{ value: 0, disabled: true }]
     });
   };
@@ -34,10 +32,12 @@ export class BillingComponent implements OnInit {
     (<FormArray>this.billForm.get("items")).push(
       this.addbillFormGroup()
     );
+    console.log((<FormArray>this.billForm.get('items')).controls);
   }
 
   removeRow(index) {
-    this.billForm.get("items").removeAt(index);
+    (<FormArray>this.billForm.get("items")).removeAt(index)
+    this.billForm.get("items");
     if(index !== this.slNoCount) {
       this.reassignSlNo();
     }
@@ -45,11 +45,12 @@ export class BillingComponent implements OnInit {
 
   reassignSlNo() {
     let value = 1;
-    this.billForm.get('items').controls.map(x => {
+    (<FormArray>this.billForm.get("items")).controls.map(x => {
       // x.get('slNo').value = value;
-      x.controls.slNo.value = value;
+      x.get("slNo").setValue(value);
       value += 1;
     });
+    this.slNoCount = value-1;
   }
 
   ngOnInit(): void {
@@ -58,5 +59,18 @@ export class BillingComponent implements OnInit {
     }, 2000);
   }
 
+  onAmountChange(i) {
+    this.calculateAndPopulateTotal(i);
+  }
+  
+  onQntyChange(i) {
+    this.calculateAndPopulateTotal(i);
+  }
+
+  calculateAndPopulateTotal(index) {
+    const amount = this.billForm.get("items").value[index]["amount"];
+    const quanity = this.billForm.get("items").value[index]["quanity"];   
+    (<FormArray>this.billForm.get("items")).controls[index].get("total").setValue(amount * quanity);
+  }
 
 }

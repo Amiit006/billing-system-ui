@@ -1,22 +1,9 @@
 <div class="content">
-    <mat-accordion>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    Client Details
-                </mat-panel-title>
-                <!-- <mat-panel-description>
-              This is a summary of the content
-            </mat-panel-description> -->
-            </mat-expansion-panel-header>
-            <p>This is the primary content of the panel.</p>
-        </mat-expansion-panel>
-    </mat-accordion>
+    <app-billing-client></app-billing-client>
     <br>
     <!-- FORM START -->
     <form [formGroup]="billForm">
-        <div  formArrayName="items"
-            *ngFor="let product of billForm.get('items').controls; let i = index">
+        <div formArrayName="items" *ngFor="let product of billForm.get('items').controls; let i = index">
             <div class="form-row" [formGroupName]="i">
                 <div class="col-1">
                     <input type="number" class="form-control" placeholder="Sl No" formControlName="slNo">
@@ -25,13 +12,13 @@
                     <input type="text" class="form-control" placeholder="Perticulars" formControlName="perticularts">
                 </div>
                 <div class="col-2">
-                    <input type="number" class="form-control" placeholder="Amount" formControlName="amount">
+                    <input type="number" class="form-control" placeholder="Amount" formControlName="amount" (change)="onAmountChange(i)">
                 </div>
                 <div class="col-2">
-                    <input type="number" class="form-control" placeholder="Quanity (in pc)" formControlName="quanity">
+                    <input type="number" class="form-control" placeholder="Quanity (in pc)" formControlName="quanity" (change)="onQntyChange(i)">
                 </div>
                 <div class="col-2">
-                    <input type="number" class="form-control" placeholder="Total" formControlName="total">
+                    <input type="number" class="form-control" placeholder="Total" formControlName="total" [value]="product['amount']">
                 </div>
                 <div class="col-1">
                     <input type="button" class="btn btn-danger" value="R" (click)="removeRow(i)">
@@ -41,4 +28,6 @@
     </form>
     <input type="button" value="Add" (click)="addRow()" class="btn btn-primary">
     <!-- FORM END -->
+
+    <app-billing-summary></app-billing-summary>
 </div>
