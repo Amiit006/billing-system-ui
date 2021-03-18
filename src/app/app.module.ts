@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { ClientsComponent } from './clients/clients.component';
 import { ReportsComponent } from './reports/reports.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { IndianCurrencyPipe } from './pipes/indian-currency.pipe';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ClientsComponent,
     ReportsComponent,
     DashboardComponent,
+    IndianCurrencyPipe,
   ],
   imports: [
     BrowserModule,

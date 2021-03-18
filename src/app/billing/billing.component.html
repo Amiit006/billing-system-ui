@@ -1,10 +1,10 @@
 <div class="content">
     <app-billing-client></app-billing-client>
-    <br>
+    <mat-divider class="mt-2 mb-2"></mat-divider>
     <!-- FORM START -->
     <form [formGroup]="billForm">
-        <div formArrayName="items" *ngFor="let product of billForm.get('items').controls; let i = index">
-            <div class="form-row" [formGroupName]="i">
+        <div formArrayName="items" *ngFor="let product of billForm.get('items')['controls']; let i = index">
+            <div class="form-row mt-1" [formGroupName]="i">
                 <div class="col-1">
                     <input type="number" class="form-control" placeholder="Sl No" formControlName="slNo">
                 </div>
@@ -26,8 +26,8 @@
             </div>
         </div>
     </form>
-    <input type="button" value="Add" (click)="addRow()" class="btn btn-primary">
+    <input type="button" value="Add" (click)="addRow()" class="btn btn-primary mt-2">
     <!-- FORM END -->
-
-    <app-billing-summary></app-billing-summary>
+    <mat-divider class="mt-2 mb-2"></mat-divider>
+    <app-billing-summary [subTotalBill]="subTotalBillAmount"></app-billing-summary>
 </div>

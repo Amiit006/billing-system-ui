@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -9,6 +9,9 @@ import { FormArray, FormBuilder } from '@angular/forms';
 export class BillingComponent implements OnInit {
   panelOpenState = true;
   slNoCount=0;
+
+  subTotalBillAmount: number;
+
   constructor(private fb: FormBuilder) {
 
   }
@@ -71,6 +74,15 @@ export class BillingComponent implements OnInit {
     const amount = this.billForm.get("items").value[index]["amount"];
     const quanity = this.billForm.get("items").value[index]["quanity"];   
     (<FormArray>this.billForm.get("items")).controls[index].get("total").setValue(amount * quanity);
+    this.calculateSubtotalBillAmount();
+  }
+
+  calculateSubtotalBillAmount() {
+    let subTotal = 0;
+    (<FormArray>this.billForm.get("items")).controls.map(x=> {
+      subTotal += x.get('total').value;
+    });
+    this.subTotalBillAmount = subTotal;
   }
 
 }
