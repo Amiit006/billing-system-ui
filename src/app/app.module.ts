@@ -3,20 +3,21 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PrintLayoutComponent } from './print-layout/print-layout.component';
-import { InvoiceComponent } from './invoice/invoice.component';
+import { PrintLayoutComponent } from './components/print-layout/print-layout.component';
+import { InvoiceComponent } from './components/invoice/invoice.component';
 import { RouterModule } from '@angular/router';
-import { BillingComponent } from './billing/billing.component';
-import { MaterialModule } from './material.module';
+import { BillingComponent } from './components/billing/billing.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HeaderComponent } from './header/header.component';
-import { BillingSummaryComponent } from './billing-summary/billing-summary.component';
-import { BillingClientComponent } from './billing-client/billing-client.component';
-import { AppRoutingModule } from './app-routing/app-routing.module';
-import { ClientsComponent } from './clients/clients.component';
-import { ReportsComponent } from './reports/reports.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { HeaderComponent } from './components/header/header.component';
+import { BillingSummaryComponent } from './components/billing-summary/billing-summary.component';
+import { BillingClientComponent } from './components/billing-client/billing-client.component';
+import { ClientsComponent } from './components/clients/clients.component';
+import { ReportsComponent } from './components/reports/reports.component';
 import { IndianCurrencyPipe } from './pipes/indian-currency.pipe';
+import { MaterialModule } from './modules/material/material.module';
+import { SharedModule } from './modules/shared/shared.module';
+import { AppRoutingModule } from './modules/app-routing/app-routing.module';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { IndianCurrencyPipe } from './pipes/indian-currency.pipe';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

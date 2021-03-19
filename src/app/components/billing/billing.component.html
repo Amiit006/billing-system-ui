@@ -8,14 +8,20 @@
                 <div class="col-1">
                     <input type="number" class="form-control" placeholder="Sl No" formControlName="slNo">
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <input type="text" class="form-control" placeholder="Perticulars" formControlName="perticularts">
                 </div>
                 <div class="col-2">
                     <input type="number" class="form-control" placeholder="Amount" formControlName="amount" (change)="onAmountChange(i)">
                 </div>
                 <div class="col-2">
-                    <input type="number" class="form-control" placeholder="Quanity (in pc)" formControlName="quanity" (change)="onQntyChange(i)">
+                    <input type="number" class="form-control" placeholder="Quanity" formControlName="quanity" (change)="onQntyChange(i)">
+                </div>
+                <div class="col-1">
+                    <select class="form-control" id="qnt">
+                        <option class="form-text" value="pc">Pc</option>
+                        <option value="form-text" value="dz">Dz</option>
+                    </select>
                 </div>
                 <div class="col-2">
                     <input type="number" class="form-control" placeholder="Total" formControlName="total" [value]="product['amount']">
@@ -30,4 +36,6 @@
     <!-- FORM END -->
     <mat-divider class="mt-2 mb-2"></mat-divider>
     <app-billing-summary [subTotalBill]="subTotalBillAmount"></app-billing-summary>
+    <mat-divider class="mt-2 mb-2"></mat-divider>
+    <app-payment></app-payment>
 </div>
