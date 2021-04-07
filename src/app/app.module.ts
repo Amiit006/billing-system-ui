@@ -18,6 +18,8 @@ import { MaterialModule } from './modules/material/material.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { AppRoutingModule } from './modules/app-routing/app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { PaymentComponent } from './components/payment/payment.component';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     ClientsComponent,
     ReportsComponent,
     DashboardComponent,
+    PaymentComponent, 
     IndianCurrencyPipe,
   ],
   imports: [
@@ -43,7 +46,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     AppRoutingModule,
     SharedModule
   ],
-  providers: [],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'en-IN'}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

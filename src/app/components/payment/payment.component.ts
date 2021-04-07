@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-payment',
@@ -7,13 +7,13 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./payment.component.css']
 })
 export class PaymentComponent implements OnInit {
-
+  maxDate = new Date();
   constructor(private fb: FormBuilder) { }
-
+  
   paymentForm = this.fb.group({
-    'date': [{ value: new Date(), required: true }],
-    'amount': [{ value: 0, required: true }],
-    'mode': [{ value: 'cash', required: true }]
+    'paymentDate': [new Date(), Validators.required],
+    'paymentAmount': [0, Validators.required],
+    'paymentMode': ['cash', Validators.required]
   });
 
   ngOnInit(): void {

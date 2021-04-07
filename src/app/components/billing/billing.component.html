@@ -9,13 +9,13 @@
                     <input type="number" class="form-control" placeholder="Sl No" formControlName="slNo">
                 </div>
                 <div class="col-3">
-                    <input type="text" class="form-control" placeholder="Perticulars" formControlName="perticularts">
+                    <input type="text" class="form-control" placeholder="Perticulars" formControlName="perticulars">
                 </div>
                 <div class="col-2">
                     <input type="number" class="form-control" placeholder="Amount" formControlName="amount" (change)="onAmountChange(i)">
                 </div>
-                <div class="col-2">
-                    <input type="number" class="form-control" placeholder="Quanity" formControlName="quanity" (change)="onQntyChange(i)">
+                <div class="col-1">
+                    <input type="number" class="form-control" placeholder="Qnt" formControlName="quanity" (change)="onQntyChange(i)">
                 </div>
                 <div class="col-1">
                     <select class="form-control" id="qnt">
@@ -26,16 +26,27 @@
                 <div class="col-2">
                     <input type="number" class="form-control" placeholder="Total" formControlName="total" [value]="product['amount']">
                 </div>
-                <div class="col-1">
-                    <input type="button" class="btn btn-danger" value="R" (click)="removeRow(i)">
+                <div class="col-2">
+                    <input type="button" class="btn btn-danger mr-2" value="R" (click)="removeRow(i)">
+                    <mat-checkbox formControlName="verified" (change)="verifyRow(i, $event)">Verified</mat-checkbox>
                 </div>
+
             </div>
         </div>
     </form>
-    <input type="button" value="Add" (click)="addRow()" class="btn btn-primary mt-2">
+    <div class="col text-center">
+        <button class="btn-class mt-2" [disabled]="!billForm.valid" mat-flat-button color="primary" (click)="addRow()">Add</button>
+    </div>
+    <!-- <input type="button" value="Add" (click)="addRow()" class="btn btn-primary mt-2"> -->
     <!-- FORM END -->
     <mat-divider class="mt-2 mb-2"></mat-divider>
     <app-billing-summary [subTotalBill]="subTotalBillAmount"></app-billing-summary>
     <mat-divider class="mt-2 mb-2"></mat-divider>
     <app-payment></app-payment>
+    <mat-divider class="mt-2 mb-2"></mat-divider>
+    <div class="col text-center">
+        <button mat-flat-button color="primary" [disabled]="!billForm.valid" (click)="onPrintBill()">Print Bill</button>
+    </div>
 </div>
+
+<pre> {{ billForm.getRawValue() | json }} </pre>

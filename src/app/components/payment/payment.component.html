@@ -1,0 +1,44 @@
+<mat-accordion>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Payment
+            </mat-panel-title>
+            <mat-panel-description>
+                Total Payment: {{this.paymentForm.controls['paymentAmount'].value | indianCurrency}}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="container">
+            <form [formGroup]="paymentForm">
+                <div class="row">
+                    <div class="col-3">
+                        <mat-form-field appearance="fill" class="mr-3">
+                            <mat-label>Payment Date</mat-label>
+                            <input [max]="maxDate" matInput [matDatepicker]="picker" formControlName="paymentDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Amount</mat-label>
+                            <input matInput placeholder="Enter Amount" type="number" formControlName="paymentAmount">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Payment Mode</mat-label>
+                            <mat-select formControlName="paymentMode">
+                                <mat-option value="cash">Cash</mat-option>
+                                <mat-option value="online">Online</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="col-3">
+                        <button class="btn-class" mat-flat-button color="primary">Confirm</button>
+                    </div> -->
+                </div>
+            </form>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
