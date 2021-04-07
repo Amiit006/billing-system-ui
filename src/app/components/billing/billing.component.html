@@ -40,9 +40,9 @@
     <!-- <input type="button" value="Add" (click)="addRow()" class="btn btn-primary mt-2"> -->
     <!-- FORM END -->
     <mat-divider class="mt-2 mb-2"></mat-divider>
-    <app-billing-summary [subTotalBill]="subTotalBillAmount"></app-billing-summary>
+    <app-billing-summary [subTotalBill]="subTotalBillAmount" (billAmountDetails)="setBillAmountDetails($event)"></app-billing-summary>
     <mat-divider class="mt-2 mb-2"></mat-divider>
-    <app-payment></app-payment>
+    <app-payment (paymentFormData)="setPaymentFormData($event)"></app-payment>
     <mat-divider class="mt-2 mb-2"></mat-divider>
     <div class="col text-center">
         <button mat-flat-button color="primary" [disabled]="!billForm.valid" (click)="onPrintBill()">Print Bill</button>

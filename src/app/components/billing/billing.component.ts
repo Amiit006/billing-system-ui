@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { BillAmountDetails } from 'src/app/model/bill-amount-details.model';
 
 @Component({
   selector: 'app-billing',
@@ -16,6 +17,9 @@ export class BillingComponent implements OnInit {
   subTotalBillAmount: number;
 
   noOfPerticulars = 0;
+
+  billAmountDetails: BillAmountDetails;
+  paymentDetails;
 
   constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router) { }
 
@@ -31,7 +35,7 @@ export class BillingComponent implements OnInit {
       'amount': [0, [Validators.required, Validators.min(1)]],
       'quanity': [0, [Validators.required, Validators.min(1)]],
       'total': [{ value: 0, disabled: true }],
-      'verified': [false]
+      'verified': [false, Validators.required]
     });
   };
 
@@ -39,6 +43,7 @@ export class BillingComponent implements OnInit {
     (<FormArray>this.billForm.get("items")).push(
       this.addbillFormGroup()
     );
+    console.log(this.billForm);
   }
 
   removeRow(index) {
@@ -115,20 +120,25 @@ export class BillingComponent implements OnInit {
   }
 
   onPrintBill() {
-    console.log('Print Bill')
-    this.router.navigate(["/invoice"]);
+    this.router.navigateByUrl("/invoice", {
+      state: {
+        billFormValue: this.billForm.getRawValue(),
+        billAmountDetails: this.billAmountDetails,
+        paymentDetails: this.paymentDetails
+      }
+    });
   }
 
   // trackByFn(index: any, item: any) {
   //   return index;
   // }
 
-  verifyRow(index, event:MatCheckboxChange) {
-    if(event.checked) {
+  verifyRow(index, event: MatCheckboxChange) {
+    if (event.checked) {
       const perticulars = this.billForm.get("items").value[index]["perticulars"];
       const amount = this.billForm.get("items").value[index]["amount"];
       const quanity = this.billForm.get("items").value[index]["quanity"];
-      if(perticulars == "" || amount < 0 || quanity < 0) {
+      if (perticulars == "" || amount < 0 || quanity < 0) {
         this.openSnakbar("Fill the row first", "Close");
         this.billForm.get("items").get([index]).get("verified").setValue(false);
       } else {
@@ -139,6 +149,14 @@ export class BillingComponent implements OnInit {
       this.billForm.get("items").get([index]).enable();
     }
 
+  }
+
+  setBillAmountDetails(event: BillAmountDetails) {
+    this.billAmountDetails = event;
+  }
+
+  setPaymentFormData(event) {
+    this.paymentDetails = event.value;
   }
 
 }

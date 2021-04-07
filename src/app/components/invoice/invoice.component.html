@@ -1,1 +1,82 @@
-<p>invoice works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="grid invoice">
+                <div class="grid-body">
+                    <div class="invoice-title">
+                        <h1 height="35">Radharani Dresses</h1>
+                        <br>
+                        <h2>Invoice<br>
+                            <span class="small">Order #1082</span>
+                        </h2>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <address>
+                                <strong>Billed To:</strong><br>
+                                Twitter, Inc.<br>
+                                795 Folsom Ave, Suite 600<br>
+                                San Francisco, CA 94107<br>
+                                <abbr title="Phone">P:</abbr> (123) 456-7890
+                            </address>
+                        </div>
+                        <div class="col-6 text-right">
+                            <address>
+                                <strong>Order Date:</strong><br>
+                                {{currentDate | date:'dd-MMM-yyyy'}}
+                            </address>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>ORDER SUMMARY</h3>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="line">
+                                        <td><strong>#</strong></td>
+                                        <td class="text-center"><strong>Perticulars</strong></td>
+                                        <td class="text-center"><strong>Amount</strong></td>
+                                        <td class="text-right"><strong>Quantity</strong></td>
+                                        <td class="text-right"><strong>Sub Total</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of billFormData">
+                                        <td class="text-left">{{item.slNo}}</td>
+                                        <td class="text-center">{{item.perticulars}}</td>
+                                        <td class="text-center">{{item.amount | indianCurrency}}</td>
+                                        <td class="text-right">{{item.quanity}}</td>
+                                        <td class="text-right">{{item.total | indianCurrency}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <td class="text-right"><strong>Taxes
+                                                ({{billAmountDetails.taxPercentage}}%)</strong></td>
+                                        <td class="text-right"><strong>+ {{billAmountDetails.taxAmount |
+                                                indianCurrency}}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                        </td>
+                                        <td class="text-right"><strong>Payment</strong></td>
+                                        <td class="text-right"><strong>- {{paymentDetails.paymentAmount |
+                                                indianCurrency}}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                        </td>
+                                        <td class="text-right"><strong>Total</strong></td>
+                                        <td class="text-right">
+                                            <strong>{{billAmountDetails.grandTotalAmount-paymentDetails.paymentAmount |
+                                                indianCurrency}}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
