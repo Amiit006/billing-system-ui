@@ -20,6 +20,7 @@ import { AppRoutingModule } from './modules/app-routing/app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    NgxPrintModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'en-IN'}
