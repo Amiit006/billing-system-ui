@@ -2,7 +2,14 @@
     <div class="row">
         <div class="col-12">
             <div class="grid invoice">
-                <div class="grid-body">
+                <div class="row">
+                    <div class="col-9"></div>
+                    <div class="col-3 text-right">
+                        <a href="javascript:;" (click)="onPrint()" class="btn btn-sm btn-white m-b-10 p-l-5"><i
+                                class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>
+                    </div>
+                </div>
+                <div class="grid-body" id="print-body">
                     <div class="invoice-title">
                         <h1 height="35">Radharani Dresses</h1>
                         <br>
@@ -69,7 +76,8 @@
                                         <td class="text-right"><strong>Total</strong></td>
                                         <td class="text-right">
                                             <strong>{{billAmountDetails.grandTotalAmount-paymentDetails.paymentAmount |
-                                                indianCurrency}}</strong></td>
+                                                indianCurrency}}</strong>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
