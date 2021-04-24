@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -43,7 +43,6 @@ export class BillingComponent implements OnInit {
     (<FormArray>this.billForm.get("items")).push(
       this.addbillFormGroup()
     );
-    console.log(this.billForm);
   }
 
   removeRow(index) {
@@ -73,6 +72,16 @@ export class BillingComponent implements OnInit {
       //     console.log(this.noOfPerticulars);
       //   }
       // });
+    }
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.code === 'F4') {
+      if (this.billForm.valid)
+        this.addRow();
+      else 
+        this.openSnakbar("Fill the form first", "Close")
     }
   }
 
@@ -115,7 +124,7 @@ export class BillingComponent implements OnInit {
 
   openSnakbar(msg, action) {
     this._snackBar.open(msg, action, {
-      duration: 3000
+      duration: 2000
     });
   }
 
