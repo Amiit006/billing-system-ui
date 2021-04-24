@@ -9,7 +9,7 @@
                     <input type="number" class="form-control" placeholder="Sl No" formControlName="slNo">
                 </div>
                 <div class="col-3">
-                    <input type="text" class="form-control" placeholder="Perticulars" formControlName="perticulars">
+                    <input type="text" #inputToFocus class="form-control" placeholder="Perticulars" formControlName="perticulars">
                 </div>
                 <div class="col-2">
                     <input type="number" class="form-control" placeholder="Amount" formControlName="amount" (change)="onAmountChange(i)">

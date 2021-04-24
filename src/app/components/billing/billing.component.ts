@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,7 +21,10 @@ export class BillingComponent implements OnInit {
   billAmountDetails: BillAmountDetails;
   paymentDetails;
 
-  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router) { }
+  // @ViewChildren('formRow', { read: ElementRef }) rows: QueryList<ElementRef>;
+
+  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router,
+    private cdRef:ChangeDetectorRef) { }
 
   billForm = this.fb.group({
     items: this.fb.array([this.addbillFormGroup()])
@@ -43,6 +46,13 @@ export class BillingComponent implements OnInit {
     (<FormArray>this.billForm.get("items")).push(
       this.addbillFormGroup()
     );
+  }
+
+  private inputToFocus: any;
+  @ViewChildren('inputToFocus') set inputF(inputF: any) {
+    this.inputToFocus = inputF
+    this.inputToFocus.last.nativeElement.focus();
+    this.cdRef.detectChanges();
   }
 
   removeRow(index) {
@@ -77,7 +87,7 @@ export class BillingComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.code === 'F4') {
+    if (event.code === 'F4' || event.code === 'Enter') {
       if (this.billForm.valid)
         this.addRow();
       else 
