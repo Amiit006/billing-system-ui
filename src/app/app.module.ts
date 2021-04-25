@@ -22,6 +22,7 @@ import { PaymentComponent } from './components/payment/payment.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgxPrintModule } from 'ngx-print';
 import { RowOptnOnHoverComponent } from './components/row-optn-on-hover/row-optn-on-hover.component';
+import { ParticularsComponent } from './components/particulars/particulars.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { RowOptnOnHoverComponent } from './components/row-optn-on-hover/row-optn
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent,
   ],
   imports: [
     BrowserModule,
