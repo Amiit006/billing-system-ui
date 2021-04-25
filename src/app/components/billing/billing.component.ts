@@ -22,7 +22,7 @@ export class BillingComponent implements OnInit {
   billAmountDetails: BillAmountDetails;
   paymentDetails;
 
-  // @ViewChildren('formRow', { read: ElementRef }) rows: QueryList<ElementRef>;
+  @ViewChildren('formRow', { read: ElementRef }) rows: QueryList<ElementRef>;
 
   constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router,
     private cdRef: ChangeDetectorRef) { }
@@ -51,9 +51,13 @@ export class BillingComponent implements OnInit {
 
   private inputToFocus: any;
   @ViewChildren('inputToFocus') set inputF(inputF: QueryList<ElementRef>) {
-    this.inputToFocus = inputF.filter(x => x?.nativeElement.value === "")
-    this.inputToFocus[0].nativeElement.focus()
-    // this.inputToFocus.last.nativeElement.focus();
+    this.inputToFocus = inputF.filter(x => x?.nativeElement.value === "");
+    if (this.inputToFocus.length > 0) {
+      this.inputToFocus[0].nativeElement.focus();
+    } else {
+      this.inputToFocus = inputF;
+      this.inputToFocus.last.nativeElement.focus();
+    }
     this.cdRef.detectChanges();
   }
 
@@ -64,38 +68,46 @@ export class BillingComponent implements OnInit {
         billFrm.insert(index, this.addbillFormGroup());
         this.reassignSlNo();
       } else {
-        this.openSnakbar(SnackBarMessage.BLANK_ROW, SnackBarMessage.CLOSE);  
+        this.openSnakbar(SnackBarMessage.BLANK_ROW, SnackBarMessage.CLOSE);
       }
     }
   }
 
+  private inputToFocus1: any;
   removeRow(index) {
     const billFrm = (<FormArray>this.billForm.get("items"));
     if (billFrm.length == 1) {
       this.openSnakbar(SnackBarMessage.ONE_ROW_MUST, SnackBarMessage.CLOSE);
     }
     else if (billFrm.length > 1) {
-      const test1 = billFrm.at(index);
-      billFrm.removeAt(index);
-      this.noOfPerticulars = billFrm.length;
-      console.log(this.noOfPerticulars);
-      if (index !== this.slNoCount) {
-        this.reassignSlNo();
-      }
-      // // Undo action
-      // var test = this._snackBar.open("Row deleted", "undo", {
-      //   duration: 3000
-      // });
-      // test.afterDismissed().subscribe(data => {
-      //   // undo clicked
-      //   if (data.dismissedByAction) {
-      //     // this.addRow();
-      //     (<FormArray>this.billForm.get("items")).insert(index, test1);
-      //     this.reassignSlNo();
-      //     this.noOfPerticulars = billFrm.length;
-      //     console.log(this.noOfPerticulars);
-      //   }
-      // });
+      // this.inputToFocus1 = this.rows.filter((x, i) => i === index);
+      // this.inputToFocus1[0].nativeElement.style.display = 'none';
+      // Undo action  
+      var tempRow = billFrm.at(index);
+      (<FormArray>this.billForm.get("items")).removeAt(index);
+      this.reassignSlNo();
+      this.cdRef.detectChanges();
+      var undoAction = this._snackBar.open("Row deleted", "undo", {
+        duration: 2000
+      });
+      undoAction.afterDismissed().subscribe(data => {
+        if (data.dismissedByAction) {
+          // this.inputToFocus1[0].nativeElement.style.display = 'flex';
+          (<FormArray>this.billForm.get("items")).insert(index, tempRow);
+
+          if (index !== this.slNoCount) {
+            this.reassignSlNo();
+          }
+          this.cdRef.detectChanges();
+        } 
+        // else {
+        //   billFrm.removeAt(index);
+        //   this.noOfPerticulars = billFrm.length;
+        //   if (index !== this.slNoCount) {
+        //     this.reassignSlNo();
+        //   }
+        // }
+      });
     }
   }
 
