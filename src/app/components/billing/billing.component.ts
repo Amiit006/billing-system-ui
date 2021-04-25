@@ -4,6 +4,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BillAmountDetails } from 'src/app/model/bill-amount-details.model';
+import { SnackBarMessage } from 'src/app/model/snackbar-message.enum';
 
 @Component({
   selector: 'app-billing',
@@ -24,7 +25,7 @@ export class BillingComponent implements OnInit {
   // @ViewChildren('formRow', { read: ElementRef }) rows: QueryList<ElementRef>;
 
   constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router,
-    private cdRef:ChangeDetectorRef) { }
+    private cdRef: ChangeDetectorRef) { }
 
   billForm = this.fb.group({
     items: this.fb.array([this.addbillFormGroup()])
@@ -49,16 +50,29 @@ export class BillingComponent implements OnInit {
   }
 
   private inputToFocus: any;
-  @ViewChildren('inputToFocus') set inputF(inputF: any) {
-    this.inputToFocus = inputF
-    this.inputToFocus.last.nativeElement.focus();
+  @ViewChildren('inputToFocus') set inputF(inputF: QueryList<ElementRef>) {
+    this.inputToFocus = inputF.filter(x => x?.nativeElement.value === "")
+    this.inputToFocus[0].nativeElement.focus()
+    // this.inputToFocus.last.nativeElement.focus();
     this.cdRef.detectChanges();
+  }
+
+  addRowAbove(event, index) {
+    if (event) {
+      if (this.billForm.valid) {
+        const billFrm = (<FormArray>this.billForm.get("items"));
+        billFrm.insert(index, this.addbillFormGroup());
+        this.reassignSlNo();
+      } else {
+        this.openSnakbar(SnackBarMessage.BLANK_ROW, SnackBarMessage.CLOSE);  
+      }
+    }
   }
 
   removeRow(index) {
     const billFrm = (<FormArray>this.billForm.get("items"));
     if (billFrm.length == 1) {
-      this.openSnakbar("Must have aleast one row", "Close");
+      this.openSnakbar(SnackBarMessage.ONE_ROW_MUST, SnackBarMessage.CLOSE);
     }
     else if (billFrm.length > 1) {
       const test1 = billFrm.at(index);
@@ -90,8 +104,8 @@ export class BillingComponent implements OnInit {
     if (event.code === 'F4' || event.code === 'Enter') {
       if (this.billForm.valid)
         this.addRow();
-      else 
-        this.openSnakbar("Fill the form first", "Close")
+      else
+        this.openSnakbar(SnackBarMessage.BLANK_ROW, SnackBarMessage.CLOSE)
     }
   }
 
@@ -132,9 +146,9 @@ export class BillingComponent implements OnInit {
     this.subTotalBillAmount = subTotal;
   }
 
-  openSnakbar(msg, action) {
+  openSnakbar(msg, action, time = 2000) {
     this._snackBar.open(msg, action, {
-      duration: 2000
+      duration: time
     });
   }
 
@@ -158,7 +172,7 @@ export class BillingComponent implements OnInit {
       const amount = this.billForm.get("items").value[index]["amount"];
       const quanity = this.billForm.get("items").value[index]["quanity"];
       if (perticulars == "" || amount < 0 || quanity < 0) {
-        this.openSnakbar("Fill the row first", "Close");
+        this.openSnakbar(SnackBarMessage.BLANK_ROW, SnackBarMessage.CLOSE);
         this.billForm.get("items").get([index]).get("verified").setValue(false);
       } else {
         this.billForm.get("items").get([index]).disable();

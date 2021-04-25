@@ -4,6 +4,7 @@
     <!-- FORM START -->
     <form [formGroup]="billForm">
         <div formArrayName="items" *ngFor="let product of billForm.get('items')['controls']; let i = index">
+            <app-row-optn-on-hover *ngIf="billForm.get('items').length > 1 && billForm.valid" (addButtonClicked)="addRowAbove($event, i)"></app-row-optn-on-hover>
             <div class="form-row mt-1" [formGroupName]="i">
                 <div class="col-1">
                     <input type="number" class="form-control" placeholder="Sl No" formControlName="slNo">
@@ -40,7 +41,8 @@
     <!-- <input type="button" value="Add" (click)="addRow()" class="btn btn-primary mt-2"> -->
     <!-- FORM END -->
     <mat-divider class="mt-2 mb-2"></mat-divider>
-    <app-billing-summary [subTotalBill]="subTotalBillAmount" (billAmountDetails)="setBillAmountDetails($event)"></app-billing-summary>
+    <app-billing-summary [subTotalBill]="subTotalBillAmount" (billAmountDetails)="setBillAmountDetails($event)">
+    </app-billing-summary>
     <mat-divider class="mt-2 mb-2"></mat-divider>
     <app-payment (paymentFormData)="setPaymentFormData($event)"></app-payment>
     <mat-divider class="mt-2 mb-2"></mat-divider>

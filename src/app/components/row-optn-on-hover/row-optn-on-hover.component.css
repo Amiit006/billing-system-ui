@@ -1,0 +1,83 @@
+.hhtYRR {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    min-height: 0px;
+    width: 100%;
+}
+
+.fDoAGU {
+    margin-top: 0px;
+    opacity: 1;
+}
+
+.hGKGop {
+    position: absolute;
+    transform: translateY(3px);
+    height: 2px;
+    width: 100%;
+    background: #3f51b5;
+}
+
+.yCgsd {
+    display: block;
+    position: relative;
+    z-index: 1;
+    margin: -4px 0px;
+    padding: 0px;
+    border: none;
+    outline: none;
+    height: 8px;
+    width: 100%;
+    background-color: transparent;
+    opacity: 0;
+}
+
+.yCgsd:hover {
+    cursor: pointer;
+    animation-name: eMLfYp;
+    animation-duration: 200ms;
+    animation-delay: 2000ms;
+    animation-fill-mode: forwards;
+    opacity: 1;
+}
+
+.iPCJYM {
+    display: block;
+    position: absolute;
+    transform: translate(-10px, -6px);
+    z-index: 1;
+    margin: 0px;
+    padding: 0px;
+    outline: none;
+    height: 20px;
+    width: 20px;
+    border: none;
+    border-radius: 3px;
+    background-color: #3f51b5;
+    cursor: inherit;
+}
+
+.HEGZe {
+    margin: -2px;
+    height: 24px;
+    width: 24px;
+}
+
+.llDqok {
+    color: rgb(255, 255, 255);
+    display: inline-block;
+    fill: rgb(255, 255, 255);
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.llDqok>svg {
+    max-height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    vertical-align: bottom;
+}
