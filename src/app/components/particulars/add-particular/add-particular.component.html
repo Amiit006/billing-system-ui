@@ -1,0 +1,14 @@
+<div class="starter-template">
+    <h2>Add Particulars</h2>
+    <div class="card card-body bg-light col-9 mx-auto">
+        <form [formGroup]="particularForm">
+            <div class="row">
+                <label for="particularName" class="col-3 col-md-3 col-sm-3 control-label">Particular Name: </label>
+                <input type="text" class="form-control col-7 col-md-7 col-sm-7" id="particularName" formControlName="particular">
+            </div>
+        </form>
+        <div class="col text-center">
+            <button class="btn-class mt-2" [disabled]="!particularForm.valid" mat-flat-button color="primary" (click)="createParticular()">Create</button>
+        </div>
+    </div>
+</div>

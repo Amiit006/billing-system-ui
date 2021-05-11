@@ -13,3 +13,8 @@ body {
 .example-spacer {
     flex: 1 1 auto;
 }
+
+.btn-class {
+    height: 40px;
+    margin: 10px 0 0 20px;
+}

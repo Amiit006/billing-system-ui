@@ -23,6 +23,9 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgxPrintModule } from 'ngx-print';
 import { RowOptnOnHoverComponent } from './components/row-optn-on-hover/row-optn-on-hover.component';
 import { ParticularsComponent } from './components/particulars/particulars.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AddParticularComponent } from './components/particulars/add-particular/add-particular.component';
+import { ViewParticularsComponent } from './components/particulars/view-particulars/view-particulars.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,7 @@ import { ParticularsComponent } from './components/particulars/particulars.compo
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,8 @@ import { ParticularsComponent } from './components/particulars/particulars.compo
     ReactiveFormsModule,
     AppRoutingModule,
     SharedModule,
-    NgxPrintModule
+    NgxPrintModule,
+    HttpClientModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'en-IN'}

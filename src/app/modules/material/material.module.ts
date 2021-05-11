@@ -13,6 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
 
 const materialModules = [
   MatAutocompleteModule,
@@ -27,7 +29,9 @@ const materialModules = [
   MatButtonModule,
   MatSelectModule,
   MatCheckboxModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatTableModule,
+  MatSortModule
 ]
 
 @NgModule({
