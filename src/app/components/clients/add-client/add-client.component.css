@@ -1,0 +1,9 @@
+.starter-template {
+    padding: 55px 15px 15px 15px;
+    text-align: center;
+}
+
+.required .control-label:after {
+    content: "*";
+    color: red;
+}

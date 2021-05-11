@@ -21,7 +21,7 @@ export class ViewParticularsComponent implements OnInit {
 
   initialSelection = [];
   allowMultiSelect = true;
-  selection = new SelectionModel<Particulars>(this.allowMultiSelect, this.initialSelection);
+  selection = new SelectionModel(this.allowMultiSelect, this.initialSelection);
 
   ngOnInit(): void {
     this.particularsService.getAllParticulars().subscribe(data => {

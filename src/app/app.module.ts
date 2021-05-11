@@ -26,6 +26,8 @@ import { ParticularsComponent } from './components/particulars/particulars.compo
 import { HttpClientModule } from '@angular/common/http';
 import { AddParticularComponent } from './components/particulars/add-particular/add-particular.component';
 import { ViewParticularsComponent } from './components/particulars/view-particulars/view-particulars.component';
+import { AddClientComponent } from './components/clients/add-client/add-client.component';
+import { ViewClientsComponent } from './components/clients/view-clients/view-clients.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,7 @@ import { ViewParticularsComponent } from './components/particulars/view-particul
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent,
   ],
   imports: [
     BrowserModule,

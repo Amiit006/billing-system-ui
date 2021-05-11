@@ -1,0 +1,47 @@
+<div>
+    <h2 class="starter-template">Add Client</h2>
+    <div class="card card-body bg-light col-9 mx-auto">
+        <form [formGroup]="clientForm">
+            <div class="required row mb-2">
+                <label for="clientName" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Client Name: </label>
+                <input type="text" class="form-control col-8 col-md-8 col-sm-8" id="clientName" formControlName="clientName">
+            </div>
+            <div class="row mb-2">
+                <label for="mobile" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Mobile: </label>
+                <input type="number" class="form-control col-3 col-md-3 col-sm-3" id="mobile" formControlName="mobile">
+                <label for="email" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Email: </label>
+                <input type="email" class="form-control col-3 col-md-3 col-sm-3" id="email" formControlName="email">
+            </div>
+            <div class="row mb-2">
+                <label for="gstNumber" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">GST Number: </label>
+                <input type="text" class="uppercase form-control col-3 col-md-3 col-sm-3" id="gstNumber" formControlName="gstNumber">
+            </div>
+            <div formGroupName="address">
+                <div class="required row mb-2">
+                    <label for="address1" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Address Line1: </label>
+                    <input type="text" class="form-control col-8 col-md-8 col-sm-8" id="address1" formControlName="address1">
+                </div>
+                <div class="required row mb-2">
+                    <label for="address2" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Address Line2: </label>
+                    <input type="text" class="form-control col-8 col-md-8 col-sm-8" id="address2" formControlName="address2">
+                </div>
+                <div class="required row mb-2">
+                    <label for="city" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">City: </label>
+                    <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="city" formControlName="city">
+                    <label for="state" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">State: </label>
+                    <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="state" formControlName="state">
+                </div>
+                <div class="required row mb-2">
+                    <label for="zip" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Zip: </label>
+                    <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="zip" formControlName="zip">
+                    <label for="country" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Country: </label>
+                    <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="country" formControlName="country">
+                </div>
+            </div>
+        </form>
+        <div class="col text-center">
+            <button class="btn-class mt-2" (click)="onSubmission()" [disabled]="!clientForm.valid" mat-flat-button color="primary">Create</button>
+        </div>
+    </div>
+</div>
+<div style="margin-bottom: 55px;"></div>
