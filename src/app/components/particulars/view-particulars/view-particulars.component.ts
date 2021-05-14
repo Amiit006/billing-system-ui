@@ -25,6 +25,7 @@ export class ViewParticularsComponent implements OnInit {
 
   ngOnInit(): void {
     this.particularsService.getAllParticulars().subscribe(data => {
+      console.log(data);
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
     });

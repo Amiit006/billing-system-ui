@@ -19,19 +19,19 @@
         </ng-container>
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
-            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.particularId}} </td>
         </ng-container>
 
         <ng-container matColumnDef="particulars">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.particular}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.particularName}} </td>
         </ng-container>
 
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef> Action </th>
             <td mat-cell *matCellDef="let element">
                 <mat-icon class="icon">edit</mat-icon>
-                <mat-icon class="icon ml-5" (click)=onSingleDelete(element.id)>delete</mat-icon>
+                <mat-icon class="icon ml-5" (click)=onSingleDelete(element.particularId)>delete</mat-icon>
             </td>
         </ng-container>
 

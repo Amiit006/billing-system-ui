@@ -1,4 +1,4 @@
 export interface Particulars {
-    id: number,
-    particular: string
+    particularId: number,
+    particularName: string
 }
