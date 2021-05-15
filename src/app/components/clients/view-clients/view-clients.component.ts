@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ClientsService } from 'src/app/services/clients.service';
 
 @Component({
   selector: 'app-view-clients',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewClientsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private clientsService: ClientsService) { }
 
   ngOnInit(): void {
+    this.clientsService.getAllParticulars().subscribe(data => {
+      console.log(data);
+    })
   }
 
 }

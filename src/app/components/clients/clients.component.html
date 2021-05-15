@@ -1,3 +1,9 @@
-<app-add-client></app-add-client>
-<mat-divider></mat-divider>
-<app-view-clients></app-view-clients>
+<mat-tab-group color="primary" backgroundColor="primary">
+    <mat-tab label="Overview"> Overview </mat-tab>
+    <mat-tab label="Add Client">
+        <app-add-client></app-add-client>
+    </mat-tab>
+    <mat-tab label="View All Clients">
+        <app-view-clients></app-view-clients>
+    </mat-tab>
+</mat-tab-group>
