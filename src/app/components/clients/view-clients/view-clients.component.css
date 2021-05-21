@@ -1,0 +1,23 @@
+table {
+    width: 100%;
+}
+
+.starter-template {
+    text-align: center;
+}
+
+.icon {
+    cursor: pointer;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}
+
+.mat-column-select {
+    overflow: initial;
+}
+
+a:hover {
+    text-decoration: none;
+}

@@ -28,6 +28,7 @@ import { AddParticularComponent } from './components/particulars/add-particular/
 import { ViewParticularsComponent } from './components/particulars/view-particulars/view-particulars.component';
 import { AddClientComponent } from './components/clients/add-client/add-client.component';
 import { ViewClientsComponent } from './components/clients/view-clients/view-clients.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,12 @@ import { ViewClientsComponent } from './components/clients/view-clients/view-cli
     AppRoutingModule,
     SharedModule,
     NgxPrintModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    })
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'en-IN'}

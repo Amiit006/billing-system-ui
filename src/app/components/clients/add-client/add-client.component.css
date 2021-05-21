@@ -7,3 +7,11 @@
     content: "*";
     color: red;
 }
+
+.reqMark {
+    color: red;
+}
+
+.not-required .control-label:after {
+    content: "";
+}

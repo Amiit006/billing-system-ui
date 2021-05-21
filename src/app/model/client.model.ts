@@ -1,11 +1,12 @@
 import { Address } from "./address.model";
 
 export interface Client {
-    clientId: string;
+    clientId: number;
     clientName: string;
-    mobile: number;
-    email: string;
-    gstNumber: string;
+    mobile: string;
+    email?: string;
+    gstNumber?: string;
+    isActive?: boolean;
     address: Address;
 }
 

@@ -15,8 +15,12 @@ export class ParticularsService {
     return this.http.get<Particulars[]>(environment.baseUrl + "particulars");
   }
 
-  addParticular(particular: string) : Observable<Particulars[]> {
-    return this.http.get<Particulars[]>(environment.baseUrl + "particulars");
+  addParticular(particular: string) : Observable<string> {
+    const toBeCreated: Particulars = {
+      particularId: 0,
+      particularName: particular
+    }
+    return this.http.post<string>(environment.baseUrl + "particulars", toBeCreated);
   }
 
   updateParticular(id: number, particular: string) : Observable<Particulars[]> {

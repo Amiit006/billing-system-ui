@@ -8,7 +8,7 @@
             </div>
         </form>
         <div class="col text-center">
-            <button class="btn-class mt-2" [disabled]="!particularForm.valid" mat-flat-button color="primary" (click)="createParticular()">Create</button>
+            <button class="btn-class mt-2" [disabled]="!particularForm.valid && !saveInProgress" mat-flat-button color="primary" (click)="createParticular()">Create</button>
         </div>
     </div>
 </div>

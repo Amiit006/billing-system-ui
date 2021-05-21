@@ -1,5 +1,6 @@
 export interface Address {
-    addressId : string;
+    addressId : number;
+    storeName: string;
     addressLine1 : string;
     addressLine2 : string;
     city : string;
