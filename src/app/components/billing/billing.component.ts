@@ -89,7 +89,6 @@ export class BillingComponent implements OnInit {
     }
   }
 
-  private inputToFocus1: any;
   removeRow(index) {
     const billFrm = (<FormArray>this.billForm.get("items"));
     if (billFrm.length == 1) {
@@ -106,6 +105,7 @@ export class BillingComponent implements OnInit {
       var undoAction = this._snackBar.open("Row deleted", "undo", {
         duration: 2000
       });
+      this.calculateSubtotalBillAmount();
       undoAction.afterDismissed().subscribe(data => {
         if (data.dismissedByAction) {
           // this.inputToFocus1[0].nativeElement.style.display = 'flex';
@@ -114,6 +114,7 @@ export class BillingComponent implements OnInit {
           if (index !== this.slNoCount) {
             this.reassignSlNo();
           }
+          this.calculateSubtotalBillAmount();
           this.cdRef.detectChanges();
         }
         // else {
