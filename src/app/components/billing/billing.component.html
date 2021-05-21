@@ -10,7 +10,7 @@
                     <input type="number" class="form-control" placeholder="Sl No" formControlName="slNo">
                 </div>
                 <div class="col-3">
-                    <input type="text" #inputToFocus class="form-control" placeholder="Perticulars" formControlName="perticulars">
+                    <input type="text" #inputToFocus class="form-control" placeholder="Perticulars" formControlName="perticulars" [ngbTypeahead]="search">
                 </div>
                 <div class="col-2">
                     <input type="number" class="form-control" placeholder="Amount" formControlName="amount" (change)="onAmountChange(i)">
@@ -47,6 +47,6 @@
     <app-payment (paymentFormData)="setPaymentFormData($event)"></app-payment>
     <mat-divider class="mt-2 mb-2"></mat-divider>
     <div class="col text-center">
-        <button mat-flat-button color="primary" [disabled]="!billForm.valid" (click)="onPrintBill()">Print Bill</button>
+        <button mat-flat-button color="primary" [disabled]="!billForm.valid" (click)="onPrintBill()">Save & Print Bill</button>
     </div>
 </div>

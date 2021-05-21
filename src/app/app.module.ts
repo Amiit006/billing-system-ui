@@ -29,6 +29,7 @@ import { ViewParticularsComponent } from './components/particulars/view-particul
 import { AddClientComponent } from './components/clients/add-client/add-client.component';
 import { ViewClientsComponent } from './components/clients/view-clients/view-clients.component';
 import { ToastrModule } from 'ngx-toastr';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { ToastrModule } from 'ngx-toastr';
     SharedModule,
     NgxPrintModule,
     HttpClientModule,
+    NgbModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-bottom-right',

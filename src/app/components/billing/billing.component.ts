@@ -3,8 +3,13 @@ import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Observable, OperatorFunction } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { BillAmountDetails } from 'src/app/model/bill-amount-details.model';
+import { Particulars } from 'src/app/model/particulars.model';
 import { SnackBarMessage } from 'src/app/model/snackbar-message.enum';
+import { ClientsService } from 'src/app/services/clients.service';
+import { ParticularsService } from 'src/app/services/particulars.service';
 
 @Component({
   selector: 'app-billing',
@@ -22,10 +27,20 @@ export class BillingComponent implements OnInit {
   billAmountDetails: BillAmountDetails;
   paymentDetails;
 
+  particulars: Particulars[] = [];
+
   @ViewChildren('formRow', { read: ElementRef }) rows: QueryList<ElementRef>;
 
   constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router,
-    private cdRef: ChangeDetectorRef) { }
+    private cdRef: ChangeDetectorRef,
+    private particularService: ParticularsService,
+    private clientService: ClientsService) { }
+
+  ngOnInit(): void {
+    this.particularService.getAllParticulars().subscribe(data => {
+      this.particulars = data;
+    }, error => console.log(error.error))
+  }
 
   billForm = this.fb.group({
     items: this.fb.array([this.addbillFormGroup()])
@@ -50,6 +65,7 @@ export class BillingComponent implements OnInit {
   }
 
   private inputToFocus: any;
+
   @ViewChildren('inputToFocus') set inputF(inputF: QueryList<ElementRef>) {
     this.inputToFocus = inputF.filter(x => x?.nativeElement.value === "");
     if (this.inputToFocus.length > 0) {
@@ -99,7 +115,7 @@ export class BillingComponent implements OnInit {
             this.reassignSlNo();
           }
           this.cdRef.detectChanges();
-        } 
+        }
         // else {
         //   billFrm.removeAt(index);
         //   this.noOfPerticulars = billFrm.length;
@@ -113,7 +129,7 @@ export class BillingComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.code === 'F4' || event.code === 'Enter') {
+    if (event.code === 'F4') { // || event.code === 'Enter') {
       if (this.billForm.valid)
         this.addRow();
       else
@@ -131,9 +147,17 @@ export class BillingComponent implements OnInit {
     this.slNoCount = value - 1;
   }
 
-  ngOnInit(): void {
 
-  }
+  search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 2 ? []
+        : this.particulars
+          .filter(v => v.particularName.toLowerCase().indexOf(term.toLowerCase()) > -1)
+          .map(v => v.particularName)
+          .slice(0, 10))
+    )
 
   onAmountChange(i) {
     this.calculateAndPopulateTotal(i);
