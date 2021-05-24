@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -20,7 +20,7 @@ export class BillingComponent implements OnInit {
   panelOpenState = true;
   slNoCount = 0;
 
-  subTotalBillAmount: number;
+  subTotalBillAmount: number = 0;
 
   noOfPerticulars = 0;
 
@@ -30,7 +30,7 @@ export class BillingComponent implements OnInit {
   particulars: Particulars[] = [];
 
   @ViewChildren('formRow', { read: ElementRef }) rows: QueryList<ElementRef>;
-
+ 
   constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router,
     private cdRef: ChangeDetectorRef,
     private particularService: ParticularsService,
@@ -40,6 +40,7 @@ export class BillingComponent implements OnInit {
     this.particularService.getAllParticulars().subscribe(data => {
       this.particulars = data;
     }, error => console.log(error.error))
+
   }
 
   billForm = this.fb.group({

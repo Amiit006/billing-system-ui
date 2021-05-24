@@ -1,0 +1,71 @@
+<div class="container">
+    <mat-horizontal-stepper linear #stepper>
+        <mat-step>
+            <ng-template matStepLabel>Fill Client Details</ng-template>
+            <app-billing-client></app-billing-client>
+            <div>
+                <button mat-button matStepperNext color="primary" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Next</button>
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="billForm">
+            <ng-template matStepLabel>Fill out your address</ng-template>
+            <form [formGroup]="billForm">
+                <div formArrayName="items" *ngFor="let product of billForm.get('items')['controls']; let i = index">
+                    <app-row-optn-on-hover *ngIf="billForm.get('items').length > 1 && billForm.valid" (addButtonClicked)="addRowAbove($event, i)"></app-row-optn-on-hover>
+                    <div class="form-row mt-1" #formRow [formGroupName]="i">
+                        <div class="col-1">
+                            <input type="number" class="form-control" placeholder="Sl No" formControlName="slNo">
+                        </div>
+                        <div class="col-3">
+                            <input type="text" #inputToFocus class="form-control" placeholder="Perticulars" formControlName="perticulars" [ngbTypeahead]="search">
+                        </div>
+                        <div class="col-2">
+                            <input type="number" class="form-control" placeholder="Amount" formControlName="amount" (change)="onAmountChange(i)">
+                        </div>
+                        <div class="col-1">
+                            <input type="number" class="form-control" placeholder="Qnt" formControlName="quanity" (change)="onQntyChange(i)">
+                        </div>
+                        <div class="col-1">
+                            <select class="form-control" id="qnt">
+                                <option class="form-text" value="pc">Pc</option>
+                                <option value="form-text" value="dz">Dz</option>
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <input type="number" class="form-control" placeholder="Total" formControlName="total" [value]="product['amount']">
+                        </div>
+                        <div class="col-2">
+                            <input type="button" class="btn btn-danger mr-2" value="R" (click)="removeRow(i)">
+                            <mat-checkbox formControlName="verified" (change)="verifyRow(i, $event)">Verified
+                            </mat-checkbox>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+            <div class="col text-center">
+                <button class="btn-class mt-2" [disabled]="!billForm.valid" mat-flat-button color="primary" (click)="addRow()">Add</button>
+            </div>
+            <div>
+                <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
+                <button mat-button matStepperNext color="primary" [disabled]="!billForm.valid" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Next</button>
+            </div>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Payment</ng-template>
+            <app-bill-payment (paymentFormData)="setPaymentFormData($event)"></app-bill-payment>
+            <div>
+                <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
+                <button mat-button matStepperNext color="primary" [disabled]="!billForm.valid" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Next</button>
+            </div>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Bill Summery</ng-template>
+            <app-billing-summary [subTotalBill]="subTotalBillAmount" (billAmountDetails)="setBillAmountDetails($event)">
+            </app-billing-summary>
+            <div>
+                <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>

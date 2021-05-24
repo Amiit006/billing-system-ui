@@ -6,11 +6,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PrintLayoutComponent } from './components/print-layout/print-layout.component';
 import { InvoiceComponent } from './components/invoice/invoice.component';
 import { RouterModule } from '@angular/router';
-import { BillingComponent } from './components/billing/billing.component';
+import { BillingComponent } from './components/billing-board/billing/billing.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './components/header/header.component';
-import { BillingSummaryComponent } from './components/billing-summary/billing-summary.component';
-import { BillingClientComponent } from './components/billing-client/billing-client.component';
+import { BillingSummaryComponent } from './components/billing-board/billing-summary/billing-summary.component';
+import { BillingClientComponent } from './components/billing-board/billing-client/billing-client.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { IndianCurrencyPipe } from './pipes/indian-currency.pipe';
@@ -18,7 +18,7 @@ import { MaterialModule } from './modules/material/material.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { AppRoutingModule } from './modules/app-routing/app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { PaymentComponent } from './components/payment/payment.component';
+import { PaymentComponent } from './components/billing-board/billing-payment/billing-payment.component';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgxPrintModule } from 'ngx-print';
 import { RowOptnOnHoverComponent } from './components/row-optn-on-hover/row-optn-on-hover.component';
@@ -30,6 +30,7 @@ import { AddClientComponent } from './components/clients/add-client/add-client.c
 import { ViewClientsComponent } from './components/clients/view-clients/view-clients.component';
 import { ToastrModule } from 'ngx-toastr';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BillingBoardComponent } from './components/billing-board/billing-board.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent,
   ],
   imports: [
     BrowserModule,

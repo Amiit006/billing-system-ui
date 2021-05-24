@@ -18,6 +18,7 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatStepperModule} from '@angular/material/stepper';
 
 const materialModules = [
   MatAutocompleteModule,
@@ -37,7 +38,8 @@ const materialModules = [
   MatSortModule,
   MatMenuModule,
   MatTabsModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatStepperModule,
 ]
 
 @NgModule({
