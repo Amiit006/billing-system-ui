@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { lengthValidator } from 'src/app/directives/length-validator.directive';
 import { Client } from 'src/app/model/client.model';
 import { ClientsService } from 'src/app/services/clients.service';
 
@@ -10,13 +12,18 @@ import { ClientsService } from 'src/app/services/clients.service';
 })
 export class AddClientComponent implements OnInit {
 
+  disableSaveButton = false;
 
-  constructor(private fb: FormBuilder, private clientsService: ClientsService) { }
+  constructor(private fb: FormBuilder, private clientsService: ClientsService
+    , private toastr: ToastrService) { }
 
   clientForm = this.fb.group({
     'clientName': ['', Validators.required],
-    'mobile': ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-    'email': [],
+    'mobile': ['', {
+      validators: [Validators.required, lengthValidator(10)],
+      updateOn: 'blur'
+    }],
+    'email': ['', {validators: Validators.email, updateOn: 'blur'}],
     'gstNumber': [''],
     'isActive': [true, Validators.required],
     'address': this.fb.group({
@@ -37,10 +44,17 @@ export class AddClientComponent implements OnInit {
     gstNumberControl.valueChanges.subscribe(() => {
       gstNumberControl.patchValue(gstNumberControl.value.toUpperCase(), { emitEvent: false });
     });
+
+    this.clientForm.get('mobile').valueChanges.subscribe(() => console.log(this.clientForm.get('mobile')))
+
+    this.clientForm.valueChanges.subscribe(() => {
+      this.disableSaveButton = false;
+    })
+
   }
 
   onSubmission() {
-    console.log(this.clientForm.get("address").value);
+    this.disableSaveButton = true;
     const client: Client = {
       clientId: 0,
       clientName: this.clientForm.get("clientName").value,
@@ -59,7 +73,13 @@ export class AddClientComponent implements OnInit {
         zip: this.clientForm.get("address").get("zip").value,
       }
     }
-    this.clientsService.createClient(client).subscribe(data => console.log(data));
+    this.clientsService.createClient(client).subscribe(data => {
+      this.toastr.success("Client Created Successfully");
+    }, error => {
+      console.log(error);
+      this.disableSaveButton = false;
+      this.toastr.error(error.error.error);
+    });
   }
 
 }
