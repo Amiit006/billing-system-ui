@@ -8,6 +8,82 @@
           This is a summary of the content
         </mat-panel-description> -->
         </mat-expansion-panel-header>
-        <p>This is the primary content of the panel.</p>
+        <div class="container">
+            <form [formGroup]="billingClientForm">
+                <div class="row mb-2">
+                    <label for="clientName" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Client Name:
+                    </label>
+                    <input type="text" (keyup)="onSearchEnter()" class="form-control col-8 col-md-8 col-sm-8" id="clientName" formControlName="clientName" placeholder="search for client...">
+                </div>
+                <div *ngIf="showDropdown" class="row mb-2">
+                    <div class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto"></div>
+                    <div class="col-8 col-md-8 col-sm-8">
+                        <ul class="filter-select">
+                            <li (click)="onClick(result)" *ngFor="let result of filteredResult" class="filter-select-list">
+                                <p class="artist-name">
+                                    {{result.clientName}} ({{result.mobile}})</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div *ngIf="showDropdown && noResultFound" class="row mb-2">
+                    <div class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto"></div>
+                    <div class="col-8 col-md-8 col-sm-8">
+                        <ul class="filter-select">
+                            <li class="filter-select-list">
+                                <p class="artist-name">No client found! Create one</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div *ngIf="showClientDetails">
+                    <div class="row mb-2">
+                        <label for="mobile" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">
+                            Mobile:
+                        </label>
+                        <input type="number" class="form-control col-3 col-md-3 col-sm-3" id="mobile" formControlName="mobile">
+                        <!-- <label for="email" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Email: </label>
+                        <input type="email" class="form-control col-3 col-md-3 col-sm-3" id="email" formControlName="email"> -->
+                    </div>
+                    <div class="row mb-2">
+                        <label for="gstNumber" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">GST
+                            Number: </label>
+                        <input type="text" class="uppercase form-control col-3 col-md-3 col-sm-3" id="gstNumber" formControlName="gstNumber">
+                    </div>
+                    <div formGroupName="address">
+                        <div class="row mb-2">
+                            <label for="storeName" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Store
+                                Name: </label>
+                            <input type="text" class="form-control col-8 col-md-8 col-sm-8" id="storeName" formControlName="storeName">
+                        </div>
+                        <!-- <div class="row mb-2">
+                            <label for="address1" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Address Line1: </label>
+                            <input type="text" class="form-control col-8 col-md-8 col-sm-8" id="address1" formControlName="address1">
+                        </div>
+                        <div class="row mb-2">
+                            <label for="address2" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Address Line2: </label>
+                            <input type="text" class="form-control col-8 col-md-8 col-sm-8" id="address2" formControlName="address2">
+                        </div> -->
+                        <div class="row mb-2">
+                            <label for="city" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">City:
+                            </label>
+                            <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="city" formControlName="city">
+                            <label for="state" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">State:
+                            </label>
+                            <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="state" formControlName="state">
+                        </div>
+                        <div class="row mb-2">
+                            <label for="zip" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Zip:
+                            </label>
+                            <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="zip" formControlName="zip">
+                            <label for="country" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Country:
+                            </label>
+                            <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="country" formControlName="country">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
     </mat-expansion-panel>
 </mat-accordion>

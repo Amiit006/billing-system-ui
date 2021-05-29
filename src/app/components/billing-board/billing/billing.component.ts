@@ -1,11 +1,10 @@
-import { ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, OnInit, Output, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { BillAmountDetails } from 'src/app/model/bill-amount-details.model';
 import { Particulars } from 'src/app/model/particulars.model';
 import { SnackBarMessage } from 'src/app/model/snackbar-message.enum';
 import { ClientsService } from 'src/app/services/clients.service';
@@ -19,28 +18,45 @@ import { ParticularsService } from 'src/app/services/particulars.service';
 export class BillingComponent implements OnInit {
   panelOpenState = true;
   slNoCount = 0;
-
-  subTotalBillAmount: number = 0;
-
+  @Output() subTotalBillAmount = new EventEmitter<number>();;
   noOfPerticulars = 0;
 
-  billAmountDetails: BillAmountDetails;
-  paymentDetails;
+  qntTypes: any = [{'id': 'pc', 'value': 'Pc'},{'id': 'dz', 'value': 'Dz'}];
 
   particulars: Particulars[] = [];
 
+  @Output() billFormData = new EventEmitter();
+
   @ViewChildren('formRow', { read: ElementRef }) rows: QueryList<ElementRef>;
- 
+
   constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router,
     private cdRef: ChangeDetectorRef,
-    private particularService: ParticularsService,
-    private clientService: ClientsService) { }
+    private particularService: ParticularsService) { }
 
   ngOnInit(): void {
     this.particularService.getAllParticulars().subscribe(data => {
       this.particulars = data;
     }, error => console.log(error.error))
+    this.billForm.valueChanges.subscribe(() => {
+      this.billFormData.emit(this.billForm);
+    })
+    this.testMe();
+  }
 
+  testMe() {
+    const initialResult = {
+      'perticulars': '1',
+      'amount': 1,
+      'quanity': 1,
+    }
+    for (let index = 0; index < 5; index++) {
+      this.addRow();
+      const val = (<FormArray>this.billForm.get('items')).at(index);
+      val.get('perticulars').setValue('Partucular ' + index);
+      val.get('amount').setValue(Math.floor((Math.random() * 100) + 1));
+      val.get('quanity').setValue(Math.floor((Math.random() * 100) + 1));
+      val.get('total').setValue(val.get('amount').value * val.get('quanity').value);
+    }
   }
 
   billForm = this.fb.group({
@@ -55,7 +71,8 @@ export class BillingComponent implements OnInit {
       'amount': [0, [Validators.required, Validators.min(1)]],
       'quanity': [0, [Validators.required, Validators.min(1)]],
       'total': [{ value: 0, disabled: true }],
-      'verified': [false, Validators.required]
+      'quantityType': ['pc', Validators.required],
+      'verified': [false, Validators.requiredTrue]
     });
   };
 
@@ -118,13 +135,6 @@ export class BillingComponent implements OnInit {
           this.calculateSubtotalBillAmount();
           this.cdRef.detectChanges();
         }
-        // else {
-        //   billFrm.removeAt(index);
-        //   this.noOfPerticulars = billFrm.length;
-        //   if (index !== this.slNoCount) {
-        //     this.reassignSlNo();
-        //   }
-        // }
       });
     }
   }
@@ -142,7 +152,6 @@ export class BillingComponent implements OnInit {
   reassignSlNo() {
     let value = 1;
     (<FormArray>this.billForm.get("items")).controls.map(x => {
-      // x.get('slNo').value = value;
       x.get("slNo").setValue(value);
       value += 1;
     });
@@ -181,7 +190,7 @@ export class BillingComponent implements OnInit {
     (<FormArray>this.billForm.get("items")).controls.map(x => {
       subTotal += x.get('total').value;
     });
-    this.subTotalBillAmount = subTotal;
+    this.subTotalBillAmount.emit(subTotal);
   }
 
   openSnakbar(msg, action, time = 2000) {
@@ -189,20 +198,6 @@ export class BillingComponent implements OnInit {
       duration: time
     });
   }
-
-  onPrintBill() {
-    this.router.navigateByUrl("/invoice", {
-      state: {
-        billFormValue: this.billForm.getRawValue(),
-        billAmountDetails: this.billAmountDetails,
-        paymentDetails: this.paymentDetails
-      }
-    });
-  }
-
-  // trackByFn(index: any, item: any) {
-  //   return index;
-  // }
 
   verifyRow(index, event: MatCheckboxChange) {
     if (event.checked) {
@@ -219,15 +214,6 @@ export class BillingComponent implements OnInit {
     } else {
       this.billForm.get("items").get([index]).enable();
     }
-
-  }
-
-  setBillAmountDetails(event: BillAmountDetails) {
-    this.billAmountDetails = event;
-  }
-
-  setPaymentFormData(event) {
-    this.paymentDetails = event.value;
   }
 
 }

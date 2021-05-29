@@ -5,7 +5,9 @@
                 <div class="row">
                     <div class="col-9"></div>
                     <div class="col-3 text-right">
-                        <button [useExistingCss]="true" printSectionId="print-body" ngxPrint class="btn btn-sm btn-white m-b-10 p-l-5"><i
+                        <button [disabled]="invoiceSaveStatus" (click)="onSave()" class="btn btn-sm btn-white m-b-10 p-l-5">
+                            <i class="fa fa-save t-plus-1 fa-fw fa-lg"></i>Save</button>
+                        <button [disabled]="!invoiceSaveStatus" [useExistingCss]="true" printSectionId="print-body" ngxPrint class="btn btn-sm btn-white m-b-10 p-l-5"><i
                                 class="fa fa-print t-plus-1 fa-fw fa-lg"></i>Print</button>
                     </div>
                 </div>
@@ -14,7 +16,7 @@
                         <h1 height="35">Radharani Dresses</h1>
                         <br>
                         <h2>Invoice<br>
-                            <span class="small">Order #1082</span>
+                            <span class="small">Order #{{invoiceId}}</span>
                         </h2>
                     </div>
                     <hr>
@@ -22,10 +24,15 @@
                         <div class="col-6">
                             <address>
                                 <strong>Billed To:</strong><br>
-                                Twitter, Inc.<br>
-                                795 Folsom Ave, Suite 600<br>
-                                San Francisco, CA 94107<br>
-                                <abbr title="Phone">P:</abbr> (123) 456-7890
+                                {{clientForm.getRawValue().clientName}}<br>
+                                {{clientForm.getRawValue().address?.storeName}}<br>
+                                {{clientForm.getRawValue().address?.address1}},
+                                {{clientForm.getRawValue().address?.address2}}<br>
+                                {{clientForm.getRawValue().address?.city}},
+                                {{clientForm.getRawValue().address?.state}}<br>
+                                {{clientForm.getRawValue().address?.country}},
+                                {{clientForm.getRawValue().address?.zip}}<br>
+                                <abbr title="Phone">P:</abbr> {{clientForm.getRawValue().mobile}}
                             </address>
                         </div>
                         <div class="col-6 text-right">
@@ -45,37 +52,48 @@
                                         <td class="text-center"><strong>Perticulars</strong></td>
                                         <td class="text-center"><strong>Amount</strong></td>
                                         <td class="text-right"><strong>Quantity</strong></td>
+                                        <td class="text-right"><strong>Qnty Type</strong></td>
                                         <td class="text-right"><strong>Sub Total</strong></td>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of billFormData">
+                                    <tr style="font-size: 14px;" *ngFor="let item of billForm.getRawValue().items">
                                         <td class="text-left">{{item.slNo}}</td>
                                         <td class="text-center">{{item.perticulars}}</td>
                                         <td class="text-center">{{item.amount | indianCurrency}}</td>
                                         <td class="text-right">{{item.quanity}}</td>
+                                        <td class="text-right">{{item.quantityType}}</td>
                                         <td class="text-right">{{item.total | indianCurrency}}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3"></td>
-                                        <td class="text-right"><strong>Taxes
-                                                ({{billAmountDetails.taxPercentage}}%)</strong></td>
-                                        <td class="text-right"><strong>+ {{billAmountDetails.taxAmount |
+                                        <td colspan="4"></td>
+                                        <td class="text-right"><strong>Subtotal</strong></td>
+                                        <td class="text-right"><strong>{{billAmountDetails?.subTotalAmount |
                                                 indianCurrency}}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3">
-                                        </td>
-                                        <td class="text-right"><strong>Payment</strong></td>
-                                        <td class="text-right"><strong>- {{paymentDetails.paymentAmount |
+                                        <td colspan="4"></td>
+                                        <td class="text-right">
+                                            <strong>Taxes
+                                                ({{billAmountDetails?.taxPercentage}}%) + </strong></td>
+                                        <td class="text-right"><strong>{{billAmountDetails?.taxAmount |
                                                 indianCurrency}}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3">
-                                        </td>
+                                        <td colspan="4"></td>
+                                        <td class="text-right"><strong>Payment - </strong></td>
+                                        <td class="text-right"><strong>{{paymentForm.value.paymentAmount ?
+                                                paymentForm.value.paymentAmount : 0 |
+                                                indianCurrency}}</strong></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4"></td>
                                         <td class="text-right"><strong>Total</strong></td>
                                         <td class="text-right">
-                                            <strong>{{billAmountDetails.grandTotalAmount-paymentDetails.paymentAmount |
+                                            <strong>{{billAmountDetails.grandTotalAmount -
+                                                (paymentForm.value.paymentAmount ?
+                                                paymentForm.value.paymentAmount : 0) |
                                                 indianCurrency}}</strong>
                                         </td>
                                     </tr>

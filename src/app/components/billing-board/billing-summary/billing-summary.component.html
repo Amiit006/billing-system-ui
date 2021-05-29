@@ -15,16 +15,16 @@
             <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
                 <div class="row my-2">
                     <div class="col-7 text-right"> SubTotal</div>
-                    <div class="col-5"> <span class="text-120 text-secondary-d1">{{subTotalAmount | indianCurrency}}</span></div>
+                    <div class="col-5"> <span style="float: right;" class="text-120 text-secondary-d1">{{subTotalAmount | indianCurrency}}</span></div>
                 </div>
                 <div class="row my-2">
                     <div class="col-7 text-right"> Tax (5%)</div>
-                    <div class="col-5"> <span class="text-110 text-secondary-d1">{{taxAmount | indianCurrency}}</span></div>
+                    <div class="col-5"> <span style="float: right;" class="text-110 text-secondary-d1">{{taxAmount | indianCurrency}}</span></div>
                 </div>
                 <mat-divider class="mt-2 mb-2"></mat-divider>
-                <div class="row my-2 align-items-center bgc-primary-l3 p-2">
+                <div class="row my-2 align-items-center bgc-primary-l3">
                     <div class="col-7 text-right"> Total Amount</div>
-                    <div class="col-5"> <span class="text-150 text-success-d3 opacity-2">{{grandTotalAmount | indianCurrency}}</span></div>
+                    <div class="col-5"> <span style="float: right;" class="text-150 text-success-d3 opacity-2">{{grandTotalAmount | indianCurrency}}</span></div>
                 </div>
             </div>
         </div>
