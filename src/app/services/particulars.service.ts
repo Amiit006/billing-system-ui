@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Particulars } from '../model/particulars.model';
@@ -10,6 +10,12 @@ import { Particulars } from '../model/particulars.model';
 export class ParticularsService {
 
   constructor(private http: HttpClient) { }
+
+  refreshedParticulars = new EventEmitter<Particulars[]>();
+
+  refreshParticulars() {
+    this.getAllParticulars().subscribe(data => this.refreshedParticulars.emit(data));
+  }
 
   getAllParticulars() : Observable<Particulars[]> {
     return this.http.get<Particulars[]>(environment.baseUrl + "particulars");

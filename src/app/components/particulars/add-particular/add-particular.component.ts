@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { error } from 'selenium-webdriver';
+import { SnackBarMessage } from 'src/app/model/snackbar-message.enum';
 import { ParticularsService } from 'src/app/services/particulars.service';
 
 @Component({
@@ -10,6 +11,9 @@ import { ParticularsService } from 'src/app/services/particulars.service';
   styleUrls: ['./add-particular.component.css']
 })
 export class AddParticularComponent implements OnInit {
+  mode = 'indeterminate';
+  displayProgressSpinner = false;
+  
   particularForm = this.fb.group({
     'particular': ['', Validators.required]
   });
@@ -25,15 +29,18 @@ export class AddParticularComponent implements OnInit {
 
   createParticular() {
     this.saveInProgress = true;
+    this.displayProgressSpinner = true;
     this.particularService.addParticular(this.particularForm.get('particular').value).subscribe(data => {
-      console.log(data);
-      this.toastr.success("Created Successfully.");
+      this.toastr.success(SnackBarMessage.PARTICULAR_CREATED);
       this.particularForm.get('particular').setValue("");
       this.saveInProgress = false;
+      this.particularService.refreshParticulars();
+      this.displayProgressSpinner = false;
     }, error => {
       console.log(error);
       this.toastr.error(error.error);
       this.saveInProgress = false;
+      this.displayProgressSpinner = false;
     });
   }
 }

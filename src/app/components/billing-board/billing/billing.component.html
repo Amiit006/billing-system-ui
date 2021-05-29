@@ -24,9 +24,9 @@
                 <input type="number" class="form-control" placeholder="Total" formControlName="total" [value]="product['amount']">
             </div>
             <div class="col-2">
-                <input type="button" class="btn btn-danger mr-2" value="R" (click)="removeRow(i)">
-                <mat-checkbox formControlName="verified" (change)="verifyRow(i, $event)">Verified
+                <mat-checkbox class="mr-2" formControlName="verified" (change)="verifyRow(i, $event)">Verified
                 </mat-checkbox>
+                <input type="button" class="btn btn-danger mr-2" value="R" (click)="removeRow(i)">
             </div>
 
         </div>
