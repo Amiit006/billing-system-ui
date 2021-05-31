@@ -1,7 +1,7 @@
+import { OverlayRef } from '@angular/cdk/overlay';
 import { AfterViewInit, Component, Input, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
-import { OverlayRef } from 'ngx-toastr';
 import { OverlayService } from 'src/app/services/overlay.service';
 
 @Component({

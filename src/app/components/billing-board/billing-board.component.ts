@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { BillAmountDetails } from 'src/app/model/bill-amount-details.model';
 
 @Component({
@@ -9,11 +9,11 @@ import { BillAmountDetails } from 'src/app/model/bill-amount-details.model';
   styleUrls: ['./billing-board.component.css']
 })
 export class BillingBoardComponent implements OnInit {
-  
+
   clientForm: FormGroup = this.fb.group({});
   billForm: FormGroup = this.fb.group({});
   paymentForm: FormGroup = this.fb.group({});
-  
+
   billAmountDetails: BillAmountDetails;
 
   subTotalBillAmount = 0;
@@ -22,8 +22,8 @@ export class BillingBoardComponent implements OnInit {
   constructor(private router: Router, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.clientForm.setErrors({'incorrect': true});
-    this.billForm.setErrors({'incorrect': true});
+    this.clientForm.setErrors({ 'incorrect': true });
+    this.billForm.setErrors({ 'incorrect': true });
     // this.paymentForm.setErrors({'incorrect': true});
   }
 
@@ -59,4 +59,16 @@ export class BillingBoardComponent implements OnInit {
   //   });
   // }
 
+  showNewBill = false;
+
+  setShowNewBill = (event: boolean) => {
+    console.log(event);
+    this.showNewBill = event;
+  } 
+
+  onReset() {
+    this.router.navigateByUrl('/new-bill-refersh', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['new-bill']);
+    });
+  }
 }

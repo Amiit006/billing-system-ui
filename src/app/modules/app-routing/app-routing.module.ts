@@ -11,6 +11,7 @@ import { ReportsComponent } from 'src/app/components/reports/reports.component';
 
 const routes: Routes = [
   { path: 'new-bill', component: BillingBoardComponent },
+  { path: 'new-bill-refersh', component: BillingBoardComponent },
   { path: 'clients', component: ClientsComponent },
   { path: 'particulars', component: ParticularsComponent },
   { path: 'reports', component: ReportsComponent },

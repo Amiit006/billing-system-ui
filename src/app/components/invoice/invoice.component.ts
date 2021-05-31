@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -24,6 +24,7 @@ export class InvoiceComponent implements OnInit {
   @Input() billForm: FormGroup;
   @Input() paymentForm: FormGroup;
   @Input() billAmountDetails: BillAmountDetails;
+  @Output() invoiceSaveStatusEmitter = new EventEmitter<boolean>();
   invoiceId: number;
   invoiceSaveStatus = false;
   constructor(public activatedRoute: ActivatedRoute, private billingService: BillingService
@@ -61,6 +62,7 @@ export class InvoiceComponent implements OnInit {
     this.billingService.createInvoice(value).subscribe(data => {
       this.displayProgressSpinner = false;
       this.invoiceSaveStatus = true;
+      this.invoiceSaveStatusEmitter.emit(this.invoiceSaveStatus);
       this.toastrService.success(data.response);
     });
   }
