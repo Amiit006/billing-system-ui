@@ -32,6 +32,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BillingBoardComponent } from './components/billing-board/billing-board.component';
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
+import { PaymentBoardComponent } from './components/payment-board/payment-board.component';
+import { PaymentSummaryComponent } from './components/payment-board/payment-summary/payment-summary.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,7 @@ import { ProgressSpinnerComponent } from './components/progress-spinner/progress
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent,
   ],
   imports: [
     BrowserModule,

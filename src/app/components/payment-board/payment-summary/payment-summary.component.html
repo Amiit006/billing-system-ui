@@ -1,0 +1,72 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="grid invoice">
+                <div class="row">
+                    <div class="col-9"></div>
+                    <div class="col-3 text-right">
+                        <button [disabled]="paymentSaveStatus" (click)="onSave()" class="btn btn-sm btn-white m-b-10 p-l-5">
+                            <i class="fa fa-save t-plus-1 fa-fw fa-lg"></i>Save</button>
+                        <button [disabled]="!paymentSaveStatus" [useExistingCss]="true" printSectionId="print-body" ngxPrint class="btn btn-sm btn-white m-b-10 p-l-5"><i
+                                class="fa fa-print t-plus-1 fa-fw fa-lg"></i>Print</button>
+                    </div>
+                </div>
+                <div class="grid-body" id="print-body">
+                    <div class="invoice-title">
+                        <h1 height="35">Radharani Dresses</h1>
+                        <br>
+                        <h2>Payment<br>
+                            <span class="small">Payment ID #{{paymentId}}</span>
+                        </h2>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <address>
+                                <strong>Payment Done By:</strong><br>
+                                {{clientForm.getRawValue().clientName}}<br>
+                                {{clientForm.getRawValue().address?.storeName}}<br>
+                                {{clientForm.getRawValue().address?.address1}},
+                                {{clientForm.getRawValue().address?.address2}}<br>
+                                {{clientForm.getRawValue().address?.city}},
+                                {{clientForm.getRawValue().address?.state}}<br>
+                                {{clientForm.getRawValue().address?.country}},
+                                {{clientForm.getRawValue().address?.zip}}<br>
+                                <abbr title="Phone">P:</abbr> {{clientForm.getRawValue().mobile}}
+                            </address>
+                        </div>
+                        <div class="col-6 text-right">
+                            <address>
+                                <strong>Payment Date:</strong><br>
+                                <!-- {{currentDate | date:'dd-MMM-yyyy'}} -->
+                            </address>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>PAYMENT SUMMARY</h3>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="line">
+                                        <td class="text-left"><strong>Date</strong></td>
+                                        <td class="text-center"><strong>Amount</strong></td>
+                                        <td class="text-right"><strong>Mode</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="font-size: 14px;">
+                                        <td class="text-left">{{paymentForm.getRawValue().paymentDate | date:'dd-MM-yyyy'}}</td>
+                                        <td class="text-center">{{paymentForm.getRawValue().paymentAmount | indianCurrency}}</td>
+                                        <td class="text-right">{{paymentForm.getRawValue().paymentMode}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-progress-spinner class="example-margin" [mode]="mode" [backdropEnabled]="true" [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
+</app-progress-spinner>

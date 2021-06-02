@@ -1,5 +1,6 @@
 <ng-template matStepLabel>Fill out your address</ng-template>
 <form [formGroup]="billForm">
+    <div style="margin-bottom: 10px;"></div>
     <div formArrayName="items" *ngFor="let product of billForm.get('items')['controls']; let i = index">
         <app-row-optn-on-hover *ngIf="billForm.get('items').length > 1 && billForm.valid" (addButtonClicked)="addRowAbove($event, i)"></app-row-optn-on-hover>
         <div class="form-row mt-1" #formRow [formGroupName]="i">
