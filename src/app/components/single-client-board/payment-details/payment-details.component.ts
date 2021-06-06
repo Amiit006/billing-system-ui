@@ -14,6 +14,7 @@ export class PaymentDetailsComponent implements OnInit {
   clientId;
   displayedColumns: string[] = ['paymentDate', 'amount', 'paymentMode'];
   dataSource = new MatTableDataSource();
+  showSpinner = true;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -28,6 +29,7 @@ export class PaymentDetailsComponent implements OnInit {
       console.log(this.dataSource.data)
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      this.showSpinner = false;
     });
   }
 

@@ -14,6 +14,7 @@ export class InvoiceDetailsComponent implements OnInit {
   clientId;
   displayedColumns: string[] = ['invoiceDate', 'grandTotalAmount', 'subTotalAmount', 'taxAmount', 'payment', 'action'];
   dataSource = new MatTableDataSource();
+  showSpinner = true;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -27,6 +28,7 @@ export class InvoiceDetailsComponent implements OnInit {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      this.showSpinner = false;
     });
   }
 
