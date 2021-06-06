@@ -25,6 +25,12 @@
     width: auto;
 }
 
+.state-process-container svg {
+    height: 140px;
+    margin-bottom: 30px;
+    width: auto;
+}
+
 #mainText {
     margin-bottom: 0;
 }
