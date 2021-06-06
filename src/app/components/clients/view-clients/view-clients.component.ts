@@ -1,5 +1,5 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ClientsService } from 'src/app/services/clients.service';
@@ -15,14 +15,13 @@ export class ViewClientsComponent implements OnInit {
   dataSource = new MatTableDataSource();
 
   initialSelection = [];
-  allowMultiSelect = true;
-  election = new SelectionModel(this.allowMultiSelect, this.initialSelection);
 
   doFilter(searchString) {
     this.dataSource.filter = searchString.trim().toLocaleLowerCase();
   }
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private clientsService: ClientsService) { }
 
@@ -30,6 +29,7 @@ export class ViewClientsComponent implements OnInit {
     this.clientsService.getAllParticulars().subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     })
   }
 

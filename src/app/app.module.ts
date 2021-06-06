@@ -34,6 +34,11 @@ import { BillingBoardComponent } from './components/billing-board/billing-board.
 import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
 import { PaymentBoardComponent } from './components/payment-board/payment-board.component';
 import { PaymentSummaryComponent } from './components/payment-board/payment-summary/payment-summary.component';
+import { SingleClientBoardComponent } from './components/single-client-board/single-client-board.component';
+import { ClientDetailsComponent } from './components/single-client-board/client-details/client-details.component';
+import { PaymentDetailsComponent } from './components/single-client-board/payment-details/payment-details.component';
+import { InvoiceDetailsComponent } from './components/single-client-board/invoice-details/invoice-details.component';
+import { NoResultComponent } from './components/no-result/no-result.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +53,7 @@ import { PaymentSummaryComponent } from './components/payment-board/payment-summ
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent,
   ],
   imports: [
     BrowserModule,

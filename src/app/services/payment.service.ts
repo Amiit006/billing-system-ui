@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { InvoiceOverview } from '../model/invoice-overview.model';
 import { StringResponse } from '../model/string-response.model';
 
 @Injectable({
@@ -13,6 +14,12 @@ export class PaymentService {
 
   generatePaymentId() {
     return this.http.get<number>(environment.baseUrl + "payment/generatePaymentId");
+  }
+
+  getPaymentByClientId(clientId) {
+    let params = new HttpParams();
+    params = params.append('clientId', clientId.toString());
+    return this.http.get<InvoiceOverview[]>(environment.baseUrl + "payment", {params: params});
   }
 
   createPayment(payload) {

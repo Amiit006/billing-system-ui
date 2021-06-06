@@ -1,0 +1,126 @@
+<div>
+    <div class="card card-body bg-light mx-auto">
+        <form [formGroup]="clientForm">
+            <div class="required row mb-2">
+                <label for="mobile" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Client Name:
+                </label>
+                <input type="text" class="form-control col-8 col-md-8 col-sm-8" id="clientName" formControlName="clientName" [ngClass]="{ 'is-invalid': clientForm.get('clientName').invalid && clientForm.get('clientName').errors 
+                && (clientForm.get('clientName').dirty || clientForm.get('clientName').touched)  }">
+                <div *ngIf="clientForm.get('clientName').invalid && clientForm.get('clientName').errors 
+                        && (clientForm.get('clientName').dirty || clientForm.get('clientName').touched)" class="invalid-feedback">
+                    <div class="offset-md-2 offset-sm-2" *ngIf="clientForm.get('clientName').hasError('required')">
+                        Client Name is required</div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label for="mobile" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">
+                    Mobile: <span class="reqMark">*</span>
+                </label>
+                <input type="number" class="form-control col-3 col-md-3 col-sm-3" id="mobile" formControlName="mobile" [ngClass]="{ 'is-invalid': clientForm.get('mobile').invalid && clientForm.get('mobile').errors 
+                && (clientForm.get('mobile').dirty || clientForm.get('mobile').touched)  }">
+                <label for="email" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Email: </label>
+                <input type="email" class="form-control col-3 col-md-3 col-sm-3" id="email" formControlName="email" [ngClass]="{ 'is-invalid': clientForm.get('email').invalid && clientForm.get('email').errors 
+                && (clientForm.get('email').dirty || clientForm.get('email').touched)  }">
+            </div>
+            <div class="row">
+                <div #mobileError *ngIf="clientForm.get('mobile').invalid && clientForm.get('mobile').errors 
+                && (clientForm.get('mobile').dirty || clientForm.get('mobile').touched)" class="offset-md-2 offset-sm-2 col-3 col-md-3 col-sm-3 custom-invalid-feedback">
+                    <div *ngIf="clientForm.get('mobile').hasError('required')">
+                        Mobile is required</div>
+                    <div *ngIf="clientForm.get('mobile').hasError('lengthError')">
+                        Mobile No. length cant exceed 10</div>
+                </div>
+                <!-- <div class="col-2 col-md-2 col-sm-2"></div> -->
+                <div *ngIf="clientForm.get('email').invalid && clientForm.get('email').errors 
+                && (clientForm.get('email').dirty || clientForm.get('email').touched)" [ngClass]="clientForm.get('mobile').invalid && clientForm.get('mobile').errors 
+                    && (clientForm.get('mobile').dirty || clientForm.get('mobile').touched) ? 'offset-md-2 offset-sm-2' : 'offset-md-7 offset-sm-7'" class="col-3 col-md-3 col-sm-3 custom-invalid-feedback">
+                    <div *ngIf="clientForm.get('email').hasError('email')">
+                        Email not valid</div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label for="gstNumber" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">GST Number:
+                </label>
+                <input type="text" class="uppercase form-control col-3 col-md-3 col-sm-3" id="gstNumber" formControlName="gstNumber">
+            </div>
+            <div formGroupName="address">
+                <div class="required row mb-2">
+                    <label for="storeName" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Store Name:
+                    </label>
+                    <input type="text" class="form-control col-8 col-md-8 col-sm-8" id="storeName" formControlName="storeName" [ngClass]="{ 'is-invalid': clientForm.get('address').get('storeName').invalid && clientForm.get('address').get('storeName').errors 
+                    && (clientForm.get('address').get('storeName').dirty || clientForm.get('address').get('storeName').touched)  }">
+                    <div *ngIf="clientForm.get('address').get('storeName').invalid && clientForm.get('address').get('storeName').errors 
+                    && (clientForm.get('address').get('storeName').dirty || clientForm.get('address').get('storeName').touched)" class="invalid-feedback">
+                        <div class="offset-md-2 offset-sm-2" *ngIf="clientForm.get('address').get('storeName').hasError('required')">
+                            Store Name is required</div>
+                    </div>
+                </div>
+                <div class="required row mb-2">
+                    <label for="addressLine1" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Address Line1:
+                    </label>
+                    <input type="text" class="form-control col-8 col-md-8 col-sm-8" id="addressLine1" formControlName="addressLine1" [ngClass]="{ 'is-invalid': clientForm.get('address').get('addressLine1').invalid && clientForm.get('address').get('addressLine1').errors 
+                    && (clientForm.get('address').get('addressLine1').dirty || clientForm.get('address').get('addressLine1').touched)  }">
+                    <div *ngIf="clientForm.get('address').get('addressLine1').invalid && clientForm.get('address').get('addressLine1').errors 
+                    && (clientForm.get('address').get('addressLine1').dirty || clientForm.get('address').get('addressLine1').touched)" class="invalid-feedback">
+                        <div class="offset-md-2 offset-sm-2" *ngIf="clientForm.get('address').get('addressLine1').hasError('required')">
+                            addressLine1 is required</div>
+                    </div>
+                </div>
+                <div class="required row mb-2">
+                    <label for="addressLine2" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Address Line2:
+                    </label>
+                    <input type="text" class="form-control col-8 col-md-8 col-sm-8" id="addressLine2" formControlName="addressLine2" [ngClass]="{ 'is-invalid': clientForm.get('address').get('addressLine2').invalid && clientForm.get('address').get('addressLine2').errors 
+                        && (clientForm.get('address').get('addressLine2').dirty || clientForm.get('address').get('addressLine2').touched)  }">
+                    <div *ngIf="clientForm.get('address').get('addressLine2').invalid && clientForm.get('address').get('addressLine2').errors 
+                    && (clientForm.get('address').get('addressLine2').dirty || clientForm.get('address').get('addressLine2').touched)" class="invalid-feedback">
+                        <div class="offset-md-2 offset-sm-2" *ngIf="clientForm.get('address').get('addressLine2').hasError('required')">
+                            addressLine2 is required</div>
+                    </div>
+                </div>
+                <div class="required row mb-2">
+                    <label for="city" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">City: </label>
+                    <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="city" formControlName="city" [ngClass]="{ 'is-invalid': clientForm.get('address').get('city').invalid && clientForm.get('address').get('city').errors 
+                    && (clientForm.get('address').get('city').dirty || clientForm.get('address').get('city').touched)  }">
+                    <label for="state" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">State:
+                    </label>
+                    <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="state" formControlName="state" [ngClass]="{ 'is-invalid': clientForm.get('address').get('state').invalid && clientForm.get('address').get('state').errors 
+                    && (clientForm.get('address').get('state').dirty || clientForm.get('address').get('state').touched)  }">
+                </div>
+                <div class="row">
+                    <div *ngIf="clientForm.get('address').get('city').invalid && clientForm.get('address').get('city').errors 
+                    && (clientForm.get('address').get('city').dirty || clientForm.get('address').get('city').touched)" class="offset-md-2 offset-sm-2 col-3 col-md-3 col-sm-3 custom-invalid-feedback">
+                        <div *ngIf="clientForm.get('address').get('city').hasError('required')">
+                            City is required</div>
+                    </div>
+                    <div *ngIf="clientForm.get('address').get('state').invalid && clientForm.get('address').get('state').errors 
+                    && (clientForm.get('address').get('state').dirty || clientForm.get('address').get('state').touched)" [ngClass]="clientForm.get('address').get('city').invalid && clientForm.get('address').get('city').errors 
+                    && (clientForm.get('address').get('city').dirty || clientForm.get('address').get('city').touched) ? 'offset-md-2 offset-sm-2' : 'offset-md-7 offset-sm-7'" class="col-3 col-md-3 col-sm-3 custom-invalid-feedback">
+                        <div *ngIf="clientForm.get('address').get('state').hasError('required')">
+                            State is required</div>
+                    </div>
+                </div>
+                <div class="required row mb-2">
+                    <label for="zip" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Zip: </label>
+                    <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="zip" formControlName="zip" [ngClass]="{ 'is-invalid': clientForm.get('address').get('zip').invalid && clientForm.get('address').get('zip').errors 
+                    && (clientForm.get('address').get('zip').dirty || clientForm.get('address').get('zip').touched)  }">
+                    <label for="country" class="col-2 col-md-2 col-sm-2 control-label text-right font-weight-bold mt-auto">Country:
+                    </label>
+                    <input type="text" class="form-control col-3 col-md-3 col-sm-3" id="country" formControlName="country">
+                </div>
+                <div class="row">
+                    <div *ngIf="clientForm.get('address').get('zip').invalid && clientForm.get('address').get('zip').errors 
+                    && (clientForm.get('address').get('zip').dirty || clientForm.get('address').get('zip').touched)" class="offset-md-2 offset-sm-2 col-3 col-md-3 col-sm-3 custom-invalid-feedback">
+                        <div *ngIf="clientForm.get('address').get('zip').hasError('required')">
+                            Zip is required</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="col text-center">
+            <button class="btn-class mt-2" *ngIf="!editInProgress" (click)="onEditClick()" mat-flat-button color="primary">Edit</button>
+            <button class="btn-class mt-2" *ngIf="editInProgress" (click)="onSaveClick()" [disabled]="clientForm.invalid || disableSaveButton" mat-flat-button color="primary">Save</button>
+        </div>
+    </div>
+</div>
+<app-progress-spinner [mode]="mode" [backdropEnabled]="true" [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
+</app-progress-spinner>

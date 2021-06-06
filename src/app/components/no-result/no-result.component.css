@@ -1,0 +1,30 @@
+.section {
+    max-width: 100%;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.state-process-container {
+    width: 395px;
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.state-process {
+    margin: auto;
+    text-align: center;
+    margin-top: 10vh;
+}
+
+.state-process-container img {
+    height: 140px;
+    margin-bottom: 30px;
+    width: auto;
+}
+
+#mainText {
+    margin-bottom: 0;
+}
