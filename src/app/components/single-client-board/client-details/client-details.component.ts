@@ -16,7 +16,7 @@ export class ClientDetailsComponent implements OnInit {
   editInProgress = false;
   disableSaveButton = false;
   clientId;
-  intialFormValue; 
+  intialFormValue;
   clientForm = this.fb.group({
     'clientName': ['', Validators.required],
     'mobile': ['', {
@@ -38,8 +38,8 @@ export class ClientDetailsComponent implements OnInit {
 
   });
 
-  constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute, 
-    private toastrService: ToastrService, 
+  constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute,
+    private toastrService: ToastrService,
     private clientsService: ClientsService) {
     this.clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
     console.log(this.clientId);
@@ -82,11 +82,17 @@ export class ClientDetailsComponent implements OnInit {
     this.editInProgress = true;
   }
 
+  onCanclelClick() {
+    this.disableSaveButton = false;
+    this.editInProgress = false;
+    this.clientForm.disable();
+  }
+
   onSaveClick() {
     const newValue = JSON.stringify(this.clientForm.getRawValue());
     console.log(newValue)
     console.log(this.intialFormValue)
-    if(newValue === this.intialFormValue) {
+    if (newValue === this.intialFormValue) {
       this.toastrService.error("No changes to the form!")
     } else {
       this.disableSaveButton = true;

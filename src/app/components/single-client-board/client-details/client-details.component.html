@@ -119,6 +119,7 @@
         <div class="col text-center">
             <button class="btn-class mt-2" *ngIf="!editInProgress" (click)="onEditClick()" mat-flat-button color="primary">Edit</button>
             <button class="btn-class mt-2" *ngIf="editInProgress" (click)="onSaveClick()" [disabled]="clientForm.invalid || disableSaveButton" mat-flat-button color="primary">Save</button>
+            <button class="btn-class mt-2 ml-2" *ngIf="editInProgress" (click)="onCanclelClick()" mat-flat-button color="warn">Cancel</button>
         </div>
     </div>
 </div>
