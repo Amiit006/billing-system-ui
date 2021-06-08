@@ -9,6 +9,12 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="container">
+            <div class="row show-outstanding" *ngIf="showOutstandingHtml && outstandingAmount > 0">
+                <div class="col-3 align-self-center font-weight-bold">Current Outstanding: {{outstandingAmount | indianCurrency }}</div>
+                <div class="col-3">
+                    <button (click)="paymentFullClick()" mat-button class="mat-flat-button mat-button-base mat-primary">Pay full Amount</button>
+                </div>
+            </div>
             <form [formGroup]="paymentForm">
                 <div class="row">
                     <div class="col-3">

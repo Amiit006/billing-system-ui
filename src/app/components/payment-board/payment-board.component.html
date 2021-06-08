@@ -10,18 +10,22 @@
         </mat-step>
         <mat-step [stepControl]="paymentForm">
             <ng-template matStepLabel>Add Payment</ng-template>
-            <app-bill-payment (paymentFormData)="setPaymentFormData($event)"></app-bill-payment>
-            <div>
-                <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
-                <button mat-button matStepperNext color="primary" [disabled]="!paymentForm.valid" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Next</button>
-            </div>
+            <ng-template matStepContent>
+                <app-bill-payment [showOutstandingHtml]="true" [clientForm]="clientForm" (paymentFormData)="setPaymentFormData($event)"></app-bill-payment>
+                <div>
+                    <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
+                    <button mat-button matStepperNext color="primary" [disabled]="!paymentForm.valid" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Next</button>
+                </div>
+            </ng-template>
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>Payment Summery</ng-template>
-            <app-payment-summary (paymentSaveStatusEmitter)="setPaymentSaveStatusEmitter($event)" [clientForm]="clientForm" [paymentForm]="paymentForm"></app-payment-summary>
-            <div>
-                <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
-            </div>
+            <ng-template matStepContent>
+                <app-payment-summary (paymentSaveStatusEmitter)="setPaymentSaveStatusEmitter($event)" [clientForm]="clientForm" [paymentForm]="paymentForm"></app-payment-summary>
+                <div>
+                    <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
+                </div>
+            </ng-template>
         </mat-step>
     </mat-horizontal-stepper>
 </div>
