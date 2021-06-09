@@ -3,9 +3,20 @@
     <span class="example-spacer"></span>
     <a mat-button class="docs-navbar-hide-small docs-button mr-5" routerLink="new-bill">New Bill</a>
     <a mat-button class="docs-navbar-hide-small docs-button mr-5" routerLink="new-payment">New Payment</a>
-    <a mat-button class="docs-navbar-hide-small docs-button mr-5" routerLink="clients">Clients</a>
+    <!-- <a mat-button class="docs-navbar-hide-small docs-button mr-5" routerLink="clients">Clients</a> -->
+    <button mat-button class="docs-navbar-hide-small docs-button mr-5" [matMenuTriggerFor]="menuClient">Clients <mat-icon>arrow_drop_down</mat-icon></button>
+    <mat-menu #menuClient="matMenu">
+        <button mat-menu-item (click)="onAddClient()">Add Client</button>
+        <button mat-menu-item (click)="onViewAllClient()">View All Clients</button>
+    </mat-menu>
     <a mat-button class="docs-navbar-hide-small docs-button mr-5" routerLink="particulars">Particulars</a>
     <a mat-button class="docs-navbar-hide-small docs-button mr-5" routerLink="reports">Reports</a>
+
+    <button mat-button class="docs-navbar-hide-small docs-button mr-5" [matMenuTriggerFor]="menuSettings"><mat-icon>settings</mat-icon></button>
+    <mat-menu #menuSettings="matMenu">
+        <button mat-menu-item><mat-icon>account_circle</mat-icon> Profile</button>
+    </mat-menu>
+
     <!-- <a routerLink="/new-bill" mat-button class="mat-focus-indicator docs-navbar-hide-small docs-button mat-button mat-button-base mr-5">
         <span class="mat-button-wrapper">New Bill</span>
         <span matripple="" class="mat-ripple mat-button-ripple"></span>
