@@ -24,9 +24,7 @@ export class PaymentDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
     this.paymentService.getPaymentByClientId(this.clientId).subscribe(data => {
-      console.log(data);
       this.dataSource = new MatTableDataSource(data);
-      console.log(this.dataSource.data)
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.showSpinner = false;

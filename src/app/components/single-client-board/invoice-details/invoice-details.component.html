@@ -1,5 +1,5 @@
 <app-round-spinner *ngIf="showSpinner"></app-round-spinner>
-<div *ngIf="!showSpinner">
+<div [hidden]="showSpinner">
     <div class="col text-center">
         <button class="mt-2 mb-2" mat-flat-button color="primary">Create a bill</button>
     </div>
@@ -7,7 +7,7 @@
         <app-no-result [h3TextInput]="'Result empty'" [pTextInput]="'There is no invoice for this client'">
         </app-no-result>
     </div>
-    <div *ngIf="this.dataSource.data.length > 0">
+    <div [hidden]="!(this.dataSource.data.length > 0)">
         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
             <ng-container matColumnDef="invoiceDate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice Date</th>

@@ -1,8 +1,8 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Particulars } from 'src/app/model/particulars.model';
 import { ParticularsService } from 'src/app/services/particulars.service';
 
 @Component({
@@ -18,6 +18,7 @@ export class ViewParticularsComponent implements OnInit {
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   initialSelection = [];
   allowMultiSelect = true;
@@ -28,10 +29,12 @@ export class ViewParticularsComponent implements OnInit {
       // console.log(data);
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     });
     this.particularsService.refreshedParticulars.subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     });
   }
 
