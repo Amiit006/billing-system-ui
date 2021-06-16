@@ -1,14 +1,14 @@
 <div class="container">
     <button style="margin-left: 24px;" *ngIf="showNewBill" mat-button color="primary" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary" (click)="onReset()">Create Another Bill</button>
     <mat-horizontal-stepper linear #stepper>
-        <mat-step [stepControl]="clientForm">
+        <mat-step [stepControl]="clientForm" [editable]="!showNewBill">
             <ng-template matStepLabel>Fill Client Details</ng-template>
             <app-billing-client (clientFormData)="setClientFormData($event)"></app-billing-client>
             <div>
                 <button mat-button matStepperNext color="primary" [disabled]="!clientForm.valid" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Next</button>
             </div>
         </mat-step>
-        <mat-step [stepControl]="billForm">
+        <mat-step [stepControl]="billForm" [editable]="!showNewBill">
             <ng-template matStepLabel>Bill
                 <span *ngIf="subTotalBillAmount > 0">Amount: {{subTotalBillAmount | indianCurrency }}</span>
             </ng-template>
@@ -20,7 +20,7 @@
                 </div>
             </ng-template>
         </mat-step>
-        <mat-step [stepControl]="paymentForm">
+        <mat-step [stepControl]="paymentForm" [editable]="!showNewBill">
             <ng-template matStepLabel>Payment</ng-template>
             <ng-template matStepContent>
                 <app-bill-payment (paymentFormData)="setPaymentFormData($event)"></app-bill-payment>
@@ -30,7 +30,7 @@
                 </div>
             </ng-template>
         </mat-step>
-        <mat-step>
+        <mat-step [editable]="!showNewBill">
             <ng-template matStepLabel>Bill Summery</ng-template>
             <ng-template matStepContent>
                 <app-billing-summary [subTotalBill]="subTotalBillAmount" (billAmountDetails)="setBillAmountDetails($event)">

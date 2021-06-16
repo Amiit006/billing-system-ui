@@ -32,7 +32,7 @@ export class PaymentBoardComponent implements OnInit {
     this.showNewPayment = event;
   } 
 
-  setPaymentSaveStatusEmitter(event) {
+  setPaymentSaveStatusEmitter(event: boolean) {
     this.showNewPayment = event;
   }
 
