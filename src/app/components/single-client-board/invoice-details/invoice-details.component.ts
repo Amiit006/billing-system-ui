@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,6 +18,7 @@ export class InvoiceDetailsComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @Output() createNewBill = new EventEmitter<boolean>();
 
   constructor(private billingService: BillingService, private activatedRoute: ActivatedRoute) { }
   
@@ -30,6 +31,11 @@ export class InvoiceDetailsComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.showSpinner = false;
     });
+  }
+
+  onNewBillClick() {
+    console.log("Clicked")
+    this.createNewBill.emit(true);
   }
 
 }

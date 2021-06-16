@@ -1,7 +1,7 @@
 <app-round-spinner *ngIf="showSpinner"></app-round-spinner>
 <div [hidden]="showSpinner">
     <div class="col text-center" *ngIf="this.dataSource.data.length > 0">
-        <button class="mt-2 mb-2" mat-flat-button color="primary">Add Payment</button>
+        <button class="mt-2 mb-2" mat-flat-button color="primary" (click)="onNewPaymentClick()">Add Payment</button>
     </div>
     <div *ngIf="this.dataSource.data.length === 0">
         <app-no-result [h3TextInput]="'Result empty'" [pTextInput]="'There is no payment made for this client'">

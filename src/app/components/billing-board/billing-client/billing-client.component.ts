@@ -4,6 +4,7 @@ import { ClientsService } from 'src/app/services/clients.service';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { Client } from 'src/app/model/client.model';
 import { BillingService } from 'src/app/services/billing.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-billing-client',
@@ -21,7 +22,7 @@ export class BillingClientComponent implements OnInit {
   noResultFound = false;
 
   @Output() clientFormData = new EventEmitter();
-  
+
   billingClientForm = this.fb.group({
     'clientId': [],
     'clientName': [''],
@@ -39,13 +40,19 @@ export class BillingClientComponent implements OnInit {
       'country': [{ value: '', disabled: true }],
     })
   });
+  clientId;
+  constructor(private fb: FormBuilder, private clientService: ClientsService, private router: Router) {
+    this.clientId = this.router.getCurrentNavigation().extras.state?.clientId;
+  }
 
-  constructor(private fb: FormBuilder, private clientService: ClientsService
-    ) { }
-  
   ngOnInit(): void {
     this.clientService.getAllParticulars().subscribe(data => {
       this.clientDetails = data;
+      if(this.clientId) {
+        this.showDropdown = false;
+        this.showClientDetails = true;
+        this.setBillingClientForm(this.clientDetails.find(client => client.clientId == this.clientId));
+      }
     });
     this.billingClientForm.get("clientName").valueChanges.subscribe(() => {
       this.clientFormData.emit(this.billingClientForm);
@@ -67,19 +74,19 @@ export class BillingClientComponent implements OnInit {
   }
 
   onSearchEnter() {
-    this.billingClientForm.get("clientName").setErrors({'incorrect': true});
-    if(this.billingClientForm.get("clientName").value === '') {
+    this.billingClientForm.get("clientName").setErrors({ 'incorrect': true });
+    if (this.billingClientForm.get("clientName").value === '') {
       this.showDropdown = false;
-      return;  
+      return;
     }
     this.showDropdown = true;
     this.showClientDetails = false;
     this.noResultFound = false;
-    
+
     const searchTerm = this.billingClientForm.get("clientName").value;
     const value = this.clientDetails.filter(v => v.clientName.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()));
     this.filteredResult = value;
-    if(this.filteredResult.length == 0) {
+    if (this.filteredResult.length == 0) {
       this.noResultFound = true;
     }
   }

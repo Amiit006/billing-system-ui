@@ -1,5 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
 import { Router, RouterOutlet } from '@angular/router';
 import { BillAmountDetails } from 'src/app/model/bill-amount-details.model';
 
@@ -18,6 +19,7 @@ export class BillingBoardComponent implements OnInit {
 
   subTotalBillAmount = 0;
 
+  @ViewChild('stepper') private stepper: MatStepper;
 
   constructor(private router: Router, private fb: FormBuilder) { }
 

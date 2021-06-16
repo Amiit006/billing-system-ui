@@ -1,7 +1,7 @@
 <app-round-spinner *ngIf="showSpinner"></app-round-spinner>
 <div [hidden]="showSpinner">
     <div class="col text-center">
-        <button class="mt-2 mb-2" mat-flat-button color="primary">Create a bill</button>
+        <button class="mt-2 mb-2" mat-flat-button color="primary" (click)="onNewBillClick()">Create a bill</button>
     </div>
     <div *ngIf="this.dataSource.data.length === 0">
         <app-no-result [h3TextInput]="'Result empty'" [pTextInput]="'There is no invoice for this client'">
