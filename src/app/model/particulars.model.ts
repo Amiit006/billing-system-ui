@@ -1,4 +1,5 @@
 export interface Particulars {
     particularId: number,
-    particularName: string
+    particularName: string,
+    discountPercentage: number
 }

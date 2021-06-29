@@ -15,7 +15,8 @@ export class AddParticularComponent implements OnInit {
   displayProgressSpinner = false;
   
   particularForm = this.fb.group({
-    'particular': ['', Validators.required]
+    'particular': ['', Validators.required],
+    'discountPercentage': [0, Validators.required]
   });
 
   saveInProgress: boolean = false;
@@ -30,9 +31,10 @@ export class AddParticularComponent implements OnInit {
   createParticular() {
     this.saveInProgress = true;
     this.displayProgressSpinner = true;
-    this.particularService.addParticular(this.particularForm.get('particular').value).subscribe(data => {
+    this.particularService.addParticular(this.particularForm.get('particular').value, this.particularForm.get('discountPercentage').value).subscribe(data => {
       this.toastr.success(SnackBarMessage.PARTICULAR_CREATED);
       this.particularForm.get('particular').setValue("");
+      this.particularForm.get('discountPercentage').setValue(0);
       this.saveInProgress = false;
       this.particularService.refreshParticulars();
       this.displayProgressSpinner = false;

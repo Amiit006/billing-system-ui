@@ -21,10 +21,11 @@ export class ParticularsService {
     return this.http.get<Particulars[]>(environment.baseUrl + "particulars");
   }
 
-  addParticular(particular: string) : Observable<string> {
+  addParticular(particular: string, discountPercentage: number) : Observable<string> {
     const toBeCreated: Particulars = {
       particularId: 0,
-      particularName: particular
+      particularName: particular,
+      discountPercentage: discountPercentage
     }
     return this.http.post<string>(environment.baseUrl + "particulars", toBeCreated);
   }

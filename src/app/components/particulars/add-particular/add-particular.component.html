@@ -6,6 +6,10 @@
                 <label for="particularName" class="col-3 col-md-3 col-sm-3 control-label">Particular Name: </label>
                 <input type="text" class="form-control col-7 col-md-7 col-sm-7" id="particularName" formControlName="particular">
             </div>
+            <div class="row mt-2">
+                <label for="discountPercentage" class="col-3 col-md-3 col-sm-3 control-label">Discount Percentage: </label>
+                <input type="number" class="form-control col-1 col-md-1 col-sm-1" id="discountPercentage" formControlName="discountPercentage">
+            </div>
         </form>
         <div class="col text-center">
             <button class="btn-class mt-2" [disabled]="!particularForm.valid && !saveInProgress" mat-flat-button color="primary" (click)="createParticular()">Create</button>
