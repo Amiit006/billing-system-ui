@@ -40,6 +40,7 @@ import { PaymentDetailsComponent } from './components/single-client-board/paymen
 import { InvoiceDetailsComponent } from './components/single-client-board/invoice-details/invoice-details.component';
 import { NoResultComponent } from './components/no-result/no-result.component';
 import { RoundSpinnerComponent } from './components/round-spinner/round-spinner.component';
+import { ViewInvoiceComponent } from './components/single-client-board/view-invoice/view-invoice.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,7 @@ import { RoundSpinnerComponent } from './components/round-spinner/round-spinner.
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent,
   ],
   imports: [
     BrowserModule,

@@ -25,4 +25,8 @@ export class BillingService {
     params = params.append('clientId', clientId.toString());
     return this.httpClient.get<Payment[]>(environment.baseUrl + "invoice/client", { params: params });
   }
+
+  getInvoiceByInvoiceId(invoiceId) {
+    return this.httpClient.get(environment.baseUrl + "invoice/" + invoiceId);
+  }
 }

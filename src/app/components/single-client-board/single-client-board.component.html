@@ -4,7 +4,7 @@
             ClientDetails
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
-            <app-client-details></app-client-details>
+            <app-client-details (clientFormData)="setClientFormData($event)"></app-client-details>
         </ng-template>
     </mat-expansion-panel>
     <mat-expansion-panel class="mt-2">

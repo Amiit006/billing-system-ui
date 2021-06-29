@@ -5,9 +5,7 @@
                 <div class="row">
                     <div class="col-9"></div>
                     <div class="col-3 text-right">
-                        <button [disabled]="invoiceSaveStatus" (click)="onSave()" class="btn btn-sm btn-white m-b-10 p-l-5">
-                            <i class="fa fa-save t-plus-1 fa-fw fa-lg"></i>Save</button>
-                        <button [disabled]="!invoiceSaveStatus" [useExistingCss]="true" printSectionId="print-body" ngxPrint class="btn btn-sm btn-white m-b-10 p-l-5"><i
+                        <button [useExistingCss]="true" printSectionId="print-body" ngxPrint class="btn btn-sm btn-white m-b-10 p-l-5"><i
                                 class="fa fa-print t-plus-1 fa-fw fa-lg"></i>Print</button>
                     </div>
                 </div>
@@ -24,21 +22,21 @@
                         <div class="col-6">
                             <address>
                                 <strong>Billed To:</strong><br>
-                                {{clientForm.clientName}}<br>
-                                {{clientForm.address?.storeName}}<br>
-                                {{clientForm.address?.address1}},
-                                {{clientForm.address?.address2}}<br>
-                                {{clientForm.address?.city}},
-                                {{clientForm.address?.state}}<br>
-                                {{clientForm.address?.country}},
-                                {{clientForm.address?.zip}}<br>
-                                <abbr title="Phone">P:</abbr> {{clientForm.mobile}}
+                                {{client?.clientName}}<br>
+                                {{client?.address?.storeName}}<br>
+                                {{client?.address?.addressLine1}},
+                                {{client?.address?.addressLine2}}<br>
+                                {{client?.address?.city}},
+                                {{client?.address?.state}}<br>
+                                {{client?.address?.country}},
+                                {{client?.address?.zip}}<br>
+                                <abbr title="Phone">P:</abbr> {{client?.mobile}}
                             </address>
                         </div>
                         <div class="col-6 text-right">
                             <address>
                                 <strong>Order Date:</strong><br>
-                                {{currentDate | date:'dd-MMM-yyyy'}}
+                                {{invoice?.invoiceDate | date:'dd-MMM-yyyy'}}
                             </address>
                         </div>
                     </div>
@@ -57,7 +55,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr style="font-size: 14px;" *ngFor="let item of billForm.items">
+                                    <tr style="font-size: 14px;" *ngFor="let item of invoice?.invoiceDetails">
                                         <td class="text-left">{{item.slNo}}</td>
                                         <td class="text-center">{{item.perticulars}}</td>
                                         <td class="text-center">{{item.amount | indianCurrency}}</td>
@@ -68,22 +66,22 @@
                                     <tr>
                                         <td colspan="4"></td>
                                         <td class="text-right"><strong>Subtotal</strong></td>
-                                        <td class="text-right"><strong>{{billAmountDetails?.subTotalAmount |
+                                        <td class="text-right"><strong>{{invoice?.subTotalAmount |
                                                 indianCurrency}}</strong></td>
                                     </tr>
                                     <tr>
                                         <td colspan="4"></td>
                                         <td class="text-right">
                                             <strong>Taxes
-                                                ({{billAmountDetails?.taxPercentage}}%) + </strong></td>
-                                        <td class="text-right"><strong>{{billAmountDetails?.taxAmount |
+                                                ({{invoice?.taxPercentage}}%) + </strong></td>
+                                        <td class="text-right"><strong>{{invoice?.taxAmount |
                                                 indianCurrency}}</strong></td>
                                     </tr>
                                     <tr>
                                         <td colspan="4"></td>
                                         <td class="text-right"><strong>Payment - </strong></td>
-                                        <td class="text-right"><strong>{{paymentForm.paymentAmount ?
-                                                paymentForm.paymentAmount : 0 |
+                                        <td class="text-right"><strong>{{invoice?.paymentAmount ?
+                                            invoice?.paymentAmount : 0 |
                                                 indianCurrency}}</strong></td>
 
                                     </tr>
@@ -91,9 +89,9 @@
                                         <td colspan="4"></td>
                                         <td class="text-right"><strong>Total</strong></td>
                                         <td class="text-right">
-                                            <strong>{{billAmountDetails.grandTotalAmount -
-                                                (paymentForm.paymentAmount ?
-                                                paymentForm.paymentAmount : 0) |
+                                            <strong>{{invoice?.grandTotalAmount -
+                                                (invoice?.paymentAmount ?
+                                                invoice?.paymentAmount : 0) |
                                                 indianCurrency}}</strong>
                                         </td>
                                     </tr>

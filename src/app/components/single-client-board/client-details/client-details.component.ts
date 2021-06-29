@@ -70,14 +70,11 @@ export class ClientDetailsComponent implements OnInit {
     this.clientForm.valueChanges.subscribe(() => {
       this.disableSaveButton = false;
     })
-
-    console.log(this.clientForm.valid);
     // this.clientForm.valueChanges.subscribe(data => console.log(this.clientForm));
   }
 
   onEditClick() {
     this.clientForm.enable();
-    console.log(this.clientForm);
     this.clientForm.get("address").get("country").disable();
     this.editInProgress = true;
   }
@@ -90,21 +87,16 @@ export class ClientDetailsComponent implements OnInit {
 
   onSaveClick() {
     const newValue = JSON.stringify(this.clientForm.getRawValue());
-    console.log(newValue)
-    console.log(this.intialFormValue)
     if (newValue === this.intialFormValue) {
       this.toastrService.error("No changes to the form!")
     } else {
       this.disableSaveButton = true;
-      console.log(this.clientForm.getRawValue());
       this.clientsService.updateClient(this.clientId, this.clientForm).subscribe(data => {
-        console.log(data);
         this.disableSaveButton = false;
         this.editInProgress = false;
         this.toastrService.success("Successfully updated client!");
         this.clientForm.disable();
       }, error => {
-        console.log(error);
         this.toastrService.error(error.error.error);
       });
     }

@@ -44,7 +44,7 @@
         <mat-step>
             <ng-template matStepLabel>Print Bill</ng-template>
             <ng-template matStepContent>
-                <app-invoice (invoiceSaveStatusEmitter)="setShowNewBill($event)" [clientForm]="clientForm" [billForm]="billForm" [paymentForm]="paymentForm" [billAmountDetails]="billAmountDetails">
+                <app-invoice (invoiceSaveStatusEmitter)="setShowNewBill($event)" [clientForm]="clientForm.getRawValue()" [billForm]="billForm.getRawValue()" [paymentForm]="paymentForm.getRawValue()" [billAmountDetails]="billAmountDetails">
                 </app-invoice>
                 <div>
                     <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>

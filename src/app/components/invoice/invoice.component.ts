@@ -20,9 +20,9 @@ export class InvoiceComponent implements OnInit {
 
   currentDate = new Date();
 
-  @Input() clientForm: FormGroup;
-  @Input() billForm: FormGroup;
-  @Input() paymentForm: FormGroup;
+  @Input() clientForm;
+  @Input() billForm;
+  @Input() paymentForm;
   @Input() billAmountDetails: BillAmountDetails;
   @Output() invoiceSaveStatusEmitter = new EventEmitter<boolean>();
   invoiceId: number;
@@ -51,15 +51,15 @@ export class InvoiceComponent implements OnInit {
   }
 
   onSave() {
-    const value = {
-      "invoice": this.billForm.getRawValue().items,
-      "client": this.clientForm.getRawValue(),
-      "payment": this.paymentForm.getRawValue(),
+    const payload = {
+      "invoice": this.billForm.items,
+      "client": this.clientForm,
+      "payment": this.paymentForm,
       "billAmountDetails": this.billAmountDetails
     }
-    console.log(value);
+    console.log(payload);
     this.displayProgressSpinner = true;
-    this.billingService.createInvoice(value).subscribe(data => {
+    this.billingService.createInvoice(payload).subscribe(data => {
       this.displayProgressSpinner = false;
       this.invoiceSaveStatus = true;
       this.invoiceSaveStatusEmitter.emit(this.invoiceSaveStatus);
