@@ -7,22 +7,28 @@
             <div class="col-1">
                 <input type="number" class="form-control" placeholder="Sl No" formControlName="slNo">
             </div>
-            <div class="col-3">
-                <input type="text" #inputToFocus class="form-control" placeholder="Perticulars" formControlName="perticulars" [ngbTypeahead]="search">
-            </div>
             <div class="col-2">
-                <input type="number" class="form-control" placeholder="Amount" formControlName="amount" (change)="onAmountChange(i)">
+                <input type="text" #inputToFocus class="form-control" placeholder="Perticulars" formControlName="perticulars" (selectItem)="selectedItem($event, i)" [ngbTypeahead]="search">
             </div>
             <div class="col-1">
-                <input type="number" class="form-control" placeholder="Qnt" formControlName="quanity" (change)="onQntyChange(i)">
+                <input type="number" class="form-control" placeholder="Amount" formControlName="amount" (change)="onChange(i)">
+            </div>
+            <div class="col-1">
+                <input type="number" class="form-control" placeholder="Qnt" formControlName="quanity" (change)="onChange(i)">
             </div>
             <div class="col-1">
                 <select class="form-control" id="qnt" formControlName="quantityType">
                     <option *ngFor="let qntType of qntTypes" [ngValue]="qntType.id">{{qntType.value}}</option>
                 </select>
             </div>
-            <div class="col-2">
-                <input type="number" class="form-control" placeholder="Total" formControlName="total" [value]="product['amount']">
+            <div class="col-1">
+                <input type="number" class="form-control" placeholder="discount" formControlName="discount" (change)="onChange(i)">
+            </div>
+            <div class="col-1" style="width: 12.499999995%">
+                <input type="number" class="form-control" placeholder="Total" formControlName="total">
+            </div>
+            <div class="col-1" style="width: 12.499999995%">
+                <input type="number" class="form-control" placeholder="Total" formControlName="discountPrice">
             </div>
             <div class="col-2">
                 <mat-checkbox class="mr-2" formControlName="verified" (change)="verifyRow(i, $event)">Verified
@@ -35,4 +41,3 @@
 </form>
 <div class="col text-center">
     <button class="btn-class mt-2" [disabled]="!billForm.valid" mat-flat-button color="primary" (click)="addRow()">Add</button>
-</div>

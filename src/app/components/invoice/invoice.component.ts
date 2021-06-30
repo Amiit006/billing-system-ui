@@ -65,6 +65,7 @@ export class InvoiceComponent implements OnInit {
       this.invoiceSaveStatusEmitter.emit(this.invoiceSaveStatus);
       this.toastrService.success(data.response);
     }, error => {
+      console.log(error);
       this.displayProgressSpinner = false;
       this.invoiceSaveStatus = false;
       this.invoiceSaveStatusEmitter.emit(this.invoiceSaveStatus);

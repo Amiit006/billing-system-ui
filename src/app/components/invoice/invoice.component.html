@@ -54,6 +54,8 @@
                                         <td class="text-right"><strong>Quantity</strong></td>
                                         <td class="text-right"><strong>Qnty Type</strong></td>
                                         <td class="text-right"><strong>Sub Total</strong></td>
+                                        <td class="text-right"><strong>Discount</strong></td>
+                                        <td class="text-right"><strong>Discount Total</strong></td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -64,15 +66,17 @@
                                         <td class="text-right">{{item.quanity}}</td>
                                         <td class="text-right">{{item.quantityType}}</td>
                                         <td class="text-right">{{item.total | indianCurrency}}</td>
+                                        <td class="text-right">{{item.discount}}%</td>
+                                        <td class="text-right">{{item.discountPrice | indianCurrency}}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4"></td>
+                                        <td colspan="6"></td>
                                         <td class="text-right"><strong>Subtotal</strong></td>
                                         <td class="text-right"><strong>{{billAmountDetails?.subTotalAmount |
                                                 indianCurrency}}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4"></td>
+                                        <td colspan="6"></td>
                                         <td class="text-right">
                                             <strong>Taxes
                                                 ({{billAmountDetails?.taxPercentage}}%) + </strong></td>
@@ -80,7 +84,7 @@
                                                 indianCurrency}}</strong></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4"></td>
+                                        <td colspan="6"></td>
                                         <td class="text-right"><strong>Payment - </strong></td>
                                         <td class="text-right"><strong>{{paymentForm.paymentAmount ?
                                                 paymentForm.paymentAmount : 0 |
@@ -88,7 +92,7 @@
 
                                     </tr>
                                     <tr>
-                                        <td colspan="4"></td>
+                                        <td colspan="6"></td>
                                         <td class="text-right"><strong>Total</strong></td>
                                         <td class="text-right">
                                             <strong>{{billAmountDetails.grandTotalAmount -

@@ -21,7 +21,7 @@ export class BillingComponent implements OnInit {
   @Output() subTotalBillAmount = new EventEmitter<number>();;
   noOfPerticulars = 0;
 
-  qntTypes: any = [{'id': 'pc', 'value': 'Pc'},{'id': 'dz', 'value': 'Dz'}];
+  qntTypes: any = [{ 'id': 'pc', 'value': 'Pc' }, { 'id': 'dz', 'value': 'Dz' }];
 
   particulars: Particulars[] = [];
 
@@ -56,7 +56,21 @@ export class BillingComponent implements OnInit {
       val.get('amount').setValue(Math.floor((Math.random() * 100) + 1));
       val.get('quanity').setValue(Math.floor((Math.random() * 100) + 1));
       val.get('total').setValue(val.get('amount').value * val.get('quanity').value);
+      
+      const amount = this.billForm.get("items").value[index]["amount"];
+      const quanity = this.billForm.get("items").value[index]["quanity"];
+      const discount = this.billForm.get("items").value[index]["discount"];
+      const discountPrice = (amount * quanity) - (amount * quanity * discount / 100);
+      (<FormArray>this.billForm.get("items")).controls[index].get("discountPrice").setValue(discountPrice);
+
     }
+  }
+
+  selectedItem(item, index) {
+    console.log(item);
+    const discountPercentage = this.particulars.find(data => data.particularName === item.item).discountPercentage;
+    console.log(discountPercentage);
+    (<FormArray>this.billForm.get("items")).controls[index].get("discount").setValue(discountPercentage);
   }
 
   billForm = this.fb.group({
@@ -70,7 +84,9 @@ export class BillingComponent implements OnInit {
       'perticulars': ['', Validators.required],
       'amount': [0, [Validators.required, Validators.min(1)]],
       'quanity': [0, [Validators.required, Validators.min(1)]],
+      'discount': [0],
       'total': [{ value: 0, disabled: true }],
+      'discountPrice': [{ value: 0, disabled: true }],
       'quantityType': ['pc', Validators.required],
       'verified': [false, Validators.requiredTrue]
     });
@@ -170,7 +186,7 @@ export class BillingComponent implements OnInit {
           .slice(0, 10))
     )
 
-  onAmountChange(i) {
+  onChange(i) {
     this.calculateAndPopulateTotal(i);
   }
 
@@ -181,14 +197,17 @@ export class BillingComponent implements OnInit {
   calculateAndPopulateTotal(index) {
     const amount = this.billForm.get("items").value[index]["amount"];
     const quanity = this.billForm.get("items").value[index]["quanity"];
+    const discount = this.billForm.get("items").value[index]["discount"];
     (<FormArray>this.billForm.get("items")).controls[index].get("total").setValue(amount * quanity);
+    const discountPrice = (amount * quanity) - (amount * quanity * discount / 100);
+    (<FormArray>this.billForm.get("items")).controls[index].get("discountPrice").setValue(discountPrice);
     this.calculateSubtotalBillAmount();
   }
 
   calculateSubtotalBillAmount() {
     let subTotal = 0;
     (<FormArray>this.billForm.get("items")).controls.map(x => {
-      subTotal += x.get('total').value;
+      subTotal += x.get('discountPrice').value;
     });
     this.subTotalBillAmount.emit(subTotal);
   }
