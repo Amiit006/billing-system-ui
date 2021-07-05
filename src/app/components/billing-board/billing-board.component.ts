@@ -14,6 +14,7 @@ export class BillingBoardComponent implements OnInit {
   clientForm: FormGroup = this.fb.group({});
   billForm: FormGroup = this.fb.group({});
   paymentForm: FormGroup = this.fb.group({});
+  billSettingForm: FormGroup = this.fb.group({});
 
   billAmountDetails: BillAmountDetails;
 
@@ -31,6 +32,10 @@ export class BillingBoardComponent implements OnInit {
 
   setClientFormData(event: FormGroup) {
     this.clientForm = event;
+  }
+
+  setBillSettingFormData(event: FormGroup) {
+    this.billSettingForm = event;
   }
 
   setBillFormData(event: FormGroup) {

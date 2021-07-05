@@ -8,6 +8,16 @@
                 <button mat-button matStepperNext color="primary" [disabled]="!clientForm.valid" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Next</button>
             </div>
         </mat-step>
+        <mat-step [stepControl]="billSettingForm" [editable]="!showNewBill">
+            <ng-template matStepLabel>Bill Settings</ng-template>
+            <ng-template matStepContent>
+                <app-bill-setting (billSettingFormData)="setBillSettingFormData($event)"></app-bill-setting>
+                <div>
+                    <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
+                    <button mat-button matStepperNext color="primary" [disabled]="!billSettingForm.valid" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Next</button>
+                </div>
+            </ng-template>
+        </mat-step>
         <mat-step [stepControl]="billForm" [editable]="!showNewBill">
             <ng-template matStepLabel>Bill
                 <span *ngIf="subTotalBillAmount > 0">Amount: {{subTotalBillAmount | indianCurrency }}</span>
@@ -20,6 +30,17 @@
                 </div>
             </ng-template>
         </mat-step>
+        <mat-step [editable]="!showNewBill">
+            <ng-template matStepLabel>Bill Summery</ng-template>
+            <ng-template matStepContent>
+                <app-billing-summary [billSetting]="billSettingForm.getRawValue()" [subTotalBill]="subTotalBillAmount" (billAmountDetails)="setBillAmountDetails($event)">
+                </app-billing-summary>
+                <div>
+                    <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
+                    <button mat-button matStepperNext color="primary" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Print</button>
+                </div>
+            </ng-template>
+        </mat-step>
         <mat-step [stepControl]="paymentForm" [editable]="!showNewBill">
             <ng-template matStepLabel>Payment</ng-template>
             <ng-template matStepContent>
@@ -27,17 +48,6 @@
                 <div>
                     <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
                     <button mat-button matStepperNext color="primary" [disabled]="!paymentForm.valid" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Next</button>
-                </div>
-            </ng-template>
-        </mat-step>
-        <mat-step [editable]="!showNewBill">
-            <ng-template matStepLabel>Bill Summery</ng-template>
-            <ng-template matStepContent>
-                <app-billing-summary [subTotalBill]="subTotalBillAmount" (billAmountDetails)="setBillAmountDetails($event)">
-                </app-billing-summary>
-                <div>
-                    <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
-                    <button mat-button matStepperNext color="primary" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Print</button>
                 </div>
             </ng-template>
         </mat-step>

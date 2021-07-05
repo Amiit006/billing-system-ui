@@ -75,7 +75,19 @@
                                         <td class="text-right"><strong>{{billAmountDetails?.subTotalAmount |
                                                 indianCurrency}}</strong></td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="billAmountDetails?.overallDiscountAmount > 0">
+                                        <td colspan="6"></td>
+                                        <td class="text-right"><strong>Overall Disc({{billAmountDetails?.overallDiscountPercentage}}%)</strong></td>
+                                        <td class="text-right"><strong>{{billAmountDetails?.overallDiscountAmount |
+                                                indianCurrency}}</strong></td>
+                                    </tr>
+                                    <tr *ngIf="billAmountDetails?.overallDiscountAmount > 0">
+                                        <td colspan="6"></td>
+                                        <td class="text-right"><strong>Total</strong></td>
+                                        <td class="text-right"><strong>{{billAmountDetails?.subTotalAmount - billAmountDetails?.overallDiscountAmount |
+                                                indianCurrency}}</strong></td>
+                                    </tr>
+                                    <tr *ngIf="billAmountDetails?.taxAmount > 0">
                                         <td colspan="6"></td>
                                         <td class="text-right">
                                             <strong>Taxes
@@ -93,7 +105,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="6"></td>
-                                        <td class="text-right"><strong>Total</strong></td>
+                                        <td class="text-right"><strong>Grand Total</strong></td>
                                         <td class="text-right">
                                             <strong>{{billAmountDetails.grandTotalAmount -
                                                 (paymentForm.paymentAmount ?

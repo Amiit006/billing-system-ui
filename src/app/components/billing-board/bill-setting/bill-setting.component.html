@@ -1,0 +1,28 @@
+<mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Bill Settings</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="container">
+            <form [formGroup]="billSettingForm">
+                <div class="row">
+                    <div class="col-3 center">
+                        <mat-checkbox formControlName="isGstBill" (change)="gstSelectedEvent($event)">GST Bill?</mat-checkbox>
+                    </div>
+                    <div class="col-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Tax Percentage</mat-label>
+                            <input matInput placeholder="Tax Percentage" type="number" formControlName="taxPercentage">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Discount Percentage</mat-label>
+                            <input matInput placeholder="Discount Percentage" type="number" formControlName="overallDiscountPercentage">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
