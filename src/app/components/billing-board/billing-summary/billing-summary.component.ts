@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { BillAmountDetails } from 'src/app/model/bill-amount-details.model';
+import { BillingService } from 'src/app/services/billing.service';
 import { BillingComponent } from '../billing/billing.component';
 
 @Component({
@@ -21,8 +22,7 @@ export class BillingSummaryComponent implements OnInit, OnChanges {
 
   @Output() billAmountDetails = new EventEmitter<BillAmountDetails>();
 
-  constructor() {
-    console.log(this.billSetting);
+  constructor(private billingService: BillingService) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -62,7 +62,9 @@ export class BillingSummaryComponent implements OnInit, OnChanges {
       overallDiscountAmount: this.overallDiscountAmount,
       grandTotalAmount: this.grandTotalAmount
     };
+    console.log("val", val)
     this.billAmountDetails.emit(val);
+    this.billingService.setBillAmountDetails(val);
   }
 
   ngOnInit(): void {

@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { BillAmountDetails } from '../model/bill-amount-details.model';
 import { Payment } from '../model/payment.model';
 import { StringResponse } from '../model/string-response.model';
 
@@ -11,6 +12,16 @@ import { StringResponse } from '../model/string-response.model';
 export class BillingService {
 
   constructor(private httpClient: HttpClient) { }
+  
+  billAmountDetails:BillAmountDetails; 
+
+  setBillAmountDetails(data) {
+    this.billAmountDetails = data;
+  }
+
+  getBillAmountDetails() {
+    return this.billAmountDetails;
+  }
 
   generateInvoiceId(): Observable<number> {
     return this.httpClient.get<number>(environment.baseUrl + "invoice/generateInvoiceId");
@@ -28,5 +39,10 @@ export class BillingService {
 
   getInvoiceByInvoiceId(invoiceId) {
     return this.httpClient.get(environment.baseUrl + "invoice/" + invoiceId);
+  }
+
+  addDiscountToBill(clientId, invoiceId, billAmountDetails) {
+    return this.httpClient.put(environment.baseUrl + "invoice/addDiscount/" + 
+      clientId + "/" + invoiceId, billAmountDetails);
   }
 }

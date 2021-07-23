@@ -14,13 +14,13 @@
             </div>
             <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
                 <div class="row my-2">
-                    <div class="col-7 text-right"> SubTotal</div>
-                    <div class="col-5"> <span id="subTotalAmount" style="float: right;" class="text-120 text-secondary-d1">{{subTotalAmount
+                    <div class="col-7 col-sm-6 text-right"> SubTotal</div>
+                    <div class="col-5 col-sm-6"> <span id="subTotalAmount" style="float: right;" class="text-120 text-secondary-d1">{{subTotalAmount
                             | indianCurrency}}</span></div>
                 </div>
                 <div class="row my-2">
-                    <div class="col-7 text-right"> Overall Disc. ({{overallDiscountPercentage}}%)</div>
-                    <div class="col-5">
+                    <div class="col-7 col-sm-6 text-right"> Overall Disc. ({{overallDiscountPercentage}}%)</div>
+                    <div class="col-5 col-sm-6">
                         <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">-</span>
                         <span id="overallDiscountAmount" style="float: right;" class="text-110 text-secondary-d1">{{overallDiscountAmount |
                             indianCurrency}}</span>
@@ -28,13 +28,13 @@
                 </div>
                 <mat-divider class="mt-2 mb-2"></mat-divider>
                 <div class="row my-2 align-items-center bgc-primary-l3">
-                    <div class="col-7 text-right"> Amount</div>
-                    <div class="col-5"> <span style="float: right;" class="text-150 text-success-d3 opacity-2">{{subTotalAmount - overallDiscountAmount | indianCurrency}}</span>
+                    <div class="col-7 col-sm-6 text-right"> Amount</div>
+                    <div class="col-5 col-sm-6"> <span style="float: right;" class="text-150 text-success-d3 opacity-2">{{subTotalAmount - overallDiscountAmount | indianCurrency}}</span>
                     </div>
                 </div>
                 <div class="row my-2">
-                    <div class="col-7 text-right"> Tax ({{taxPercentage}}%)</div>
-                    <div class="col-5">
+                    <div class="col-7 col-sm-6 text-right"> Tax ({{taxPercentage}}%)</div>
+                    <div class="col-5 col-sm-6">
                         <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">+</span>
                         <span id="taxAmount" style="float: right;" class="text-110 text-secondary-d1">{{taxAmount |
                             indianCurrency}}</span>
@@ -42,8 +42,8 @@
                 </div>
                 <mat-divider class="mt-2 mb-2"></mat-divider>
                 <div class="row my-2 align-items-center bgc-primary-l3">
-                    <div class="col-7 text-right"> Total Amount</div>
-                    <div class="col-5"> <span style="float: right;" class="text-150 text-success-d3 opacity-2">{{grandTotalAmount | indianCurrency}}</span>
+                    <div class="col-7 col-sm-6 text-right"> Total Amount</div>
+                    <div class="col-5 col-sm-6"> <span style="float: right;" class="text-150 text-success-d3 opacity-2">{{grandTotalAmount | indianCurrency}}</span>
                     </div>
                 </div>
             </div>

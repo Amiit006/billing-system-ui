@@ -1,10 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Client } from 'src/app/model/client.model';
 import { BillingService } from 'src/app/services/billing.service';
+import { AddDiscountComponent } from '../add-discount/add-discount.component';
 
 @Component({
   selector: 'app-invoice-details',
@@ -24,7 +27,7 @@ export class InvoiceDetailsComponent implements OnInit {
   @Input() clientData: Client;
 
   constructor(private billingService: BillingService, private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router, public dialog: MatDialog, private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
@@ -46,6 +49,27 @@ export class InvoiceDetailsComponent implements OnInit {
     const clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
     this.router.navigate(["clients/" + clientId + "/invoice/" + invoiceId]
       , { state: { invoice: this.invoice.filter(data => data.invoiceId === invoiceId)[0] } });
+  }
+
+  onAddDiscountClick(invoiceId) {
+    const clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
+    const data = this.invoice.filter(x => x.invoiceId === invoiceId);
+    this.openDialog(invoiceId, data[0]);
+  }
+
+  openDialog(invoiceId, data): void {
+    console.log(data);
+    const dialogRef = this.dialog.open(AddDiscountComponent, {
+      width: '1150px',
+      data: {invoiceDetails: data}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result?.success) {
+        console.log(result);
+        this.toastrService.success(result.response.response);
+      }
+    });
   }
 
 }
