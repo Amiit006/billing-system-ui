@@ -42,13 +42,11 @@ export class ClientDetailsComponent implements OnInit {
     private toastrService: ToastrService,
     private clientsService: ClientsService) {
     this.clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
-    console.log(this.clientId);
   }
 
   ngOnInit(): void {
     this.clientForm.disable();
     this.clientsService.getClientById(this.clientId).subscribe(data => {
-      console.log(data)
       // this.clientForm.get("clientId").setValue(data.clientId);
       this.clientForm.get("clientName").setValue(data.clientName);
       this.clientForm.get("mobile").setValue(data.mobile);
@@ -63,14 +61,12 @@ export class ClientDetailsComponent implements OnInit {
       this.clientForm.get("address").get("state").setValue(data.address.state);
       this.clientForm.get("address").get("zip").setValue(data.address.zip);
       this.clientForm.get("address").get("country").setValue(data.address.country);
-      console.log("Inside", this.clientForm)
       this.intialFormValue = JSON.stringify(this.clientForm.getRawValue());
     });
 
     this.clientForm.valueChanges.subscribe(() => {
       this.disableSaveButton = false;
     })
-    // this.clientForm.valueChanges.subscribe(data => console.log(this.clientForm));
   }
 
   onEditClick() {

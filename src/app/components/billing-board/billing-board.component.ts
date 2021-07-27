@@ -43,7 +43,6 @@ export class BillingBoardComponent implements OnInit {
   }
 
   setPaymentFormData(event: FormGroup) {
-    console.log(event)
     this.paymentForm = event;
   }
 
@@ -69,7 +68,6 @@ export class BillingBoardComponent implements OnInit {
   showNewBill = false;
 
   setShowNewBill = (event: boolean) => {
-    console.log(event);
     this.showNewBill = event;
   } 
 

@@ -29,7 +29,6 @@ export class PaymentSummaryComponent implements OnInit {
       "client": this.clientForm.getRawValue(),
       "payment": this.paymentForm.getRawValue(),
     }
-    console.log(value);
     this.displayProgressSpinner = true;
     this.paymentService.createPayment(value).subscribe(data => {
       this.displayProgressSpinner = false;
@@ -37,7 +36,6 @@ export class PaymentSummaryComponent implements OnInit {
       this.paymentSaveStatusEmitter.emit(this.paymentSaveStatus);
       this.toastrService.success(data.response);
     }, error => {
-      console.log(error.error);
       this.displayProgressSpinner = false;
       this.toastrService.error(error.error.error);
     });

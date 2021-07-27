@@ -39,7 +39,6 @@ export class AddParticularComponent implements OnInit {
       this.particularService.refreshParticulars();
       this.displayProgressSpinner = false;
     }, error => {
-      console.log(error);
       this.toastr.error(error.error);
       this.saveInProgress = false;
       this.displayProgressSpinner = false;

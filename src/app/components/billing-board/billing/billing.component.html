@@ -1,4 +1,19 @@
 <ng-template matStepLabel>Fill out your address</ng-template>
+<div class="row mt-1">
+    <div class="col-1 text-center">Sl No</div>
+    <div class="col-2 text-center">Perticulars</div>
+    <div class="col-1 text-center">Amount</div>
+    <div class="col-1 text-center">Qnt</div>
+    <div class="col-1 text-center">Qnt Type</div>
+    <div class="col-1 text-center">Discount</div>
+    <div class="col-3  text-center">
+        <div class="row">
+            <div class="col-6">Total</div>
+            <div class="col-6">Dis. Price</div>
+        </div>
+    </div>
+    <div class="col-2 text-center">Action</div>
+</div>
 <form [formGroup]="billForm">
     <div style="margin-bottom: 10px;"></div>
     <div formArrayName="items" *ngFor="let product of billForm.get('items')['controls']; let i = index">
@@ -24,11 +39,15 @@
             <div class="col-1">
                 <input type="number" class="form-control" placeholder="discount" formControlName="discount" (change)="onChange(i)">
             </div>
-            <div class="col-1" style="width: 12.499999995%">
-                <input type="number" class="form-control" placeholder="Total" formControlName="total">
-            </div>
-            <div class="col-1" style="width: 12.499999995%">
-                <input type="number" class="form-control" placeholder="Total" formControlName="discountPrice">
+            <div class="col-3">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="number" class="form-control" placeholder="Total" formControlName="total">
+                    </div>
+                    <div class="col-6">
+                        <input type="number" class="form-control" placeholder="Total" formControlName="discountPrice">
+                    </div>
+                </div>
             </div>
             <div class="col-2">
                 <mat-checkbox class="mr-2" formControlName="verified" (change)="verifyRow(i, $event)">Verified
@@ -40,4 +59,4 @@
     </div>
 </form>
 <div class="col text-center">
-    <button class="btn-class mt-2" [disabled]="!billForm.valid" mat-flat-button color="primary" (click)="addRow()">Add</button>
+    <button class="btn-class mt-2" mat-flat-button color="primary" (click)="addRow()">Add</button>

@@ -20,7 +20,7 @@
                     <div class="col-8 col-md-8 col-sm-8">
                         <ul class="filter-select">
                             <li (click)="onClick(result)" *ngFor="let result of filteredResult" class="filter-select-list">
-                                <p class="artist-name">
+                                <p>
                                     {{result.clientName}} ({{result.mobile}})</p>
                             </li>
                         </ul>
@@ -31,7 +31,7 @@
                     <div class="col-8 col-md-8 col-sm-8">
                         <ul class="filter-select">
                             <li class="filter-select-list">
-                                <p class="artist-name">No client found! Create one</p>
+                                <p>No client found! Create one</p>
                             </li>
                         </ul>
                     </div>

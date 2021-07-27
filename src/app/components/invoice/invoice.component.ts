@@ -41,13 +41,8 @@ export class InvoiceComponent implements OnInit {
     //   this.paymentDetails = data.paymentDetails;
     // });
     this.billingService.generateInvoiceId().subscribe(data => {
-      console.log(data);
       this.invoiceId = data;
     })
-    console.log('clientForm', this.clientForm);
-    console.log('billForm', this.billForm);
-    console.log('paymentForm', this.paymentForm);
-    console.log('billAmountDetails', this.billAmountDetails);
   }
 
   onSave() {
@@ -57,7 +52,6 @@ export class InvoiceComponent implements OnInit {
       "payment": this.paymentForm,
       "billAmountDetails": this.billAmountDetails
     }
-    console.log(payload);
     this.displayProgressSpinner = true;
     this.billingService.createInvoice(payload).subscribe(data => {
       this.displayProgressSpinner = false;
@@ -65,7 +59,6 @@ export class InvoiceComponent implements OnInit {
       this.invoiceSaveStatusEmitter.emit(this.invoiceSaveStatus);
       this.toastrService.success(data.response);
     }, error => {
-      console.log(error);
       this.displayProgressSpinner = false;
       this.invoiceSaveStatus = false;
       this.invoiceSaveStatusEmitter.emit(this.invoiceSaveStatus);

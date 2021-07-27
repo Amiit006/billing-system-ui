@@ -26,7 +26,6 @@ export class BillSettingComponent implements OnInit {
   }
 
   gstSelectedEvent(event: MatCheckboxChange) {
-    console.log(event.checked);
     if(!event.checked) {
       this.billSettingForm.get("taxPercentage").disable();
       this.billSettingForm.get("taxPercentage").setValue(0);

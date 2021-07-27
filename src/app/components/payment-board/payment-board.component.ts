@@ -28,7 +28,6 @@ export class PaymentBoardComponent implements OnInit {
   }
 
   setShowNewPayment = (event: boolean) => {
-    console.log(event);
     this.showNewPayment = event;
   } 
 

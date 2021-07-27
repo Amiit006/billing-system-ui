@@ -62,7 +62,6 @@ export class BillingSummaryComponent implements OnInit, OnChanges {
       overallDiscountAmount: this.overallDiscountAmount,
       grandTotalAmount: this.grandTotalAmount
     };
-    console.log("val", val)
     this.billAmountDetails.emit(val);
     this.billingService.setBillAmountDetails(val);
   }

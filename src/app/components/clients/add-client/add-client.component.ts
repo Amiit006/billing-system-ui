@@ -45,8 +45,6 @@ export class AddClientComponent implements OnInit {
       gstNumberControl.patchValue(gstNumberControl.value.toUpperCase(), { emitEvent: false });
     });
 
-    this.clientForm.get('mobile').valueChanges.subscribe(() => console.log(this.clientForm.get('mobile')))
-
     this.clientForm.valueChanges.subscribe(() => {
       this.disableSaveButton = false;
     })
@@ -76,7 +74,6 @@ export class AddClientComponent implements OnInit {
     this.clientsService.createClient(client).subscribe(data => {
       this.toastr.success("Client Created Successfully");
     }, error => {
-      console.log(error);
       this.disableSaveButton = false;
       this.toastr.error(error.error.error);
     });

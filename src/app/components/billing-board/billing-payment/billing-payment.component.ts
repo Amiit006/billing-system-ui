@@ -33,7 +33,6 @@ export class PaymentComponent implements OnInit {
 
   getOutstandingbyId() {
     const clientId = this.clientForm?.get("clientId")?.value;
-    console.log(clientId);
     if(this.showOutstandingHtml && clientId) {
       this.outstandingService.getOutstandingById(clientId)
         .subscribe(data => {

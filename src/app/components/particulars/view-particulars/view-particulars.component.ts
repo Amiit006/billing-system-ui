@@ -26,7 +26,6 @@ export class ViewParticularsComponent implements OnInit {
 
   ngOnInit(): void {
     this.particularsService.getAllParticulars().subscribe(data => {
-      // console.log(data);
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
@@ -57,7 +56,6 @@ export class ViewParticularsComponent implements OnInit {
   }
 
   onSingleDelete(id) {
-    console.log(id);
   }
 
   onMultiDelete() {
@@ -65,6 +63,5 @@ export class ViewParticularsComponent implements OnInit {
     this.selection.selected.map(data => {
       selectedIds.push(data.id);
     });
-    console.log(selectedIds);
   }
 }

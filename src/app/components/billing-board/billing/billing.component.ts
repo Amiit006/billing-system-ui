@@ -7,7 +7,6 @@ import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Particulars } from 'src/app/model/particulars.model';
 import { SnackBarMessage } from 'src/app/model/snackbar-message.enum';
-import { ClientsService } from 'src/app/services/clients.service';
 import { ParticularsService } from 'src/app/services/particulars.service';
 
 @Component({
@@ -67,9 +66,7 @@ export class BillingComponent implements OnInit {
   }
 
   selectedItem(item, index) {
-    console.log(item);
     const discountPercentage = this.particulars.find(data => data.particularName === item.item).discountPercentage;
-    console.log(discountPercentage);
     (<FormArray>this.billForm.get("items")).controls[index].get("discount").setValue(discountPercentage);
   }
 

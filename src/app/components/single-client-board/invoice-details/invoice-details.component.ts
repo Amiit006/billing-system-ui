@@ -16,7 +16,7 @@ import { AddDiscountComponent } from '../add-discount/add-discount.component';
 })
 export class InvoiceDetailsComponent implements OnInit {
   clientId;
-  displayedColumns: string[] = ['invoiceDate', 'grandTotalAmount', 'subTotalAmount', 'taxAmount', 'payment', 'action'];
+  displayedColumns: string[] = ['invoiceDate', 'subTotalAmount', 'taxAmount', 'discountAmount', 'payment', 'grandTotalAmount', 'action'];
   dataSource = new MatTableDataSource();
   showSpinner = true;
   invoice;
@@ -31,8 +31,11 @@ export class InvoiceDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
+    this.loadClientBill();
+  }
+
+  loadClientBill() {
     this.billingService.getInvoiceByClientId(this.clientId).subscribe(data => {
-      console.log(data);
       this.invoice = data;
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
@@ -58,7 +61,6 @@ export class InvoiceDetailsComponent implements OnInit {
   }
 
   openDialog(invoiceId, data): void {
-    console.log(data);
     const dialogRef = this.dialog.open(AddDiscountComponent, {
       width: '1150px',
       data: {invoiceDetails: data}
@@ -66,8 +68,8 @@ export class InvoiceDetailsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result?.success) {
-        console.log(result);
         this.toastrService.success(result.response.response);
+        this.loadClientBill();
       }
     });
   }

@@ -19,23 +19,13 @@ export class ViewInvoiceComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private clientService: ClientsService, private router: Router) {
     this.clientId = +this.activatedRoute.snapshot.paramMap.get("clientId");
     this.invoiceId = +this.activatedRoute.snapshot.paramMap.get("invoiceId");
-    console.log(this.clientId, this.invoiceId);
     this.invoice = this.router.getCurrentNavigation().extras?.state?.invoice;
     if (this.clientId > 0) {
       this.clientService.getClientById(this.clientId).subscribe(data => {
         this.client = data;
       }, error => {
-        console.log(error)
       });
     }
-    // if(this.invoiceId > 0) {
-    //   this.invoiceService.getInvoiceByInvoiceId(this.invoiceId).subscribe(data => {
-    //     this.invoice = data;
-    //     console.log(data);
-    //   }, error => {
-    //     console.log(error)
-    //   });
-    // }
   }
 
   ngOnInit(): void {
