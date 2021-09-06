@@ -55,7 +55,7 @@
                                         <td class="text-right"><strong>Qnty Type</strong></td>
                                         <td class="text-right"><strong>Sub Total</strong></td>
                                         <td class="text-right"><strong>Discount</strong></td>
-                                        <td class="text-right"><strong>Discount Total</strong></td>
+                                        <td class="text-right"><strong>Total</strong></td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -71,36 +71,43 @@
                                     </tr>
                                     <tr>
                                         <td colspan="6"></td>
-                                        <td class="text-right"><strong>Subtotal</strong></td>
-                                        <td class="text-right"><strong>{{billAmountDetails?.subTotalAmount |
-                                                indianCurrency}}</strong></td>
+                                        <td class="text-right"><span>Subtotal</span></td>
+                                        <td class="text-right"><span>{{billAmountDetails?.subTotalAmount |
+                                                indianCurrency}}</span></td>
                                     </tr>
                                     <tr *ngIf="billAmountDetails?.overallDiscountAmount > 0">
                                         <td colspan="6"></td>
-                                        <td class="text-right"><strong>Overall Disc({{billAmountDetails?.overallDiscountPercentage}}%)</strong></td>
-                                        <td class="text-right"><strong>{{billAmountDetails?.overallDiscountAmount |
-                                                indianCurrency}}</strong></td>
+                                        <td class="text-right"><span>Overall Disc({{billAmountDetails?.overallDiscountPercentage}}%)</span></td>
+                                        <td class="text-right">
+                                            <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">-</span>
+                                            <span>{{billAmountDetails?.overallDiscountAmount |
+                                                indianCurrency}}</span></td>
                                     </tr>
                                     <tr *ngIf="billAmountDetails?.overallDiscountAmount > 0">
                                         <td colspan="6"></td>
-                                        <td class="text-right"><strong>Total</strong></td>
-                                        <td class="text-right"><strong>{{billAmountDetails?.subTotalAmount - billAmountDetails?.overallDiscountAmount |
-                                                indianCurrency}}</strong></td>
+                                        <td class="text-right"><span>Total</span></td>
+                                        <td class="text-right"><span>{{billAmountDetails?.subTotalAmount - billAmountDetails?.overallDiscountAmount |
+                                                indianCurrency}}</span></td>
                                     </tr>
                                     <tr *ngIf="billAmountDetails?.taxAmount > 0">
                                         <td colspan="6"></td>
                                         <td class="text-right">
-                                            <strong>Taxes
-                                                ({{billAmountDetails?.taxPercentage}}%) + </strong></td>
-                                        <td class="text-right"><strong>{{billAmountDetails?.taxAmount |
-                                                indianCurrency}}</strong></td>
+                                            <span>Taxes
+                                                ({{billAmountDetails?.taxPercentage}}%)</span></td>
+                                        <td class="text-right">
+                                            <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">+</span>
+                                            <span>{{billAmountDetails?.taxAmount |
+                                                indianCurrency}}</span></td>
                                     </tr>
                                     <tr>
                                         <td colspan="6"></td>
-                                        <td class="text-right"><strong>Payment - </strong></td>
-                                        <td class="text-right"><strong>{{paymentForm.paymentAmount ?
+                                        <td class="text-right"><span>Payment</span></td>
+                                        <td class="text-right">
+                                            <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">-</span>
+                                            <span>{{paymentForm.paymentAmount ?
                                                 paymentForm.paymentAmount : 0 |
-                                                indianCurrency}}</strong></td>
+                                                indianCurrency}}</span>
+                                        </td>
 
                                     </tr>
                                     <tr>

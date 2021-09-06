@@ -39,7 +39,7 @@ export class BillingComponent implements OnInit {
     this.billForm.valueChanges.subscribe(() => {
       this.billFormData.emit(this.billForm);
     })
-    this.testMe();
+    // this.testMe();
   }
 
   testMe() {
@@ -48,7 +48,7 @@ export class BillingComponent implements OnInit {
       'amount': 1,
       'quanity': 1,
     }
-    for (let index = 0; index < 5; index++) {
+    for (let index = 0; index < 50; index++) {
       this.addRow();
       const val = (<FormArray>this.billForm.get('items')).at(index);
       val.get('perticulars').setValue('Partucular ' + index);
