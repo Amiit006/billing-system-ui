@@ -152,13 +152,13 @@ export class BillingComponent implements OnInit {
     }
   }
 
-  @HostListener('window:keyup', ['$event'])
+  @HostListener('window:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.code === 'F4') { // || event.code === 'Enter') {
-      if (this.billForm.valid)
+    if (event.altKey && event.code === 'KeyA') { // || event.code === 'Enter') {
+      // if (this.billForm.valid)
         this.addRow();
-      else
-        this.openSnakbar(SnackBarMessage.BLANK_ROW, SnackBarMessage.CLOSE)
+      // else
+        // this.openSnakbar(SnackBarMessage.BLANK_ROW, SnackBarMessage.CLOSE)
     }
   }
 

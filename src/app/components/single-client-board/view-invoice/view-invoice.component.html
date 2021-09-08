@@ -68,7 +68,11 @@
                                         <td class="text-right">{{item.discountTotal | indianCurrency}}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="6"></td>
+                                        <td colspan="2"></td>
+                                        <td class="text-right" style="font-size: 14px;"><strong>Total Qnty</strong></td>
+                                        <td class="text-right" style="font-size: 14px;"><strong>{{totalQuantity}}</strong></td>
+                                        <td class="text-right" style="font-size: 14px;"><strong>Pc</strong></td>
+                                        <td colspan="1"></td>
                                         <td class="text-right"><strong>Subtotal</strong></td>
                                         <td class="text-right"><strong>{{invoice?.subTotalAmount |
                                                 indianCurrency}}</strong></td>
@@ -84,8 +88,8 @@
                                     <tr>
                                         <td colspan="6"></td>
                                         <td class="text-right"><strong>Payment - </strong></td>
-                                        <td class="text-right"><strong>{{invoice?.paymentAmount ?
-                                            invoice?.paymentAmount : 0 |
+                                        <td class="text-right"><strong>{{invoice?.payment?.amount ?
+                                            invoice?.payment?.amount : 0 |
                                                 indianCurrency}}</strong></td>
 
                                     </tr>
@@ -94,8 +98,8 @@
                                         <td class="text-right"><strong>Total</strong></td>
                                         <td class="text-right">
                                             <strong>{{invoice?.grandTotalAmount -
-                                                (invoice?.paymentAmount ?
-                                                invoice?.paymentAmount : 0) |
+                                                (invoice?.payment?.amount ?
+                                                invoice?.payment?.amount : 0) |
                                                 indianCurrency}}</strong>
                                         </td>
                                     </tr>

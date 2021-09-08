@@ -43,6 +43,7 @@ import { RoundSpinnerComponent } from './components/round-spinner/round-spinner.
 import { ViewInvoiceComponent } from './components/single-client-board/view-invoice/view-invoice.component';
 import { BillSettingComponent } from './components/billing-board/bill-setting/bill-setting.component';
 import { AddDiscountComponent } from './components/single-client-board/add-discount/add-discount.component';
+import { PendingChangesGuard } from './guard/pending-changes.guard';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { AddDiscountComponent } from './components/single-client-board/add-disco
     })
   ],
   providers: [
+    PendingChangesGuard,
     {provide: MAT_DATE_LOCALE, useValue: 'en-IN'}
   ],
   bootstrap: [AppComponent]

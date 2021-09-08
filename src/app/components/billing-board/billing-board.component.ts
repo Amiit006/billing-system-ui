@@ -1,7 +1,9 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { Router, RouterOutlet } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ComponentCanDeactivate } from 'src/app/guard/pending-changes.guard';
 import { BillAmountDetails } from 'src/app/model/bill-amount-details.model';
 
 @Component({
@@ -9,7 +11,7 @@ import { BillAmountDetails } from 'src/app/model/bill-amount-details.model';
   templateUrl: './billing-board.component.html',
   styleUrls: ['./billing-board.component.css']
 })
-export class BillingBoardComponent implements OnInit {
+export class BillingBoardComponent implements OnInit, ComponentCanDeactivate  {
 
   clientForm: FormGroup = this.fb.group({});
   billForm: FormGroup = this.fb.group({});
@@ -28,6 +30,18 @@ export class BillingBoardComponent implements OnInit {
     this.clientForm.setErrors({ 'incorrect': true });
     this.billForm.setErrors({ 'incorrect': true });
     // this.paymentForm.setErrors({'incorrect': true});
+  }
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    // insert logic to check if there are pending changes here;
+    // returning true will navigate without confirmation
+    // returning false will show a confirm dialog before navigating away
+    if(this.billForm.get("items")?.value?.length > 0) {
+      return false;
+    }
+    else
+      return true;
   }
 
   setClientFormData(event: FormGroup) {

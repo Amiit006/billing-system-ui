@@ -12,10 +12,11 @@ import { PaymentBoardComponent } from 'src/app/components/payment-board/payment-
 import { ReportsComponent } from 'src/app/components/reports/reports.component';
 import { SingleClientBoardComponent } from 'src/app/components/single-client-board/single-client-board.component';
 import { ViewInvoiceComponent } from 'src/app/components/single-client-board/view-invoice/view-invoice.component';
+import { PendingChangesGuard } from 'src/app/guard/pending-changes.guard';
 
 
 const routes: Routes = [
-  { path: 'new-bill', component: BillingBoardComponent },
+  { path: 'new-bill', component: BillingBoardComponent, canDeactivate: [PendingChangesGuard] },
   { path: 'new-bill-refersh', component: BillingBoardComponent },
   { path: 'clients', component: ClientsComponent },
   { path: 'clients/add', component: AddClientComponent },

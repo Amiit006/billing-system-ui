@@ -29,7 +29,7 @@ export class InvoiceComponent implements OnInit {
   invoiceSaveStatus = false;
   constructor(public activatedRoute: ActivatedRoute, private billingService: BillingService
     , private toastrService: ToastrService) { }
-
+  totalQuantity: number = 0;
   ngOnInit(): void {
     
     // this.state$ = this.activatedRoute.paramMap
@@ -40,6 +40,8 @@ export class InvoiceComponent implements OnInit {
     //   this.billAmountDetails = data.billAmountDetails;
     //   this.paymentDetails = data.paymentDetails;
     // });
+    this.totalQuantity = this.billForm.items.map(x => x.quanity).reduce((a, b) => a + b, 0);
+    console.log(this.totalQuantity);
     this.billingService.generateInvoiceId().subscribe(data => {
       this.invoiceId = data;
     })
