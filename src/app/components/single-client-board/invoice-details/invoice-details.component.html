@@ -31,7 +31,7 @@
             </ng-container>
             <ng-container matColumnDef="grandTotalAmount">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Grand Total</th>
-                <td mat-cell *matCellDef="let element"> {{element.grandTotalAmount | indianCurrency}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.subTotalAmount + element.taxAmount - element.discountAmount - element.payment.amount | indianCurrency}} </td>
             </ng-container>
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef> Action </th>

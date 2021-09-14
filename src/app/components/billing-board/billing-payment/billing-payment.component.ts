@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { OutstandingService } from 'src/app/services/outstanding.service';
 
 @Component({
@@ -13,7 +14,8 @@ export class PaymentComponent implements OnInit {
   @Input() clientForm: FormGroup;
 
   outstandingAmount = 0;
-  constructor(private fb: FormBuilder, private outstandingService: OutstandingService) { }
+  constructor(private fb: FormBuilder, private outstandingService: OutstandingService
+    , private toastr: ToastrService) { }
 
   @Output() paymentFormData = new EventEmitter();
 
@@ -37,7 +39,7 @@ export class PaymentComponent implements OnInit {
       this.outstandingService.getOutstandingById(clientId)
         .subscribe(data => {
           this.outstandingAmount = data;
-        });
+        }, error => this.toastr.error("Unable to fetch Client OutStanding"));
     }
   }
 
