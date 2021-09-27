@@ -1,1 +1,45 @@
-<p>dashboard works!</p>
+<div class="container">
+    <div style="margin-bottom: 50px;"></div>
+    <div class="row">
+        <div class="col6 sell-stats">
+            <h2><span><img src="/assets/bar-chart.svg"></span>Sell/Collection Stats</h2>
+            <hr class="hoz-border">
+            <br>
+        </div>
+        <div class="col6 monthly-stats" style="padding-left: 4%;">
+            <h2><span><img src="/assets/bar-chart.svg"></span>Monthly Sell Stats</h2>
+            <hr class="hoz-border">
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col6 sell-stats border-right">
+            <app-sell-collection></app-sell-collection>
+        </div>
+        <div class="col6 monthly-stats" style="padding-left: 4%;">
+            <app-monthly-sell></app-monthly-sell>
+        </div>
+    </div>
+    <br>
+    <hr><br>
+    <div class="row">
+        <div class="col6 sell-stats">
+            <h2><span><img src="/assets/bar-chart.svg"></span>Top Buyers</h2>
+            <hr class="hoz-border">
+            <br>
+        </div>
+        <div class="col6 monthly-stats" style="padding-left: 4%;">
+            <h2><span><img src="/assets/bar-chart.svg"></span>Top Products</h2>
+            <hr class="hoz-border">
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col6 sell-stats border-right">
+            <app-top-buyer></app-top-buyer>
+        </div>
+        <div class="col6 monthly-stats" style="padding-left: 4%;">
+            <app-top-product></app-top-product>
+        </div>
+    </div>
+</div>

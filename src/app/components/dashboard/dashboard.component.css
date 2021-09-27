@@ -1,0 +1,26 @@
+.hoz-border {
+    border-width: 0;
+    border-top: 1px solid #f1f1f1;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+.monthly-stats {
+    width: 50% !important;
+    color: #444;
+    font-family: Inter, sans-serif;
+}
+
+.sell-stats {
+    padding-right: 4%;
+    width: 50% !important;
+    color: #444;
+    font-family: Inter, sans-serif;
+}
+
+.border-right {
+    border-right: 1px solid #eee;
+    padding-bottom: 50px;
+}

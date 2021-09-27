@@ -44,6 +44,11 @@ import { ViewInvoiceComponent } from './components/single-client-board/view-invo
 import { BillSettingComponent } from './components/billing-board/bill-setting/bill-setting.component';
 import { AddDiscountComponent } from './components/single-client-board/add-discount/add-discount.component';
 import { PendingChangesGuard } from './guard/pending-changes.guard';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { TopProductComponent } from './components/dashboard/top-product/top-product.component';
+import { TopBuyerComponent } from './components/dashboard/top-buyer/top-buyer.component';
+import { SellCollectionComponent } from './components/dashboard/sell-collection/sell-collection.component';
+import { MonthlySellComponent } from './components/dashboard/monthly-sell/monthly-sell.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +63,7 @@ import { PendingChangesGuard } from './guard/pending-changes.guard';
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent, BillSettingComponent, AddDiscountComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent, BillSettingComponent, AddDiscountComponent, TopProductComponent, TopBuyerComponent, SellCollectionComponent, MonthlySellComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,6 +77,7 @@ import { PendingChangesGuard } from './guard/pending-changes.guard';
     NgxPrintModule,
     HttpClientModule,
     NgbModule,
+    NgxChartsModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-bottom-right',
