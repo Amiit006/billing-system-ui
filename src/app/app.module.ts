@@ -49,6 +49,12 @@ import { TopProductComponent } from './components/dashboard/top-product/top-prod
 import { TopBuyerComponent } from './components/dashboard/top-buyer/top-buyer.component';
 import { SellCollectionComponent } from './components/dashboard/sell-collection/sell-collection.component';
 import { MonthlySellComponent } from './components/dashboard/monthly-sell/monthly-sell.component';
+import { SellsReportComponent } from './components/reports/sells-report/sells-report.component';
+import { CollectionReportComponent } from './components/reports/collection-report/collection-report.component';
+import { ClientReportComponent } from './components/reports/client-report/client-report.component';
+import { TradeBookComponent } from './components/reports/trade-book/trade-book.component';
+import { DateRangeSelectorComponent } from './components/date-range-selector/date-range-selector.component';
+import { TableContainerComponent } from './components/table-container/table-container.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +69,7 @@ import { MonthlySellComponent } from './components/dashboard/monthly-sell/monthl
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent, BillSettingComponent, AddDiscountComponent, TopProductComponent, TopBuyerComponent, SellCollectionComponent, MonthlySellComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent, BillSettingComponent, AddDiscountComponent, TopProductComponent, TopBuyerComponent, SellCollectionComponent, MonthlySellComponent, SellsReportComponent, CollectionReportComponent, ClientReportComponent, TradeBookComponent, DateRangeSelectorComponent, TableContainerComponent,
   ],
   imports: [
     BrowserModule,

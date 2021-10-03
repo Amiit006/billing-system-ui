@@ -9,7 +9,11 @@ import { DashboardComponent } from 'src/app/components/dashboard/dashboard.compo
 import { InvoiceComponent } from 'src/app/components/invoice/invoice.component';
 import { ParticularsComponent } from 'src/app/components/particulars/particulars.component';
 import { PaymentBoardComponent } from 'src/app/components/payment-board/payment-board.component';
+import { ClientReportComponent } from 'src/app/components/reports/client-report/client-report.component';
+import { CollectionReportComponent } from 'src/app/components/reports/collection-report/collection-report.component';
 import { ReportsComponent } from 'src/app/components/reports/reports.component';
+import { SellsReportComponent } from 'src/app/components/reports/sells-report/sells-report.component';
+import { TradeBookComponent } from 'src/app/components/reports/trade-book/trade-book.component';
 import { SingleClientBoardComponent } from 'src/app/components/single-client-board/single-client-board.component';
 import { ViewInvoiceComponent } from 'src/app/components/single-client-board/view-invoice/view-invoice.component';
 import { PendingChangesGuard } from 'src/app/guard/pending-changes.guard';
@@ -28,6 +32,10 @@ const routes: Routes = [
   { path: 'new-payment', component: PaymentBoardComponent },
   { path: 'new-payment-refersh', component: PaymentBoardComponent },
   { path: 'reports', component: ReportsComponent },
+  { path: 'reports/sells', component: SellsReportComponent },
+  { path: 'reports/collection', component: CollectionReportComponent },
+  { path: 'reports/tradebook', component: TradeBookComponent },
+  { path: 'reports/client', component: ClientReportComponent },
   { path: 'invoice', component: InvoiceComponent },
   { path: '', component: DashboardComponent },
 ];

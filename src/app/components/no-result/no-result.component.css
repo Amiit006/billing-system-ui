@@ -6,6 +6,17 @@
     text-align: center !important;
 }
 
+.state-process-h3 {
+    font-weight: 400;
+    font-family: Inter, sans-serif;
+    display: block;
+    font-size: 1.17em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
 .state-process-container {
     width: 395px;
     max-width: 100%;

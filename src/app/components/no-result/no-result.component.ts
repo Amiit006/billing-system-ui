@@ -7,8 +7,11 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class NoResultComponent implements OnInit {
 
+  @Input() imageUrl = "assets/noresults.svg";
   @Input() h3TextInput = "Report's empty";
   @Input() pTextInput = "We couldn't find any results for your query";
+
+  @Input() pclass = "";
 
   constructor() { }
 

@@ -1,0 +1,15 @@
+<div *ngIf="this.dataSource?.data.length === 0">
+    <app-no-result [h3TextInput]=" 'Result empty' " [pTextInput]=" 'There is no sell record in this period' ">
+    </app-no-result>
+</div>
+<div *ngIf="this.dataSource?.data.length > 0">
+    <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" matColumnDef="{{disCol}}">
+            <th mat-header-cell *matHeaderCellDef>{{displayedColumnsValue[colIndex]}}</th>
+            <td mat-cell *matCellDef="let element "> {{element[disCol]}}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

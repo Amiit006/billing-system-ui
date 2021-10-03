@@ -1,0 +1,67 @@
+<div class="container">
+    <h1>
+        <img src="/assets/bar-chart.svg" class="pnl-head-icon"> Sells Report
+    </h1>
+    <hr class="header-hr">
+    <app-date-range-selector (rangeEmitter)="setRangeEmitter($event)"></app-date-range-selector>
+
+    <div *ngIf="reportStatus === 'notloaded'" class="section text-center">
+        <app-no-result [imageUrl]="'/assets/init.svg'" [h3TextInput]="'Build a report'" [pTextInput]="'Use the above form to generate a report'">
+        </app-no-result>
+    </div>
+
+    <div *ngIf="reportStatus === 'loading'" class="section text-center">
+        <div main="Build a report" sub="Use the above form to generate a report" class="state-process-container">
+            <div class="state-process"><img class="state-process-img" src="/assets/jobber.svg">
+                <h3 class="state-process-h3" id="mainText">Building report</h3>
+                <p class="throbber-loader "></p>
+            </div>
+        </div>
+        <!-- <app-no-result [pclass]="'throbber-loader'" [imageUrl]="'/assets/jobber.svg'" [h3TextInput]="'Building report'" [pTextInput]="''">
+        </app-no-result> -->
+    </div>
+    <div *ngIf="this.dataSource.data.length === 0 && reportStatus === 'loaded'">
+        <app-no-result [h3TextInput]="'Result empty'" [pTextInput]="'There is no sell record in this period'">
+        </app-no-result>
+    </div>
+    <div [hidden]="!(this.dataSource.data.length > 0)">
+        <div class="row container" style="margin-left: inherit;">
+            <ngx-charts-number-card [view]="view" [scheme]="colorScheme" [results]="single" [cardColor]="cardColor">
+            </ngx-charts-number-card>
+        </div>
+        <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+            <ng-container matColumnDef="invoiceId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice Id</th>
+                <td mat-cell *matCellDef="let element"> {{element.invoiceId}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="invoiceDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>InvoiceDate</th>
+                <td mat-cell *matCellDef="let element"> {{element.invoiceDate}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="clientName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Client Name</th>
+                <td mat-cell *matCellDef="let element"> {{element.clientName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="subTotalAmount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Sub Total Amount</th>
+                <td mat-cell *matCellDef="let element"> {{element.subTotalAmount | indianCurrency}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="discountAmount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Discount Amount</th>
+                <td mat-cell *matCellDef="let element"> {{element.discountAmount | indianCurrency}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="grandTotalAmount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Grand Total Amount</th>
+                <td mat-cell *matCellDef="let element"> {{element.grandTotalAmount | indianCurrency}} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+        <!-- <app-table-container [dataSource1]="getData()"></app-table-container> -->
+    </div>
+</div>

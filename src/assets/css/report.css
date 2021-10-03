@@ -1,0 +1,119 @@
+h1 {
+    font-weight: 400;
+    font-family: Inter, sans-serif;
+    font-size: 1.65em;
+    margin: .67em 0;
+}
+
+.pnl-head-icon {
+    position: relative;
+    width: 23px;
+    top: -1px;
+}
+
+.state-process-container {
+    width: 395px;
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.state-process {
+    margin: auto;
+    text-align: center;
+}
+
+.state-process-img {
+    height: 140px;
+    margin-bottom: 30px;
+    width: auto;
+}
+
+.state-process-h3 {
+    font-weight: 400;
+    font-family: Inter, sans-serif;
+    display: block;
+    font-size: 1.17em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+p {
+    margin-top: 10px;
+}
+
+@-moz-keyframes throbber-loader {
+    0% {
+        background: #dde2e7;
+    }
+    10% {
+        background: #6b9dc8;
+    }
+    40% {
+        background: #dde2e7;
+    }
+}
+
+@-webkit-keyframes throbber-loader {
+    0% {
+        background: #dde2e7;
+    }
+    10% {
+        background: #6b9dc8;
+    }
+    40% {
+        background: #dde2e7;
+    }
+}
+
+@keyframes throbber-loader {
+    0% {
+        background: #dde2e7;
+    }
+    10% {
+        background: #6b9dc8;
+    }
+    40% {
+        background: #dde2e7;
+    }
+}
+
+.throbber-loader:not(:required) {
+    -moz-animation: throbber-loader 2000ms 300ms infinite ease-out;
+    -webkit-animation: throbber-loader 2000ms 300ms infinite ease-out;
+    animation: throbber-loader 2000ms 300ms infinite ease-out;
+    background: #dde2e7;
+    display: inline-block;
+    position: relative;
+    text-indent: -9999px;
+    width: 0.5em;
+    height: 0.5em;
+    /* margin: 0 0.6em; */
+}
+
+.throbber-loader:not(:required):before,
+.throbber-loader:not(:required):after {
+    background: #dde2e7;
+    content: '\x200B';
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    position: absolute;
+    top: 0;
+}
+
+.throbber-loader:not(:required):before {
+    -moz-animation: throbber-loader 2000ms 150ms infinite ease-out;
+    -webkit-animation: throbber-loader 2000ms 150ms infinite ease-out;
+    animation: throbber-loader 2000ms 150ms infinite ease-out;
+    left: -1.6em;
+}
+
+.throbber-loader:not(:required):after {
+    -moz-animation: throbber-loader 2000ms 450ms infinite ease-out;
+    -webkit-animation: throbber-loader 2000ms 450ms infinite ease-out;
+    animation: throbber-loader 2000ms 450ms infinite ease-out;
+    right: -1.6em;
+}

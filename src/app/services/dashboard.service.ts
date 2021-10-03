@@ -30,4 +30,18 @@ export class DashboardService {
   getMonthlySellStats(): Observable<ChartResponse[]> {
     return this.http.get<ChartResponse[]>(environment.baseUrl + 'dashboard/monthlySellStats');
   }
+
+  getSellStats(from_date, to_date): Observable<ChartResponse[]> {
+    let params = new HttpParams();
+    params = params.append('from_date', from_date);
+    params = params.append('to_date', to_date);
+    return this.http.get<ChartResponse[]>(environment.baseUrl + "dashboard/sells", { params: params }); 
+  }
+
+  getCollectionStats(from_date, to_date): Observable<ChartResponse[]> {
+    let params = new HttpParams();
+    params = params.append('from_date', from_date);
+    params = params.append('to_date', to_date);
+    return this.http.get<ChartResponse[]>(environment.baseUrl + "dashboard/collection", { params: params }); 
+  }
 }

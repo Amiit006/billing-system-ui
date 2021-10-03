@@ -1,5 +1,5 @@
 export interface ChartResponse {
-    name : number;
+    name : string;
     value: number;
 }
 
