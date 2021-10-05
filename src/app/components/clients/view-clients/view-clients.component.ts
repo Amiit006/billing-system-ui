@@ -29,7 +29,7 @@ export class ViewClientsComponent implements OnInit {
   constructor(private clientsService: ClientsService, private router: Router) { }
 
   ngOnInit(): void {
-    this.clientsService.getAllParticulars().subscribe(data => {
+    this.clientsService.getAllClients().subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
@@ -10,7 +10,7 @@ import * as moment from 'moment';
 })
 export class DateRangeSelectorComponent implements OnInit {
 
-
+  @Input() maxDate=new Date();
   @Output() rangeEmitter = new EventEmitter<FormGroup>();
 
   range = new FormGroup({

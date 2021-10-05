@@ -46,7 +46,7 @@ export class BillingClientComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.clientService.getAllParticulars().subscribe(data => {
+    this.clientService.getAllClients().subscribe(data => {
       this.clientDetails = data;
       if(this.clientId) {
         this.showDropdown = false;
@@ -57,13 +57,6 @@ export class BillingClientComponent implements OnInit {
     this.billingClientForm.get("clientName").valueChanges.subscribe(() => {
       this.clientFormData.emit(this.billingClientForm);
     })
-    // this.queryField.valueChanges
-    //   .pipe(debounceTime(200), distinctUntilChanged())
-    //   .subscribe(term => {
-    //     const value = this.clientDetails.filter(v => v.clientName.toLocaleLowerCase().includes(term.toLocaleLowerCase()))
-    //     this.filteredResult = value;
-    //     this.queryField.value
-    //   });
   }
 
   onClick(result: Client) {

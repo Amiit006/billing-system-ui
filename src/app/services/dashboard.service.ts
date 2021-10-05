@@ -44,4 +44,12 @@ export class DashboardService {
     params = params.append('to_date', to_date);
     return this.http.get<ChartResponse[]>(environment.baseUrl + "dashboard/collection", { params: params }); 
   }
+
+  getSellCollectionStatsByClientId(from_date: string, to_date: string, clientId: number) {
+    let params = new HttpParams();
+    params = params.append('from_date', from_date);
+    params = params.append('to_date', to_date);
+    params = params.append('clientId', clientId);
+    return this.http.get<ChartResponse[]>(environment.baseUrl + "dashboard/client", { params: params }); 
+  }
 }

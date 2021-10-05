@@ -23,4 +23,12 @@ export class ReportService {
     params = params.append('to_date', to_date);
     return this.http.get<any[]>(environment.baseUrl + "report/collection", { params: params }); 
   }
+
+  getClientReport(from_date, to_date, clientId) : Observable<any> {
+    let params = new HttpParams();
+    params = params.append('from_date', from_date);
+    params = params.append('to_date', to_date);
+    params = params.append('clientId', clientId);
+    return this.http.get<any>(environment.baseUrl + "report/client", { params: params }); 
+  }
 }

@@ -12,7 +12,7 @@ export class ClientsService {
 
   constructor(private http: HttpClient) { }
 
-  getAllParticulars(): Observable<Client[]> {
+  getAllClients(): Observable<Client[]> {
     return this.http.get<Client[]>(environment.baseUrl + "clients");
   }
 
