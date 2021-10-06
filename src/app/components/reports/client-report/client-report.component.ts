@@ -41,8 +41,8 @@ export class ClientReportComponent implements OnInit {
   collectionDisplayedColumnsValue: string[] = ['Payment Id', 'Payment Date', 'Client Name', 'Amount', 'Payment Mode'];
 
   collectionDataSource = new MatTableDataSource();
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) collectionSort: MatSort;
+  @ViewChild(MatPaginator) collectionPaginator: MatPaginator;
 
   //Sell Details: 
   sellDisplayedColumns: string[] = ['invoiceId', 'invoiceDate', 'clientName', 'subTotalAmount', 'discountAmount', 'grandTotalAmount'];
@@ -83,12 +83,12 @@ export class ClientReportComponent implements OnInit {
       }, error => console.log(error.error.error));
     this.reportService.getClientReport(from_date, to_date, clientId).subscribe(data => {
       this.collectionDataSource = new MatTableDataSource(data.clientCollection);
-      this.collectionDataSource.sort = this.sort;
-      this.collectionDataSource.paginator = this.paginator;
+      this.collectionDataSource.sort = this.collectionSort;
+      this.collectionDataSource.paginator = this.collectionPaginator;
 
       this.sellDataSource = new MatTableDataSource(data.clientSell);
-      this.sellDataSource.sort = this.sort;
-      this.sellDataSource.paginator = this.paginator;
+      this.sellDataSource.sort = this.sellSort;
+      this.sellDataSource.paginator = this.sellPaginator;
       this.reportStatus = "loaded";
     })
   }

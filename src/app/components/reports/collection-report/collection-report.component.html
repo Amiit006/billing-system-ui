@@ -28,7 +28,7 @@
         </div>
         <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
             <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" matColumnDef="{{disCol}}">
-                <th mat-header-cell *matHeaderCellDef>{{displayedColumnsValue[colIndex]}}</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{displayedColumnsValue[colIndex]}}</th>
                 <td mat-cell *matCellDef="let element "> {{element[disCol]}}</td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

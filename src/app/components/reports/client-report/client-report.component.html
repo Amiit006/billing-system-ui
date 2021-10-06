@@ -37,7 +37,7 @@
                 <div *ngIf="this.sellDataSource.data.length > 0 && reportStatus === 'loaded'">
                     <table style="width: 100%;" mat-table [dataSource]="sellDataSource" matSort class="mat-elevation-z8">
                         <ng-container *ngFor="let disCol of sellDisplayedColumns; let colIndex = index" matColumnDef="{{disCol}}">
-                            <th mat-header-cell *matHeaderCellDef>{{sellDisplayedColumnsValue[colIndex]}}</th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{sellDisplayedColumnsValue[colIndex]}}</th>
                             <td mat-cell *matCellDef="let element "> {{element[disCol]}}</td>
                         </ng-container>
                         <tr mat-header-row *matHeaderRowDef="sellDisplayedColumns"></tr>
@@ -54,7 +54,7 @@
                 <div *ngIf="this.collectionDataSource.data.length > 0 && reportStatus === 'loaded'">
                     <table style="width: 100%;" mat-table [dataSource]="collectionDataSource" matSort class="mat-elevation-z8">
                         <ng-container *ngFor="let disCol of collectionDisplayedColumns; let colIndex = index" matColumnDef="{{disCol}}">
-                            <th mat-header-cell *matHeaderCellDef>{{collectionDisplayedColumnsValue[colIndex]}}</th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{collectionDisplayedColumnsValue[colIndex]}}</th>
                             <td mat-cell *matCellDef="let element "> {{element[disCol]}}</td>
                         </ng-container>
                         <tr mat-header-row *matHeaderRowDef="collectionDisplayedColumns"></tr>
