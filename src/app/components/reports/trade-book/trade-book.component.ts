@@ -56,4 +56,21 @@ export class TradeBookComponent implements OnInit {
     })
   }
 
+  downloadFile(data: any) {
+    // this.downloadService.downloadFile(data, "sells_report_" + moment(new Date()).format('yyyy-MM-DD-hh-mm-ss')+".csv");
+    console.log(data);
+    const totalGrandTotalAmount = data.reduce((n, { amount }) => n + amount, 0);
+
+    const replacer = (key, value) => value === null ? '' : value; // specify how you want to handle null values here
+    const header = Object.keys(data[0]);
+    let csv = data.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));
+    csv.unshift(header.join(','));
+    csv.push(['', '', 'Total', totalGrandTotalAmount])
+    console.log(csv);
+    let csvArray = csv.join('\r\n');
+    console.log(csvArray);
+    var blob = new Blob([csvArray], { type: 'text/csv' })
+    saveAs(blob, "sells_report_" + moment(new Date()).format('yyyy-MM-DD-hh-mm-ss') + ".csv");
+  }
+
 }

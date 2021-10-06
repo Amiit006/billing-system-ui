@@ -117,3 +117,16 @@ p {
     animation: throbber-loader 2000ms 450ms infinite ease-out;
     right: -1.6em;
 }
+
+.download {
+    cursor: pointer;
+    text-decoration: none;
+    color: #3f51b5;
+}
+
+.table-download {
+    display: inline-block;
+    font-weight: 500;
+    padding-right: 10px;
+    color: #3f51b5;
+}

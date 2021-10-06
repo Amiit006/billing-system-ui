@@ -8,7 +8,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ChartResponse } from 'src/app/model/chart-response.model';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { Observable } from 'rxjs';
-
+import { saveAs } from 'file-saver';
+import { DownloadService } from 'src/app/services/download.service';
 @Component({
   selector: 'app-sells-report',
   templateUrl: './sells-report.component.html',
@@ -32,7 +33,7 @@ export class SellsReportComponent implements OnInit {
   cardColor: string = '#232837';
 
   constructor(private fb: FormBuilder, private reportService: ReportService
-    , private dashboardService: DashboardService) { }
+    , private dashboardService: DashboardService, private downloadService: DownloadService) { }
 
   ngOnInit(): void {
 
@@ -45,7 +46,7 @@ export class SellsReportComponent implements OnInit {
     this.dashboardService.getSellStats(from_date, to_date)
       .subscribe(data => {
         // this.single = data.map(datum => ({name: datum.name, value: '₹ ' + datum.value}))
-        this.single=data;
+        this.single = data;
       }, error => console.log(error.error.error));
     this.reportService.getSellsReport(from_date, to_date)
       .subscribe(data => {
@@ -56,4 +57,24 @@ export class SellsReportComponent implements OnInit {
       });
   }
 
+
+  downloadFile(data: any) {
+    // this.downloadService.downloadFile(data, "sells_report_" + moment(new Date()).format('yyyy-MM-DD-hh-mm-ss')+".csv");
+    console.log(data);
+    const totalSubAmount = data.reduce((n, { subTotalAmount }) => n + subTotalAmount, 0);
+    const totalDiscountAmount = data.reduce((n, { discountAmount }) => n + discountAmount, 0);
+    const totalGrandTotalAmount = data.reduce((n, { grandTotalAmount }) => n + grandTotalAmount, 0);
+    const totalTaxAmount = data.reduce((n, { taxAmount }) => n + taxAmount, 0);
+
+    const replacer = (key, value) => value === null ? '' : value; // specify how you want to handle null values here
+    const header = Object.keys(data[0]);
+    let csv = data.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));
+    csv.unshift(header.join(','));
+    csv.push(['', '', '', '', 'Total', totalSubAmount, totalTaxAmount, totalDiscountAmount, totalGrandTotalAmount])
+    console.log(csv);
+    let csvArray = csv.join('\r\n');
+    console.log(csvArray);
+    var blob = new Blob([csvArray], { type: 'text/csv' })
+    saveAs(blob, "sells_report_" + moment(new Date()).format('yyyy-MM-DD-hh-mm-ss') + ".csv");
+  }
 }

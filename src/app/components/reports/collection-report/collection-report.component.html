@@ -26,6 +26,15 @@
             <ngx-charts-number-card [view]="view" [scheme]="colorScheme" [results]="single" [cardColor]="cardColor">
             </ngx-charts-number-card>
         </div>
+        <div class="row container mb-2">
+            <div class="col-md-3 offset-md-9 float-right">
+                <div class="table-download text-small float-right"><span>
+                        <mat-icon style="vertical-align: middle;">cloud_download</mat-icon>
+                    </span> Download:
+                    <a class="download" (click)="downloadFile(dataSource.data)">CSV</a>
+                </div>
+            </div>
+        </div>
         <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
             <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" matColumnDef="{{disCol}}">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>{{displayedColumnsValue[colIndex]}}</th>
