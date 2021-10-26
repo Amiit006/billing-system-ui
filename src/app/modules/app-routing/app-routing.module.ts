@@ -11,6 +11,7 @@ import { ParticularsComponent } from 'src/app/components/particulars/particulars
 import { PaymentBoardComponent } from 'src/app/components/payment-board/payment-board.component';
 import { ClientReportComponent } from 'src/app/components/reports/client-report/client-report.component';
 import { CollectionReportComponent } from 'src/app/components/reports/collection-report/collection-report.component';
+import { ParticularsReportComponent } from 'src/app/components/reports/particulars-report/particulars-report.component';
 import { ReportsComponent } from 'src/app/components/reports/reports.component';
 import { SellsReportComponent } from 'src/app/components/reports/sells-report/sells-report.component';
 import { TradeBookComponent } from 'src/app/components/reports/trade-book/trade-book.component';
@@ -36,6 +37,7 @@ const routes: Routes = [
   { path: 'reports/collection', component: CollectionReportComponent },
   { path: 'reports/tradebook', component: TradeBookComponent },
   { path: 'reports/client', component: ClientReportComponent },
+  { path: 'reports/particulars', component: ParticularsReportComponent },
   { path: 'invoice', component: InvoiceComponent },
   { path: '', component: DashboardComponent },
 ];

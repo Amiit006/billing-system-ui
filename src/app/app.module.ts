@@ -55,6 +55,7 @@ import { ClientReportComponent } from './components/reports/client-report/client
 import { TradeBookComponent } from './components/reports/trade-book/trade-book.component';
 import { DateRangeSelectorComponent } from './components/date-range-selector/date-range-selector.component';
 import { TableContainerComponent } from './components/table-container/table-container.component';
+import { ParticularsReportComponent } from './components/reports/particulars-report/particulars-report.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,7 @@ import { TableContainerComponent } from './components/table-container/table-cont
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent, BillSettingComponent, AddDiscountComponent, TopProductComponent, TopBuyerComponent, SellCollectionComponent, MonthlySellComponent, SellsReportComponent, CollectionReportComponent, ClientReportComponent, TradeBookComponent, DateRangeSelectorComponent, TableContainerComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent, BillSettingComponent, AddDiscountComponent, TopProductComponent, TopBuyerComponent, SellCollectionComponent, MonthlySellComponent, SellsReportComponent, CollectionReportComponent, ClientReportComponent, TradeBookComponent, DateRangeSelectorComponent, TableContainerComponent, ParticularsReportComponent,
   ],
   imports: [
     BrowserModule,
