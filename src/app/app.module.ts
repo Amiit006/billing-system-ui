@@ -56,6 +56,7 @@ import { TradeBookComponent } from './components/reports/trade-book/trade-book.c
 import { DateRangeSelectorComponent } from './components/date-range-selector/date-range-selector.component';
 import { TableContainerComponent } from './components/table-container/table-container.component';
 import { ParticularsReportComponent } from './components/reports/particulars-report/particulars-report.component';
+import { ShowChartTogglerComponent } from './components/dashboard/show-chart-toggler/show-chart-toggler.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,7 @@ import { ParticularsReportComponent } from './components/reports/particulars-rep
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent, BillSettingComponent, AddDiscountComponent, TopProductComponent, TopBuyerComponent, SellCollectionComponent, MonthlySellComponent, SellsReportComponent, CollectionReportComponent, ClientReportComponent, TradeBookComponent, DateRangeSelectorComponent, TableContainerComponent, ParticularsReportComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent, BillSettingComponent, AddDiscountComponent, TopProductComponent, TopBuyerComponent, SellCollectionComponent, MonthlySellComponent, SellsReportComponent, CollectionReportComponent, ClientReportComponent, TradeBookComponent, DateRangeSelectorComponent, TableContainerComponent, ParticularsReportComponent, ShowChartTogglerComponent,
   ],
   imports: [
     BrowserModule,

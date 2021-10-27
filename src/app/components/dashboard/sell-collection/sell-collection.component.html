@@ -1,2 +1,5 @@
-<ngx-charts-number-card [view]="view" [scheme]="colorScheme" [results]="single" [cardColor]="cardColor">
-</ngx-charts-number-card>
+<app-show-chart-toggler showButtonLabel="Show Sell Collection" hideButtonLabel="Hide Sell Collection" (status)="setStatus($event)"></app-show-chart-toggler>
+<div *ngIf="showData">
+    <ngx-charts-number-card [view]="view" [scheme]="colorScheme" [results]="single" [cardColor]="cardColor" (select)="onSelect($event)">
+    </ngx-charts-number-card>
+</div>

@@ -51,4 +51,9 @@ export class TopBuyerComponent implements OnInit {
     
   }
 
+  showData = false;
+  setStatus(event) {
+    this.showData = event;
+  }
+
 }

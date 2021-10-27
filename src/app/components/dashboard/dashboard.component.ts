@@ -9,7 +9,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 })
 export class DashboardComponent implements OnInit {
 
-
+  year = new Date().getFullYear();
+  
   constructor() { }
 
   ngOnInit(): void {

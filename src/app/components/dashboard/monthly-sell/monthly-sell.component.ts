@@ -26,7 +26,9 @@ export class MonthlySellComponent implements OnInit {
   colorScheme = {
     domain: ['#FFADAD', '#0096c7', '#FDFFB6', '#A0C4FF']
   };
-
+  
+  showData = false;
+  
   constructor(private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
@@ -36,6 +38,10 @@ export class MonthlySellComponent implements OnInit {
       // this.monthlySellList = single;
     }, error => console.log(error.error.error));
     
+  }
+
+  setStatus(event) {
+    this.showData = event;
   }
 
 }

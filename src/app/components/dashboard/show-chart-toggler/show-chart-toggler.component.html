@@ -1,0 +1,6 @@
+<div class="col text-center" *ngIf="!showData">
+    <button class="btn-class mt-2" mat-flat-button color="primary" (click)="toggleShowData()">{{showButtonLabel}}</button>
+</div>
+<div class="col text-center" *ngIf="showData">
+    <button class="btn-class mt-2" mat-flat-button color="primary" (click)="toggleShowData()">{{hideButtonLabel}} </button>
+</div>

@@ -49,4 +49,10 @@ export class TopProductComponent implements OnInit {
     }, error => console.log(error.error.error));
   }
 
+  showData = false;
+  setStatus(event) {
+    this.showData = event;
+  }
+
+
 }
