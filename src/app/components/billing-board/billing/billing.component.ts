@@ -229,6 +229,9 @@ export class BillingComponent implements OnInit {
       }
     } else {
       this.billForm.get("items").get([index]).enable();
+      this.billForm.get("items").get([index]).get(["total"]).disable();
+      this.billForm.get("items").get([index]).get(["discountPrice"]).disable();
+      this.billForm.get("items").get([index]).get(["slNo"]).disable();
     }
   }
 
