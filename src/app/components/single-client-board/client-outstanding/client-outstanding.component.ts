@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChartResponse } from 'src/app/model/chart-response.model';
 import { DashboardService } from 'src/app/services/dashboard.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-client-outstanding',
@@ -16,9 +17,17 @@ export class ClientOutstandingComponent implements OnInit {
   };
   cardColor: string = '#232837';
 
-  constructor(private activatedRoute: ActivatedRoute, private dashboardService: DashboardService) { }
+  constructor(private activatedRoute: ActivatedRoute, private dashboardService: DashboardService,
+    private sharedService: SharedService) { }
 
   ngOnInit(): void {
+    this.getClientOutstanding();
+    this.sharedService.reload.subscribe(data => {
+      this.getClientOutstanding();
+    })
+  }
+
+  getClientOutstanding() {
     var clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
     this.dashboardService.getClientOutstanding(+clientId).subscribe(data => {
       this.single = data;

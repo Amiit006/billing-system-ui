@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Client } from 'src/app/model/client.model';
 import { BillingService } from 'src/app/services/billing.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { AddDiscountComponent } from '../add-discount/add-discount.component';
 
 @Component({
@@ -27,7 +28,8 @@ export class InvoiceDetailsComponent implements OnInit {
   @Input() clientData: Client;
 
   constructor(private billingService: BillingService, private activatedRoute: ActivatedRoute,
-    private router: Router, public dialog: MatDialog, private toastrService: ToastrService) { }
+    private router: Router, public dialog: MatDialog, private toastrService: ToastrService,
+    private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
@@ -70,8 +72,15 @@ export class InvoiceDetailsComponent implements OnInit {
       if(result?.success) {
         this.toastrService.success(result.response.response);
         this.loadClientBill();
+        this.refreshClientOutstanding(true);
       }
     });
+  }
+
+  refreshClientOutstanding(load: boolean) {
+    if(load) {
+      this.sharedService.reloadClientOutstanding(true);
+    }
   }
 
 }
