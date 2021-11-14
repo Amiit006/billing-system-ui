@@ -1,4 +1,4 @@
-<app-show-chart-toggler showButtonLabel="Show Monthly Sell" hideButtonLabel="Hide Monthly Sell" (status)="setStatus($event)"></app-show-chart-toggler>
+<app-show-chart-toggler showButtonLabel="Show Top Products" hideButtonLabel="Hide Top Products" (status)="setStatus($event)"></app-show-chart-toggler>
 <div *ngIf="showData">
     <ngx-charts-bar-horizontal [view]="view" [scheme]="colorScheme" [results]="topProductList" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
         [yAxisLabel]="yAxisLabel" (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">

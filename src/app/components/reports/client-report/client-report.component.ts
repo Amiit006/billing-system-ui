@@ -80,7 +80,11 @@ export class ClientReportComponent implements OnInit {
       .subscribe(data => {
         this.single = data;
         this.reportStatus = "loaded";
-      }, error => console.log(error.error.error));
+      }, 
+      error => {
+        console.log(error.error.error);
+        this.reportStatus = "error";
+      });
     this.reportService.getClientReport(from_date, to_date, clientId).subscribe(data => {
       this.collectionDataSource = new MatTableDataSource(data.clientCollection);
       this.collectionDataSource.sort = this.collectionSort;

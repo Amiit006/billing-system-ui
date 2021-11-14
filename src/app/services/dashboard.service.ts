@@ -52,4 +52,10 @@ export class DashboardService {
     params = params.append('clientId', clientId);
     return this.http.get<ChartResponse[]>(environment.baseUrl + "dashboard/client", { params: params }); 
   }
+
+  getClientOutstanding(clientId: number) {
+    let params = new HttpParams();
+    params = params.append('clientId', clientId);
+    return this.http.get<ChartResponse[]>(environment.baseUrl + "dashboard/clientOutstanding", { params: params }); 
+  }
 }

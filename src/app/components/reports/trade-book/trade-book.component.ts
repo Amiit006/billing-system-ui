@@ -47,13 +47,20 @@ export class TradeBookComponent implements OnInit {
       .subscribe(data => {
         this.single = data;
         this.reportStatus = "loaded";
-      }, error => console.log(error.error.error));
+      }, error => {
+        console.log(error.error.error);
+        this.reportStatus = "error";
+      });
     this.reportService.getTradeBookReport(from_date, to_date).subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.reportStatus = "loaded";
-    })
+    }, error => {
+      this.dataSource = new MatTableDataSource();
+      console.log(error.error.error);
+      this.reportStatus = "error";
+    });
   }
 
   downloadFile(data: any) {

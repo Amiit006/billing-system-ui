@@ -46,4 +46,8 @@
         <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
         <!-- <app-table-container [dataSource1]="getData()"></app-table-container> -->
     </div>
+    <div *ngIf="reportStatus === 'error'" class="text-center">
+        <app-no-result [imageUrl]="'/assets/error.png'" [h3TextInput]="'Something went wrong'" [pTextInput]="'Contact Administrator'">
+        </app-no-result>
+    </div>
 </div>
