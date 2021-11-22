@@ -46,4 +46,8 @@ export class ReportService {
     params = params.append('to_date', to_date);
     return this.http.get<any[]>(environment.baseUrl + "report/particulars", { params: params }); 
   }
+
+  getClientOutstandingReport() : Observable<any> {
+    return this.http.get<any[]>(environment.baseUrl + "report/clientOutstanding"); 
+  }
 }
