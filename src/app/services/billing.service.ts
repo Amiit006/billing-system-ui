@@ -41,8 +41,10 @@ export class BillingService {
     return this.httpClient.get(environment.baseUrl + "invoice/" + invoiceId);
   }
 
-  addDiscountToBill(clientId, invoiceId, billAmountDetails) {
+  addDiscountToBill(clientId, invoiceId, billAmountDetails, remarks) {
+    let params = new HttpParams();
+    params = params.append('remarks', remarks.toString());
     return this.httpClient.put(environment.baseUrl + "invoice/addDiscount/" + 
-      clientId + "/" + invoiceId, billAmountDetails);
+      clientId + "/" + invoiceId, billAmountDetails, { params: params });
   }
 }

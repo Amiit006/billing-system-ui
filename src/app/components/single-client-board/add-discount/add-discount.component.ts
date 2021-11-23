@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -19,7 +19,7 @@ export class AddDiscountComponent implements OnInit {
     'taxPercentage': [0, Validators.required],
     'overallDiscountPercentage': [0, Validators.required]
   });
-  
+  remarkFormControl = new FormControl(this.data.invoiceDetails.remarks, [Validators.required]);
   billSettingFormValueChanged = false;
   tempBillSettingForm = this.billSettingForm.getRawValue();
 
@@ -29,24 +29,24 @@ export class AddDiscountComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.data.invoiceDetails.taxPercentage && this.data.invoiceDetails.taxPercentage > 0) {
+    if (this.data.invoiceDetails.taxPercentage && this.data.invoiceDetails.taxPercentage > 0) {
       this.billSettingForm.get("taxPercentage").setValue(this.data.invoiceDetails.taxPercentage);
       this.billSettingForm.get("taxPercentage").enable();
       this.tempBillSettingForm = this.billSettingForm.getRawValue();
     } else {
       this.billSettingForm.get("taxPercentage").disable();
     }
-    if(this.data.invoiceDetails.discountPercentage && this.data.invoiceDetails.discountPercentage > 0) {
+    if (this.data.invoiceDetails.discountPercentage && this.data.invoiceDetails.discountPercentage > 0) {
       this.billSettingForm.get("overallDiscountPercentage").setValue(this.data.invoiceDetails.discountPercentage);
       this.tempBillSettingForm = this.billSettingForm.getRawValue();
     }
     this.billSettingFormData.emit(this.billSettingForm);
     this.billSettingForm.valueChanges.subscribe(() => {
-      if(this.tempBillSettingForm.taxPercentage !== this.billSettingForm.get("taxPercentage").value
+      if (this.tempBillSettingForm.taxPercentage !== this.billSettingForm.get("taxPercentage").value
         || this.tempBillSettingForm.overallDiscountPercentage !== this.billSettingForm.get("overallDiscountPercentage").value)
-        this.billSettingFormValueChanged = true; 
-      else 
-        this.billSettingFormValueChanged = false; 
+        this.billSettingFormValueChanged = true;
+      else
+        this.billSettingFormValueChanged = false;
       this.billSettingFormData.emit(this.billSettingForm);
     });
   }
@@ -61,7 +61,7 @@ export class AddDiscountComponent implements OnInit {
   }
 
   onSave() {
-    this.billingService.addDiscountToBill(this.data.invoiceDetails.clientId, this.data.invoiceDetails.invoiceId, this.billingService.getBillAmountDetails())
+    this.billingService.addDiscountToBill(this.data.invoiceDetails.clientId, this.data.invoiceDetails.invoiceId, this.billingService.getBillAmountDetails(), this.remarkFormControl.value)
       .subscribe(data => {
         const result = {
           "success": true,
@@ -71,7 +71,6 @@ export class AddDiscountComponent implements OnInit {
       }, error => {
         this.toastrService.error(error.error.error);
       });
-    
   }
 
 }

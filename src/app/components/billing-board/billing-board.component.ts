@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { Router, RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -18,6 +18,8 @@ export class BillingBoardComponent implements OnInit, ComponentCanDeactivate  {
   paymentForm: FormGroup = this.fb.group({});
   billSettingForm: FormGroup = this.fb.group({});
 
+  remarkFormControl:FormControl = new FormControl();
+
   billAmountDetails: BillAmountDetails;
 
   subTotalBillAmount = 0;
@@ -30,6 +32,7 @@ export class BillingBoardComponent implements OnInit, ComponentCanDeactivate  {
     this.clientForm.setErrors({ 'incorrect': true });
     this.billForm.setErrors({ 'incorrect': true });
     // this.paymentForm.setErrors({'incorrect': true});
+    this.remarkFormControl.setErrors({ 'incorrect': true });
   }
 
   @HostListener('window:beforeunload')
@@ -42,6 +45,10 @@ export class BillingBoardComponent implements OnInit, ComponentCanDeactivate  {
     }
     else
       return true;
+  }
+
+  setRemarkFormControl(event: FormControl) {
+    this.remarkFormControl = event;
   }
 
   setClientFormData(event: FormGroup) {

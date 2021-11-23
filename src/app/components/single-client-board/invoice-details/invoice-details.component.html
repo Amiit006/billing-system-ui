@@ -38,7 +38,7 @@
                 <td mat-cell *matCellDef="let element">
                     <!-- <a routerLink="/clients/{{element.clientId}}" mat-flat-button color="primary" class="mr-5">View</a> -->
                     <button class="mt-2 mb-2" mat-flat-button color="primary" (click)="onViewClick(element.invoiceId)">View</button>
-                    <button class="mt-2 mb-2 ml-2" mat-flat-button color="primary" (click)="onAddDiscountClick(element.invoiceId)">Add Discount</button>
+                    <button class="mt-2 mb-2 ml-2" matTooltip="{{element.remarks}}" matTooltipPosition="right" mat-flat-button color="primary" (click)="onAddDiscountClick(element.invoiceId)">Add Discount</button>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

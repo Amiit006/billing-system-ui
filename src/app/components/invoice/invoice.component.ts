@@ -24,6 +24,7 @@ export class InvoiceComponent implements OnInit {
   @Input() billForm;
   @Input() paymentForm;
   @Input() billAmountDetails: BillAmountDetails;
+  @Input() remarkFormControl;
   @Output() invoiceSaveStatusEmitter = new EventEmitter<boolean>();
   invoiceId: number;
   invoiceSaveStatus = false;
@@ -52,7 +53,8 @@ export class InvoiceComponent implements OnInit {
       "invoice": this.billForm.items,
       "client": this.clientForm,
       "payment": this.paymentForm,
-      "billAmountDetails": this.billAmountDetails
+      "billAmountDetails": this.billAmountDetails,
+      "remarks": this.remarkFormControl
     }
     this.displayProgressSpinner = true;
     this.billingService.createInvoice(payload).subscribe(data => {

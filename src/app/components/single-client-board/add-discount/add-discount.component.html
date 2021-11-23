@@ -10,13 +10,13 @@
                 <div class="col-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Tax Percentage</mat-label>
-                        <input matInput placeholder="Tax Percentage" type="number" formControlName="taxPercentage">
+                        <input matInput placeholder="Tax Percentage" min="0" type="number" formControlName="taxPercentage">
                     </mat-form-field>
                 </div>
                 <div class="col-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Discount Percentage</mat-label>
-                        <input matInput placeholder="Discount Percentage" type="number" formControlName="overallDiscountPercentage">
+                        <input matInput placeholder="Discount Percentage" min="0" type="number" formControlName="overallDiscountPercentage">
                     </mat-form-field>
                 </div>
             </div>
@@ -28,11 +28,11 @@
     <mat-step>
         <ng-template matStepLabel>Bill Summery</ng-template>
         <ng-template matStepContent>
-            <app-billing-summary [billSetting]="billSettingForm.getRawValue()" [subTotalBill]=data.invoiceDetails.subTotalAmount>
+            <app-billing-summary [remarkFormControl]="remarkFormControl" [billSetting]="billSettingForm.getRawValue()" [subTotalBill]=data.invoiceDetails.subTotalAmount>
             </app-billing-summary>
             <div>
                 <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
-                <button mat-button matStepperNext color="primary" (click)="onSave()" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Save</button>
+                <button mat-button matStepperNext color="primary" [disabled]="!billSettingFormValueChanged || !remarkFormControl.valid" (click)="onSave()" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Save</button>
             </div>
         </ng-template>
     </mat-step>
