@@ -13,7 +13,7 @@
                 Bill Breakdown
                 <div style="margin-top: 20px;">
                     <mat-form-field style="width: 275px;" appearance="fill">
-                        <mat-label>Remark<sup style="color: rgb(233, 22, 22);">*</sup>></mat-label>
+                        <mat-label>Remark<sup style="color: rgb(233, 22, 22);">*</sup></mat-label>
                         <textarea matInput [formControl]="remarkFormControl" [errorStateMatcher]="matcher" placeholder="Bill Remark"></textarea>
                         <mat-error *ngIf="remarkFormControl.hasError('required')">
                             Bill Remark is <strong>required</strong>

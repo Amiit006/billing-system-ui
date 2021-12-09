@@ -3,6 +3,7 @@
         <img src="/assets/bar-chart.svg" class="pnl-head-icon"> Sells Report
     </h1>
     <hr class="header-hr">
+    <app-calender-heat-map [serviceData]="sellData"></app-calender-heat-map>
     <app-date-range-selector (rangeEmitter)="setRangeEmitter($event)"></app-date-range-selector>
 
     <div *ngIf="reportStatus === 'notloaded'" class="section text-center">

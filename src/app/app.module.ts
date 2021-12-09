@@ -59,6 +59,7 @@ import { ParticularsReportComponent } from './components/reports/particulars-rep
 import { ShowChartTogglerComponent } from './components/dashboard/show-chart-toggler/show-chart-toggler.component';
 import { ClientOutstandingComponent } from './components/single-client-board/client-outstanding/client-outstanding.component';
 import { ClientOutstandingReportComponent } from './components/reports/client-outstanding-report/client-outstanding-report.component';
+import { CalenderHeatMapComponent } from './components/calender-heat-map/calender-heat-map.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,7 @@ import { ClientOutstandingReportComponent } from './components/reports/client-ou
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent, BillSettingComponent, AddDiscountComponent, TopProductComponent, TopBuyerComponent, SellCollectionComponent, MonthlySellComponent, SellsReportComponent, CollectionReportComponent, ClientReportComponent, TradeBookComponent, DateRangeSelectorComponent, TableContainerComponent, ParticularsReportComponent, ShowChartTogglerComponent, ClientOutstandingComponent, ClientOutstandingReportComponent,
+    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent, BillSettingComponent, AddDiscountComponent, TopProductComponent, TopBuyerComponent, SellCollectionComponent, MonthlySellComponent, SellsReportComponent, CollectionReportComponent, ClientReportComponent, TradeBookComponent, DateRangeSelectorComponent, TableContainerComponent, ParticularsReportComponent, ShowChartTogglerComponent, ClientOutstandingComponent, ClientOutstandingReportComponent, CalenderHeatMapComponent,
   ],
   imports: [
     BrowserModule,

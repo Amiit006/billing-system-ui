@@ -31,12 +31,13 @@ export class SellsReportComponent implements OnInit {
     domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   };
   cardColor: string = '#232837';
-
+  sellData: Observable<ChartResponse[]>;
   constructor(private fb: FormBuilder, private reportService: ReportService
     , private dashboardService: DashboardService, private downloadService: DownloadService) { }
 
   ngOnInit(): void {
-
+    this.sellData = this.dashboardService.getSellForOneYearByDayReport();
+    console.log(this.sellData);
   }
 
   setRangeEmitter(range) {

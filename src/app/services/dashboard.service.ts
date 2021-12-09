@@ -58,4 +58,8 @@ export class DashboardService {
     params = params.append('clientId', clientId);
     return this.http.get<ChartResponse[]>(environment.baseUrl + "dashboard/clientOutstanding", { params: params }); 
   }
+
+  getSellForOneYearByDayReport() {
+    return this.http.get<ChartResponse[]>(environment.baseUrl + "dashboard/sells/byDay"); 
+  }
 }
