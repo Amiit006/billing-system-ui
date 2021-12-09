@@ -70,32 +70,49 @@
                                     <tr>
                                         <td colspan="2"></td>
                                         <td class="text-right" style="font-size: 14px;"><strong>Total Qnty</strong></td>
-                                        <td class="text-right" style="font-size: 14px;"><strong>{{totalQuantity}}</strong></td>
+                                        <td class="text-right" style="font-size: 14px;">
+                                            <strong>{{totalQuantity}}</strong></td>
                                         <td class="text-right" style="font-size: 14px;"><strong>Pc</strong></td>
                                         <td colspan="1"></td>
                                         <td class="text-right"><strong>Subtotal</strong></td>
                                         <td class="text-right"><strong>{{invoice?.subTotalAmount |
                                                 indianCurrency}}</strong></td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="invoice?.discountPercentage > 0">
+                                        <td colspan="6"></td>
+                                        <td class="text-right"><span>Overall Disc({{invoice?.discountPercentage}}%)</span></td>
+                                        <td class="text-right">
+                                            <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">-</span>
+                                            <span>{{invoice?.discountAmount |
+                                                indianCurrency}}</span></td>
+                                    </tr>
+                                    <tr *ngIf="invoice?.discountPercentage > 0">
+                                        <td colspan="6"></td>
+                                        <td class="text-right"><strong><span>Total</span></strong></td>
+                                        <td class="text-right"><strong><span>{{invoice?.subTotalAmount - invoice?.discountAmount |
+                                                indianCurrency}}</span></strong></td>
+                                    </tr>
+                                    <tr *ngIf="invoice?.taxAmount > 0">
                                         <td colspan="6"></td>
                                         <td class="text-right">
-                                            <strong>Taxes
-                                                ({{invoice?.taxPercentage}}%) + </strong></td>
-                                        <td class="text-right"><strong>{{invoice?.taxAmount |
-                                                indianCurrency}}</strong></td>
+                                            Taxes ({{invoice?.taxPercentage}}%) +
+                                        </td>
+                                        <td class="text-right">{{invoice?.taxAmount | indianCurrency}}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6"></td>
-                                        <td class="text-right"><strong>Payment - </strong></td>
-                                        <td class="text-right"><strong>{{invoice?.payment?.amount ?
-                                            invoice?.payment?.amount : 0 |
-                                                indianCurrency}}</strong></td>
-
+                                        <td class="text-right"><span>Payment</span></td>
+                                        <td class="text-right">
+                                            <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">-</span>
+                                            <span>{{invoice?.payment?.amount ?
+                                                invoice?.payment?.amount : 0 |
+                                                indianCurrency}}</span>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6"></td>
-                                        <td class="text-right"><strong>Total</strong></td>
+                                        <td class="text-right"><strong>Grand Total</strong></td>
                                         <td class="text-right">
                                             <strong>{{invoice?.grandTotalAmount -
                                                 (invoice?.payment?.amount ?
