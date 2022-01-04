@@ -9,6 +9,7 @@ import { DashboardComponent } from 'src/app/components/dashboard/dashboard.compo
 import { InvoiceComponent } from 'src/app/components/invoice/invoice.component';
 import { ParticularsComponent } from 'src/app/components/particulars/particulars.component';
 import { PaymentBoardComponent } from 'src/app/components/payment-board/payment-board.component';
+import { PurchaseDashboardComponent } from 'src/app/components/purchase-dashboard/purchase-dashboard.component';
 import { ClientOutstandingReportComponent } from 'src/app/components/reports/client-outstanding-report/client-outstanding-report.component';
 import { ClientReportComponent } from 'src/app/components/reports/client-report/client-report.component';
 import { CollectionReportComponent } from 'src/app/components/reports/collection-report/collection-report.component';
@@ -41,6 +42,7 @@ const routes: Routes = [
   { path: 'reports/particulars', component: ParticularsReportComponent },
   { path: 'reports/clientOutstanding', component: ClientOutstandingReportComponent },
   { path: 'invoice', component: InvoiceComponent },
+  { path: 'purchase', component: PurchaseDashboardComponent },
   { path: '', component: DashboardComponent },
 ];
 
