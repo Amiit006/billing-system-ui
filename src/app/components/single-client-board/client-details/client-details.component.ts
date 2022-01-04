@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { lengthValidator } from 'src/app/directives/length-validator.directive';
+import { Client } from 'src/app/model/client.model';
 import { ClientsService } from 'src/app/services/clients.service';
 
 @Component({
@@ -38,6 +39,9 @@ export class ClientDetailsComponent implements OnInit {
 
   });
 
+
+  @Output() clientFormData = new EventEmitter<Client>();
+
   constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute,
     private toastrService: ToastrService,
     private clientsService: ClientsService) {
@@ -47,6 +51,7 @@ export class ClientDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.clientForm.disable();
     this.clientsService.getClientById(this.clientId).subscribe(data => {
+      this.clientFormData.emit(data);
       // this.clientForm.get("clientId").setValue(data.clientId);
       this.clientForm.get("clientName").setValue(data.clientName);
       this.clientForm.get("mobile").setValue(data.mobile);

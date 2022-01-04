@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Client } from 'src/app/model/client.model';
 
 @Component({
   selector: 'app-single-client-board',
@@ -25,6 +26,11 @@ export class SingleClientBoardComponent implements OnInit {
       const clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
       this.router.navigate(["new-payment"], { state: { clientId: clientId } })
     }
+  }
+
+  clientData: Client;
+  setClientFormData(event: Client) {
+    this.clientData = event;
   }
 
 }

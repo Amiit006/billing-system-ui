@@ -53,7 +53,8 @@ export class InvoiceDetailsComponent implements OnInit {
   onViewClick(invoiceId) {
     const clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
     this.router.navigate(["clients/" + clientId + "/invoice/" + invoiceId]
-      , { state: { invoice: this.invoice.filter(data => data.invoiceId === invoiceId)[0] } });
+      // , { state: { invoice: this.invoice.filter(data => data.invoiceId === invoiceId)[0] } });
+      , { state: { invoice: this.invoice , client: this.clientData} });
   }
 
   onAddDiscountClick(invoiceId) {
