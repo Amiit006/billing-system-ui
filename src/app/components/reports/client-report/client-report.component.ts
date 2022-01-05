@@ -51,6 +51,11 @@ export class ClientReportComponent implements OnInit {
   @ViewChild(MatSort) sellSort: MatSort;
   @ViewChild(MatPaginator) sellPaginator: MatPaginator;
 
+  clientTradeBookDisplayedColumns: string[] = ['date', 'remark', 'amount', 'balance'];
+  clientTradeBookDisplayedColumnsValue: string[] = ['date', 'remark', 'amount', 'balance'];
+  clientTradeBookDataSource = new MatTableDataSource();
+  @ViewChild(MatPaginator) clientTradeBookPaginator: MatPaginator;
+  clientTradeBookData:any[] = [];
   constructor(private fb: FormBuilder, private reportService: ReportService
     , private dashboardService: DashboardService, private clientService: ClientsService
     , private tosterService: ToastrService
@@ -80,11 +85,11 @@ export class ClientReportComponent implements OnInit {
       .subscribe(data => {
         this.single = data;
         this.reportStatus = "loaded";
-      }, 
-      error => {
-        console.log(error.error.error);
-        this.reportStatus = "error";
-      });
+      },
+        error => {
+          console.log(error.error.error);
+          this.reportStatus = "error";
+        });
     this.reportService.getClientReport(from_date, to_date, clientId).subscribe(data => {
       this.collectionDataSource = new MatTableDataSource(data.clientCollection);
       this.collectionDataSource.sort = this.collectionSort;
@@ -95,6 +100,61 @@ export class ClientReportComponent implements OnInit {
       this.sellDataSource.paginator = this.sellPaginator;
       this.reportStatus = "loaded";
     })
+    this.reportService.getClientTradeBookReport(from_date, to_date, clientId).subscribe(data => {
+      this.clientTradeBookDataSource = new MatTableDataSource(data);
+      this.clientTradeBookDataSource.paginator = this.clientTradeBookPaginator;
+      this.reportStatus = "loaded";
+    })
+  }
+
+  onPrint() {
+    console.log(this.clientTradeBookDataSource.data);
+    this.clientTradeBookData = this.clientTradeBookDataSource.data;
+    let html = `
+    <div class="container">
+  <div class="row">
+    <div class="col-12 text-center">!!! Shree Ganeshaya Namaha !!!</div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-12 text-left">Client Name: ` + this.billingClientForm.get("clientName").value + `</div>
+    <div class="col-12 text-left mt-3 mb-3">Period From : ` + moment(this.range.get("start").value).format('yyyy-MM-DD') + ` to ` + moment(this.range.get("end").value).format('yyyy-MM-DD') + `</div>
+  </div>
+  <table class="table" style="font-size:12px">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Remark</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Balance</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+  `;
+    for (const r of this.clientTradeBookData) {
+      const trValue = `
+      <tr>
+      <td>`+ r.date + `</td>
+      <td>`+ r.remark + `</td>
+      <td>`+ r.amount + `</td>
+      <td>`+ r.balance + `</td>
+      </tr>
+      `;
+      html += trValue;
+    }
+    html += `</tbody>
+    </table>
+    </div>`;
+
+    const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+    WindowPrt.document.write('<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">');
+    WindowPrt.document.write('<body onload="window.print()">' + html + '</body>');
+    // WindowPrt.document.write(html);
+    WindowPrt.document.close();
+    WindowPrt.focus();
+    // WindowPrt.print();
+    // WindowPrt.close();
   }
 
   search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
@@ -107,6 +167,7 @@ export class ClientReportComponent implements OnInit {
           .map(v => v.clientName)
           .slice(0, 10))
     )
+
 
 
 }
