@@ -51,8 +51,8 @@ export class ClientReportComponent implements OnInit {
   @ViewChild(MatSort) sellSort: MatSort;
   @ViewChild(MatPaginator) sellPaginator: MatPaginator;
 
-  clientTradeBookDisplayedColumns: string[] = ['date', 'remark', 'amount', 'balance'];
-  clientTradeBookDisplayedColumnsValue: string[] = ['date', 'remark', 'amount', 'balance'];
+  clientTradeBookDisplayedColumns: string[] = ['date', 'remark', 'billAmount','paymentAmount', 'balance'];
+  clientTradeBookDisplayedColumnsValue: string[] = ['date', 'remark', 'billAmount','paymentAmount', 'balance'];
   clientTradeBookDataSource = new MatTableDataSource();
   @ViewChild(MatPaginator) clientTradeBookPaginator: MatPaginator;
   clientTradeBookData:any[] = [];
@@ -124,7 +124,8 @@ export class ClientReportComponent implements OnInit {
     <tr>
       <th scope="col">Date</th>
       <th scope="col">Remark</th>
-      <th scope="col">Amount</th>
+      <th scope="col">BillAmount</th>
+      <th scope="col">PaymentAmount</th>
       <th scope="col">Balance</th>
     </tr>
   </thead>
@@ -133,11 +134,15 @@ export class ClientReportComponent implements OnInit {
     
   `;
     for (const r of this.clientTradeBookData) {
+      const bill = r.billAmount === null ? '' : r.billAmount;
+      const payment = r.paymentAmount === null ? '' : r.paymentAmount;
+      console.log(bill);
       const trValue = `
       <tr>
-      <td>`+ r.date + `</td>
+      <td>`+ moment(r.date).format('DD-MM-yyyy') + `</td>
       <td>`+ r.remark + `</td>
-      <td>`+ r.amount + `</td>
+      <td>`+ bill + `</td>
+      <td>`+ payment + `</td>
       <td>`+ r.balance + `</td>
       </tr>
       `;

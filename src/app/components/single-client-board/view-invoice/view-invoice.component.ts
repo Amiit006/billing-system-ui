@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Client } from 'src/app/model/client.model';
 import { BillingService } from 'src/app/services/billing.service';
 import { ClientsService } from 'src/app/services/clients.service';
+import { AddDiscountComponent } from '../add-discount/add-discount.component';
 
 @Component({
   selector: 'app-view-invoice',
@@ -22,7 +25,9 @@ export class ViewInvoiceComponent implements OnInit {
   showNext = false;
   showPrev = false;
 
-  constructor(private activatedRoute: ActivatedRoute, private clientService: ClientsService, private router: Router) {
+  constructor(private activatedRoute: ActivatedRoute, public dialog: MatDialog, 
+    private clientService: ClientsService, private router: Router, private billingService: BillingService,
+    private toastrService: ToastrService) {
     this.clientId = +this.activatedRoute.snapshot.paramMap.get("clientId");
     this.invoiceId = +this.activatedRoute.snapshot.paramMap.get("invoiceId");
     this.invoices = this.router.getCurrentNavigation().extras?.state?.invoice;
@@ -76,6 +81,35 @@ export class ViewInvoiceComponent implements OnInit {
 
   onClickReturnToClient() {
     this.router.navigate(["clients/" + this.clientId]);
+  }
+
+  onAddDiscountClick(invoiceId) {
+    const clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
+    const data = this.invoices.filter(x => x.invoiceId === invoiceId);
+    this.openDialog(invoiceId, data[0]);
+  }
+
+  openDialog(invoiceId, data): void {
+    const dialogRef = this.dialog.open(AddDiscountComponent, {
+      width: '1150px',
+      data: {invoiceDetails: data}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result?.success) {
+        this.toastrService.success(result.response.response);
+        this.loadClientBill();
+      }
+    });
+  }
+
+  loadClientBill() {
+    this.billingService.getInvoiceByClientId(this.clientId).subscribe(data => {
+      this.invoices = data;
+      this.router.navigateByUrl('/' , { skipLocationChange: true })
+        .then(() => this.router.navigate(["clients/" + this.clientId + "/invoice/" + this.invoiceId]
+        , { state: { invoice: this.invoices, client: this.client } }));
+    });
   }
 
 }
