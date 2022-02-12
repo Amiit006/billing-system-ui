@@ -1,5 +1,6 @@
 <div class="container">
     <button style="margin-left: 24px;" *ngIf="showNewBill" mat-button color="primary" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary" (click)="onReset()">Create Another Bill</button>
+    <button style="margin-left: 24px;" *ngIf="showNewBill" mat-button color="primary" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary" (click)="onSameClientBill()">Create Another Bill For Same Client</button>
     <mat-horizontal-stepper linear #stepper>
         <mat-step [stepControl]="clientForm" [editable]="!showNewBill">
             <ng-template matStepLabel>Fill Client Details</ng-template>

@@ -97,4 +97,11 @@ export class BillingBoardComponent implements OnInit, ComponentCanDeactivate  {
       this.router.navigate(['new-bill']);
     });
   }
+
+  onSameClientBill() {
+    const clientId = this.clientForm.get("clientId").value;
+    this.router.navigateByUrl('/new-bill-refersh', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['new-bill'],{ state: { clientId: clientId } });
+    });
+  }
 }
