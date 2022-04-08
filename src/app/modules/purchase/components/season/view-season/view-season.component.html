@@ -1,0 +1,34 @@
+<div class="container mt-5">
+    <!-- <div *ngIf="this.seasons.length === 0 && isDataLoaded">
+        <p>Hello</p>
+        <app-no-result [h3TextInput]="'Result empty'" [pTextInput]="'There is no sell record in this period'">
+        </app-no-result>
+    </div> -->
+    <div class="row text-center">
+        <div class="col-lg-3 col-md-6 col-xs-12 pl-1 pr-1" *ngFor="let item of seasons">
+            <div class="card">
+                <div class="position-relative text-right">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" class="top-0 end-0">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                            <mat-icon>delete</mat-icon>
+                            <span>Delete</span>
+                        </button>
+                        <button mat-menu-item>
+                            <mat-icon>archive</mat-icon>
+                            <span>Archive</span>
+                        </button>
+                    </mat-menu>
+                </div>
+                <div (click)="onClick(item.seasonId)">
+                    <i [ngClass]="getClass(item.seasonName)"></i>
+                    <h3>{{item.seasonName}}</h3>
+                    <p>{{item.startDate | date : 'dd-MMM-yyyy'}} to {{item.endDate | date : 'dd-MMM-yyyy'}}</p>
+                    <p style="color: #D4AC0D;">{{item.purchases?.length}} purchases</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

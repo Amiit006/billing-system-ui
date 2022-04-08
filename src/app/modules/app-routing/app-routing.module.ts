@@ -9,7 +9,6 @@ import { DashboardComponent } from 'src/app/components/dashboard/dashboard.compo
 import { InvoiceComponent } from 'src/app/components/invoice/invoice.component';
 import { ParticularsComponent } from 'src/app/components/particulars/particulars.component';
 import { PaymentBoardComponent } from 'src/app/components/payment-board/payment-board.component';
-import { PurchaseDashboardComponent } from 'src/app/components/purchase-dashboard/purchase-dashboard.component';
 import { ClientOutstandingReportComponent } from 'src/app/components/reports/client-outstanding-report/client-outstanding-report.component';
 import { ClientReportComponent } from 'src/app/components/reports/client-report/client-report.component';
 import { CollectionReportComponent } from 'src/app/components/reports/collection-report/collection-report.component';
@@ -20,6 +19,9 @@ import { TradeBookComponent } from 'src/app/components/reports/trade-book/trade-
 import { SingleClientBoardComponent } from 'src/app/components/single-client-board/single-client-board.component';
 import { ViewInvoiceComponent } from 'src/app/components/single-client-board/view-invoice/view-invoice.component';
 import { PendingChangesGuard } from 'src/app/guard/pending-changes.guard';
+import { AddPurchaseComponent } from '../purchase/components/add-purchase/add-purchase.component';
+import { LandingComponent } from '../purchase/components/landing/landing.component';
+import { SeasonComponent } from '../purchase/components/season/season.component';
 
 
 const routes: Routes = [
@@ -42,7 +44,9 @@ const routes: Routes = [
   { path: 'reports/particulars', component: ParticularsReportComponent },
   { path: 'reports/clientOutstanding', component: ClientOutstandingReportComponent },
   { path: 'invoice', component: InvoiceComponent },
-  { path: 'purchase', component: PurchaseDashboardComponent },
+  { path: 'purchase', component: SeasonComponent },
+  { path: 'purchase/season/:seasonId/addPurchase', component: AddPurchaseComponent },
+  { path: 'purchase/season/:seasonId', component: LandingComponent },
   { path: '', component: DashboardComponent },
 ];
 

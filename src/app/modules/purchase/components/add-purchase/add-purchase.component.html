@@ -1,0 +1,171 @@
+<div class="mt-2 text-center">
+    <h3>{{selectedSeason.seasonName}}</h3>
+    <p>
+        {{selectedSeason.startDate | date : 'dd-MMM-yyyy'}} to {{selectedSeason.endDate | date : 'dd-MMM-yyyy'}}
+    </p>
+</div>
+
+<div class="container">
+    <!-- <h2 _ngcontent-akt-c262="" class="starter-template">All Clients</h2> -->
+    <mat-card>
+        <mat-card-title>Purchase Details</mat-card-title>
+        <mat-divider></mat-divider>
+        <form [formGroup]="purchaseForm">
+            <div class="row mt-4">
+                <div class="col-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Party Name</mat-label>
+                        <input matInput placeholder="Party Name" type="text" formControlName="partyName">
+                    </mat-form-field>
+                </div>
+                <div class="col-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Purchase Amount</mat-label>
+                        <input matInput placeholder="Purchase Amount" type="number" [min]="1" formControlName="purchaseAmount">
+                    </mat-form-field>
+
+                </div>
+                <div class="col-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Packing Charges</mat-label>
+                        <input matInput placeholder="Packing Charge" type="text" formControlName="packingCharge">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Purchase Date</mat-label>
+                        <input [max]="maxDate" [min]="minDate" matInput [matDatepicker]="picker" formControlName="purchaseDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tax Amount</mat-label>
+                        <input matInput placeholder="Tax Amount" (change)="onTaxAmountChange()" type="number" [min]="0" formControlName="taxAmount">
+                    </mat-form-field>
+                </div>
+                <div class="col-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tax Percent</mat-label>
+                        <input disabled matInput placeholder="Tax Percent" type="number" [min]="0" formControlName="taxPercent">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Discount Amount</mat-label>
+                        <input matInput placeholder="Discount Amount" (change)="onDiscountAmountChange()" type="number" formControlName="discountAmount">
+                    </mat-form-field>
+                </div>
+                <div class="col-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Discount Percent</mat-label>
+                        <input matInput placeholder="Discount Percent" type="number" formControlName="discountPercent">
+                    </mat-form-field>
+                </div>
+                <div class="col-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Extra Discount Amount</mat-label>
+                        <input matInput placeholder="Extra Discount Amount" type="number" formControlName="extraDiscountAmount">
+                    </mat-form-field>
+                </div>
+            </div>
+            <mat-card formGroupName="transport">
+                <mat-card-title>Transport Details</mat-card-title>
+                <mat-divider></mat-divider>
+                <div class="row mt-4">
+                    <div class="col-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Transport Name</mat-label>
+                            <input matInput placeholder="Transport Name" type="text" formControlName="transportName">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Transport Amount</mat-label>
+                            <input matInput placeholder="Transport Amount" type="text" formControlName="amount">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Consignment No</mat-label>
+                            <input matInput placeholder="Consignment No" type="text" formControlName="consignmentNumber">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card>
+
+            <mat-card formArrayName="payments">
+                <mat-card-title>Payment Details</mat-card-title>
+                <mat-divider></mat-divider>
+                <div *ngFor="let skill of skills.controls; let i=index">
+                    <div [formGroupName]="i">
+                        <div class="row mt-4">
+                            <div class="col-4">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Payment Date</mat-label>
+                                    <input [max]="maxDate" matInput [matDatepicker]="picker1" formControlName="paymentDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Amount</mat-label>
+                                    <input matInput placeholder="Amount" min="0" type="number" formControlName="amount">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Payment Mode</mat-label>
+                                    <mat-select formControlName="mode" (selectionChange)="onChange($event.value, i)">
+                                        <mat-option *ngFor="let paymentMode of paymentModes" [value]="paymentMode.value">
+                                            {{ paymentMode.viewValue }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Cheque No</mat-label>
+                                    <input matInput placeholder="0000000" min="0" type="number" formControlName="chequeNo">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Remarks</mat-label>
+                                    <textarea matInput formControlName="remark"></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-4">
+                                <!-- row delete button, hidden if there is just one row -->
+                                <button type="button" mat-mini-fab color="warn" (click)="removeUnit(i)">
+                                    <mat-icon>delete forever</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <mat-card-actions>
+                    <button type="button" mat-raised-button (click)="addPayment()">
+                        <mat-icon>add box</mat-icon>
+                        Add new Payment
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+
+        </form>
+        <mat-divider></mat-divider>
+        <mat-card-actions class="text-center">
+            <button class="btn btn-success" [disabled]="purchaseForm.invalid" (click)="onSave()">Save</button>
+        </mat-card-actions>
+    </mat-card>
+
+</div>

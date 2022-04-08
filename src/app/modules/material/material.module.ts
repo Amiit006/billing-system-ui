@@ -22,6 +22,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import {MatDialogModule} from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatCardModule} from '@angular/material/card';
 
 const materialModules = [
   MatAutocompleteModule,
@@ -45,7 +46,8 @@ const materialModules = [
   MatStepperModule,
   MatPaginatorModule,
   MatDialogModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatCardModule
 ]
 
 @NgModule({

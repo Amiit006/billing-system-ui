@@ -1,6 +1,9 @@
 <mat-toolbar class="mat-primary">
     <span><a mat-button routerLink="/">Bill Generator</a></span>
     <span class="example-spacer"></span>
+    <!-- <a matTooltip="Quick bill" mat-button class="docs-navbar-hide-small docs-button mr-5" routerLink="new-bill">
+        <mat-icon>add_circle_outline</mat-icon>
+    </a> -->
     <a mat-button class="docs-navbar-hide-small docs-button mr-5" routerLink="new-bill">New Bill</a>
     <a mat-button class="docs-navbar-hide-small docs-button mr-5" routerLink="new-payment">New Payment</a>
     <!-- <a mat-button class="docs-navbar-hide-small docs-button mr-5" routerLink="clients">Clients</a> -->
@@ -22,6 +25,7 @@
     <button mat-button class="docs-navbar-hide-small docs-button mr-5" [matMenuTriggerFor]="menuSettings"><mat-icon>settings</mat-icon></button>
     <mat-menu #menuSettings="matMenu">
         <button mat-menu-item><mat-icon>account_circle</mat-icon> Profile</button>
+        <button mat-menu-item routerLink="purchase"><mat-icon>shopping_cart</mat-icon> Purchases</button>
     </mat-menu>
 
     <!-- <a routerLink="/new-bill" mat-button class="mat-focus-indicator docs-navbar-hide-small docs-button mat-button mat-button-base mr-5">

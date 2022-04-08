@@ -1,0 +1,48 @@
+<form [formGroup]="paymentForm">
+    <div class="row">
+        <div class="col-4 center">
+            <mat-form-field appearance="outline">
+                <mat-label>Payment Date</mat-label>
+                <input [max]="maxDate" matInput [matDatepicker]="picker" formControlName="paymentDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="col-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Amount</mat-label>
+                <input matInput placeholder="Amount" min="0" type="number" formControlName="amount">
+            </mat-form-field>
+        </div>
+        <div class="col-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Payment Mode</mat-label>
+                <mat-select formControlName="mode" (selectionChange)="onChange($event.value)">
+                    <!-- <mat-option value="cash">Cash</mat-option>
+                    <mat-option value="bankTransfer">Bank Transfer</mat-option>
+                    <mat-option value="cheque">Cheque</mat-option> -->
+                    <mat-option *ngFor="let paymentMode of paymentModes" [value]="paymentMode.value">
+                        {{ paymentMode.viewValue }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Cheque No</mat-label>
+                <input matInput placeholder="0000000" min="0" type="number" formControlName="chequeNo">
+            </mat-form-field>
+        </div>
+        <div class="col-4">
+            <mat-form-field appearance="outline">
+                <mat-label>Remarks</mat-label>
+                <textarea matInput formControlName="remark"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="col-4">
+            <button class="mt-2 mb-2" (click)="onSave()" [disabled]="paymentForm.invalid" mat-flat-button color="primary">Save</button>
+        </div>
+    </div>
+</form>
