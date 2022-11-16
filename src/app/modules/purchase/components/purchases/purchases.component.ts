@@ -27,8 +27,8 @@ import { PaymentsComponent } from '../payments/payments.component';
   ],
 })
 export class PurchasesComponent implements OnInit {
-  displayedColumns: string[] = ['partyName', 'purchaseDate', 'purchaseAmount', 'taxAmount','discountAmount','extraDiscountAmount', 'payments', 'pending', 'action'];
-  displayedColumnsValue: string[] = ['Party Name', 'Purchase Date', 'Purchase Amount', 'Tax Amount','Disc Amt','Extra Disc Amt'];
+  displayedColumns: string[] = ['partyName', 'purchaseDate', 'purchaseAmount', 'packingCharge', 'taxAmount', 'discountAmount', 'extraDiscountAmount', 'totalPayble', 'payments', 'pending', 'action'];
+  displayedColumnsValue: string[] = ['Party Name', 'Purchase Date', 'Purchase Amount', 'Packing', 'Tax', 'Disc', 'Extra Disc', 'Final Amount'];
   displayedColumns1: string[] = ['paymentDone', 'paymentPending'];
 
   dataSource = new MatTableDataSource();
@@ -46,13 +46,22 @@ export class PurchasesComponent implements OnInit {
 
   getPurchasesBySeason(seasonId) {
     this.purchaseService.getPurchasesBySeason(seasonId).subscribe((data: any[]) => {
-      console.log(data);
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });
   }
-
+  getColumnValue(element, column) {
+    if (column === 'totalPayble') {
+      const purchaseAmount = element['purchaseAmount'];
+      const discountAmount = element['discountAmount'];
+      const extraDiscountAmount = element['extraDiscountAmount'];
+      const taxAmount = element['taxAmount'];
+      const packingCharge = element['packingCharge'];
+      return purchaseAmount + taxAmount + packingCharge - discountAmount - extraDiscountAmount;
+    }
+    return element[column];
+  }
   getPaymentAmount(payments) {
     return payments.map(t => t.amount).reduce((a, b) => a + b, 0);
   }
@@ -63,10 +72,10 @@ export class PurchasesComponent implements OnInit {
     const discountAmount = input['discountAmount'];
     const extraDiscountAmount = input['extraDiscountAmount'];
     const taxAmount = input['taxAmount'];
-    return purchaseAmount + taxAmount - discountAmount - extraDiscountAmount - totalPaymentDone ;
-
+    const packingCharge = input['packingCharge'];
+    return purchaseAmount + packingCharge + taxAmount - discountAmount - extraDiscountAmount - totalPaymentDone;
   }
-
+  
   onNewPaymentClick(purchaseId) {
     const seasonId = this.activeRoute.snapshot.paramMap.get('seasonId');
     const dialogRef = this.dialog.open(PaymentsComponent, {

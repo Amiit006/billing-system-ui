@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { number } from 'echarts';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, OperatorFunction } from 'rxjs';
@@ -67,6 +68,13 @@ export class ClientReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+  
+  getColumnValue(element, column) {
+    if (column === 'balance') {
+      return Number(element[column]).toFixed(2);
+    }
+    return element[column];
   }
 
   range;
@@ -143,7 +151,7 @@ export class ClientReportComponent implements OnInit {
       <td>`+ r.remark + `</td>
       <td>`+ bill + `</td>
       <td>`+ payment + `</td>
-      <td>`+ r.balance + `</td>
+      <td>`+ r.balance.toFixed(2) + `</td>
       </tr>
       `;
       html += trValue;
