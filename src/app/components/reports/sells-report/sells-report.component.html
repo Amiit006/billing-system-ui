@@ -4,7 +4,7 @@
     </h1>
     <hr class="header-hr">
     <app-calender-heat-map [serviceData]="sellData"></app-calender-heat-map>
-    <app-date-range-selector (rangeEmitter)="setRangeEmitter($event)"></app-date-range-selector>
+    <app-date-range-selector [pageInitiator]="'SellReport'" (rangeEmitter)="setRangeEmitter($event)"></app-date-range-selector>
 
     <div *ngIf="reportStatus === 'notloaded'" class="section text-center">
         <app-no-result [imageUrl]="'/assets/init.svg'" [h3TextInput]="'Build a report'" [pTextInput]="'Use the above form to generate a report'">
@@ -42,7 +42,9 @@
         <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
             <ng-container matColumnDef="invoiceId">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice Id</th>
-                <td mat-cell *matCellDef="let element"> {{element.invoiceId}} </td>
+                <td mat-cell *matCellDef="let element"> 
+                    <a (click)="viewInvoice(element)"class="mr-5">{{element.invoiceId}}</a>
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="invoiceDate">

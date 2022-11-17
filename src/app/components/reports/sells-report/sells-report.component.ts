@@ -10,6 +10,9 @@ import { DashboardService } from 'src/app/services/dashboard.service';
 import { Observable } from 'rxjs';
 import { saveAs } from 'file-saver';
 import { DownloadService } from 'src/app/services/download.service';
+import { Router } from '@angular/router';
+import { BillingService } from 'src/app/services/billing.service';
+import { ClientsService } from 'src/app/services/clients.service';
 @Component({
   selector: 'app-sells-report',
   templateUrl: './sells-report.component.html',
@@ -33,31 +36,55 @@ export class SellsReportComponent implements OnInit {
   cardColor: string = '#232837';
   sellData: Observable<ChartResponse[]>;
   constructor(private fb: FormBuilder, private reportService: ReportService
-    , private dashboardService: DashboardService, private downloadService: DownloadService) { }
+    , private dashboardService: DashboardService, private downloadService: DownloadService
+    , private router: Router, private billingService: BillingService
+    , private clientsService: ClientsService) { }
 
   ngOnInit(): void {
     this.sellData = this.dashboardService.getSellForOneYearByDayReport();
-    console.log(this.sellData);
+    if(sessionStorage.getItem('sell_report_from_date') && sessionStorage.getItem('sell_report_to_date')) {
+      let sellData = JSON.parse(sessionStorage.getItem('sell_data'));
+      let sell_stats = JSON.parse(sessionStorage.getItem('sell_stats'));
+      this.dataSource = new MatTableDataSource(sellData);
+      this.single = sell_stats;
+      this.reportStatus = "loaded";
+    }
   }
-
+  from_date; 
+  to_date;
   setRangeEmitter(range) {
     this.reportStatus = "loading";
-    const from_date = moment(range.get("start").value).format('yyyy-MM-DD');
-    const to_date = moment(range.get("end").value).format('yyyy-MM-DD');
-    this.dashboardService.getSellStats(from_date, to_date)
+    this.from_date = moment(range.get("start").value).format('yyyy-MM-DD');
+    this.to_date = moment(range.get("end").value).format('yyyy-MM-DD');
+    sessionStorage.setItem("sell_report_from_date", this.from_date);
+    sessionStorage.setItem("sell_report_to_date", this.to_date);
+    this.dashboardService.getSellStats(this.from_date, this.to_date)
       .subscribe(data => {
-        // this.single = data.map(datum => ({name: datum.name, value: '₹ ' + datum.value}))
         this.single = data;
+        sessionStorage.setItem("sell_stats", JSON.stringify(data));
       }, error => console.log(error.error.error));
-    this.reportService.getSellsReport(from_date, to_date)
+    this.reportService.getSellsReport(this.from_date, this.to_date)
       .subscribe(data => {
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        sessionStorage.setItem("sell_data", JSON.stringify(data));
         this.reportStatus = "loaded";
       });
   }
 
+  invoice = [];
+  clientData;
+  viewInvoice(element) {
+    this.billingService.getInvoiceByClientId(element.clientId).subscribe(data => {
+      this.invoice = data;
+      this.clientsService.getClientById(element.clientId).subscribe(data => {
+        this.clientData = data;
+        this.router.navigate(["clients/" + element.clientId + "/invoice/" + element.invoiceId]
+      , { state: { invoice: this.invoice , client: this.clientData} });
+      });
+    });
+  }
 
   downloadFile(data: any) {
     // this.downloadService.downloadFile(data, "sells_report_" + moment(new Date()).format('yyyy-MM-DD-hh-mm-ss')+".csv");
