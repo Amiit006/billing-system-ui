@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: "http://localhost:8080/"
+  baseUrl: "https://billing-system-service-v2.onrender.com/"
 };
