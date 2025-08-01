@@ -1,3 +1,6 @@
+/* header.component.css */
+
+/* Keep your existing styles and add these responsive ones */
 a {
     color: white;
 }
@@ -6,4 +9,97 @@ a:hover {
     color: white;
     cursor: pointer;
     text-decoration: none;
+}
+
+/* Responsive Header */
+.responsive-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Brand/Logo */
+.brand {
+    flex: 1;
+}
+
+.brand a {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* Mobile Menu Button - Hidden by default, shown on mobile */
+.mobile-menu-btn {
+    display: none;
+    color: white;
+}
+
+/* Desktop Navigation - Hidden on mobile */
+.desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.desktop-nav a,
+.desktop-nav button {
+    color: white;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    /* Show mobile menu button */
+    .mobile-menu-btn {
+        display: inline-flex;
+    }
+    
+    /* Hide desktop navigation */
+    .desktop-nav {
+        display: none;
+    }
+    
+    /* Adjust brand text for small screens */
+    .brand a {
+        font-size: 1rem;
+    }
+    
+    /* Make header more compact */
+    .responsive-header {
+        min-height: 56px;
+        padding: 0 12px;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .brand a {
+        font-size: 0.9rem;
+    }
+    
+    .responsive-header {
+        padding: 0 8px;
+    }
+}
+
+/* Mobile Menu Styling */
+::ng-deep .mobile-menu .mat-menu-panel {
+    min-width: 250px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+::ng-deep .mobile-menu .mat-menu-item {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+::ng-deep .mobile-menu .mat-menu-item .mat-icon {
+    margin: 0;
+    color: #673ab7;
+}
+
+::ng-deep .mobile-menu .mat-divider {
+    margin: 8px 0;
 }
