@@ -36,8 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      rememberMe: [false]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
     // Get return url from route parameters or default to '/'
