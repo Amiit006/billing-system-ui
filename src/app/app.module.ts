@@ -1,5 +1,7 @@
+// src/app/app.module.ts - Updated with authentication components and services
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,7 +25,6 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { NgxPrintModule } from 'ngx-print';
 import { RowOptnOnHoverComponent } from './components/row-optn-on-hover/row-optn-on-hover.component';
 import { ParticularsComponent } from './components/particulars/particulars.component';
-import { HttpClientModule } from '@angular/common/http';
 import { AddParticularComponent } from './components/particulars/add-particular/add-particular.component';
 import { ViewParticularsComponent } from './components/particulars/view-particulars/view-particulars.component';
 import { AddClientComponent } from './components/clients/add-client/add-client.component';
@@ -62,6 +63,12 @@ import { ClientOutstandingReportComponent } from './components/reports/client-ou
 import { CalenderHeatMapComponent } from './components/calender-heat-map/calender-heat-map.component';
 import { PurchaseModule } from './modules/purchase/purchase.module';
 
+// Authentication Components and Services
+import { LoginComponent } from './components/auth/login/login.component';
+import { AuthService } from './services/auth.service';
+import { AuthGuard } from './guard/auth.guard';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -75,7 +82,43 @@ import { PurchaseModule } from './modules/purchase/purchase.module';
     ReportsComponent,
     DashboardComponent,
     PaymentComponent, 
-    IndianCurrencyPipe, RowOptnOnHoverComponent, ParticularsComponent, AddParticularComponent, ViewParticularsComponent, AddClientComponent, ViewClientsComponent, BillingBoardComponent, ProgressSpinnerComponent, PaymentBoardComponent, PaymentSummaryComponent, SingleClientBoardComponent, ClientDetailsComponent, PaymentDetailsComponent, InvoiceDetailsComponent, NoResultComponent, RoundSpinnerComponent, ViewInvoiceComponent, BillSettingComponent, AddDiscountComponent, TopProductComponent, TopBuyerComponent, SellCollectionComponent, MonthlySellComponent, SellsReportComponent, CollectionReportComponent, ClientReportComponent, TradeBookComponent, DateRangeSelectorComponent, TableContainerComponent, ParticularsReportComponent, ShowChartTogglerComponent, ClientOutstandingComponent, ClientOutstandingReportComponent, CalenderHeatMapComponent,
+    IndianCurrencyPipe, 
+    RowOptnOnHoverComponent, 
+    ParticularsComponent, 
+    AddParticularComponent, 
+    ViewParticularsComponent, 
+    AddClientComponent, 
+    ViewClientsComponent, 
+    BillingBoardComponent, 
+    ProgressSpinnerComponent, 
+    PaymentBoardComponent, 
+    PaymentSummaryComponent, 
+    SingleClientBoardComponent, 
+    ClientDetailsComponent, 
+    PaymentDetailsComponent, 
+    InvoiceDetailsComponent, 
+    NoResultComponent, 
+    RoundSpinnerComponent, 
+    ViewInvoiceComponent, 
+    BillSettingComponent, 
+    AddDiscountComponent, 
+    TopProductComponent, 
+    TopBuyerComponent, 
+    SellCollectionComponent, 
+    MonthlySellComponent, 
+    SellsReportComponent, 
+    CollectionReportComponent, 
+    ClientReportComponent, 
+    TradeBookComponent, 
+    DateRangeSelectorComponent, 
+    TableContainerComponent, 
+    ParticularsReportComponent, 
+    ShowChartTogglerComponent, 
+    ClientOutstandingComponent, 
+    ClientOutstandingReportComponent, 
+    CalenderHeatMapComponent,
+    // Authentication Components
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -99,6 +142,13 @@ import { PurchaseModule } from './modules/purchase/purchase.module';
   ],
   providers: [
     PendingChangesGuard,
+    AuthGuard,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
     {provide: MAT_DATE_LOCALE, useValue: 'en-IN'}
   ],
   bootstrap: [AppComponent]

@@ -1,0 +1,101 @@
+<!-- src/app/components/auth/login/login.component.html -->
+<div class="login-container">
+  <div class="login-card">
+    <!-- Header -->
+    <div class="login-header">
+      <div class="logo-section">
+        <mat-icon class="logo-icon">receipt_long</mat-icon>
+        <h1>Bill Generator</h1>
+      </div>
+      <p class="login-subtitle">Sign in to continue to your billing dashboard</p>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Username Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Username</mat-label>
+        <input 
+          matInput 
+          type="text" 
+          formControlName="username"
+          placeholder="Enter your username"
+          autocomplete="username">
+        <mat-icon matSuffix>person</mat-icon>
+        <mat-error *ngIf="f['username'].hasError('required') && submitted">
+          Username is required
+        </mat-error>
+        <mat-error *ngIf="f['username'].hasError('minlength') && submitted">
+          Username must be at least 3 characters
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Password Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input 
+          matInput 
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="Enter your password"
+          autocomplete="current-password">
+        <button 
+          mat-icon-button 
+          matSuffix 
+          type="button"
+          (click)="togglePasswordVisibility()"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="f['password'].hasError('required') && submitted">
+          Password is required
+        </mat-error>
+        <mat-error *ngIf="f['password'].hasError('minlength') && submitted">
+          Password must be at least 6 characters
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Remember Me -->
+      <div class="form-options">
+        <mat-checkbox formControlName="rememberMe" color="primary">
+          Remember me
+        </mat-checkbox>
+        <a href="#" class="forgot-password">Forgot password?</a>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        mat-raised-button 
+        color="primary" 
+        type="submit"
+        class="login-button full-width"
+        [disabled]="loading">
+        <mat-spinner diameter="20" *ngIf="loading" class="login-spinner"></mat-spinner>
+        <span *ngIf="!loading">Sign In</span>
+        <span *ngIf="loading">Signing In...</span>
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <div class="login-footer">
+      <p>Don't have an account? <a href="#" class="signup-link">Contact Administrator</a></p>
+    </div>
+  </div>
+
+  <!-- Background Elements -->
+  <div class="background-elements">
+    <div class="floating-icon icon-1">
+      <mat-icon>receipt</mat-icon>
+    </div>
+    <div class="floating-icon icon-2">
+      <mat-icon>analytics</mat-icon>
+    </div>
+    <div class="floating-icon icon-3">
+      <mat-icon>payments</mat-icon>
+    </div>
+    <div class="floating-icon icon-4">
+      <mat-icon>people</mat-icon>
+    </div>
+  </div>
+</div>

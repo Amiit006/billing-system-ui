@@ -1,4 +1,4 @@
-<!-- header.component.html -->
+<!-- src/app/components/header/header.component.html - Updated with user menu -->
 <mat-toolbar class="mat-primary responsive-header">
   <!-- Mobile Menu Button -->
   <button mat-icon-button class="mobile-menu-btn" [matMenuTriggerFor]="mobileMenu">
@@ -40,17 +40,42 @@
       <button mat-menu-item routerLink="reports/clientOutstanding">Client Outstanding Report</button>
     </mat-menu>
     
-    <button mat-icon-button [matMenuTriggerFor]="menuSettings">
-      <mat-icon>settings</mat-icon>
+    <!-- User Menu for Desktop -->
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-btn">
+      <mat-icon>account_circle</mat-icon>
     </button>
-    <mat-menu #menuSettings="matMenu">
-      <button mat-menu-item><mat-icon>account_circle</mat-icon> Profile</button>
-      <button mat-menu-item routerLink="purchase"><mat-icon>shopping_cart</mat-icon> Purchases</button>
+    <mat-menu #userMenu="matMenu" class="user-menu">
+      <div class="user-info">
+        <div class="user-name">{{ getUserDisplayName() }}</div>
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-menu-item routerLink="purchase">
+        <mat-icon>shopping_cart</mat-icon>
+        <span>Purchases</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="onLogout()" class="logout-item">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
     </mat-menu>
   </div>
 
   <!-- Mobile Menu -->
   <mat-menu #mobileMenu="matMenu" class="mobile-menu">
+    <!-- User Info in Mobile -->
+    <div class="mobile-user-info">
+      <mat-icon class="mobile-user-icon">account_circle</mat-icon>
+      <div class="mobile-user-details">
+        <div class="mobile-user-name">{{ getUserDisplayName() }}</div>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    
     <button mat-menu-item routerLink="new-bill">
       <mat-icon>note_add</mat-icon>
       <span>New Bill</span>
@@ -99,13 +124,18 @@
       <span>Outstanding Report</span>
     </button>
     <mat-divider></mat-divider>
-    <button mat-menu-item>
-      <mat-icon>account_circle</mat-icon>
-      <span>Profile</span>
-    </button>
     <button mat-menu-item routerLink="purchase">
       <mat-icon>shopping_cart</mat-icon>
       <span>Purchases</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      <span>Settings</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="onLogout()" class="logout-item">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
     </button>
   </mat-menu>
 </mat-toolbar>
