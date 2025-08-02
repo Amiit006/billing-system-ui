@@ -6,9 +6,14 @@
                     <div class="col-9"></div>
                     <div class="col-3 text-right">
                         <button [disabled]="paymentSaveStatus" (click)="onSave()" class="btn btn-sm btn-white m-b-10 p-l-5">
-                            <i class="fa fa-save t-plus-1 fa-fw fa-lg"></i>Save</button>
-                        <button [disabled]="!paymentSaveStatus" [useExistingCss]="true" printSectionId="print-body" ngxPrint class="btn btn-sm btn-white m-b-10 p-l-5"><i
-                                class="fa fa-print t-plus-1 fa-fw fa-lg"></i>Print</button>
+                            <i class="fa fa-save t-plus-1 fa-fw fa-lg"></i>Save
+                        </button>
+                        <button [disabled]="!paymentSaveStatus" [useExistingCss]="true" printSectionId="print-body" ngxPrint class="btn btn-sm btn-white m-b-10 p-l-5">
+                            <i class="fa fa-print t-plus-1 fa-fw fa-lg"></i>Print
+                        </button>
+                        <button [disabled]="!paymentSaveStatus" (click)="onShareWhatsApp()" class="btn btn-sm btn-success m-b-10 p-l-5" title="Share via WhatsApp">
+                            <i class="fa fa-whatsapp t-plus-1 fa-fw fa-lg"></i>Share
+                        </button>
                     </div>
                 </div>
                 <div class="grid-body" id="print-body">
