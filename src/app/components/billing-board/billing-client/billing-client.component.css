@@ -17,3 +17,187 @@
 .filter-select :hover {
     background-color: #f4f4f4;
 }
+
+/* Mobile and Tablet Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .row {
+        margin: 0 -5px;
+    }
+    
+    .row > [class*="col-"] {
+        padding: 0 5px;
+        margin-bottom: 15px;
+    }
+    
+    /* Stack all form fields vertically on mobile */
+    .col-2, .col-8, .col-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    /* Labels take less space and align left */
+    .control-label {
+        text-align: left !important;
+        font-size: 14px;
+        margin-bottom: 5px;
+        display: block;
+    }
+    
+    /* Form controls full width */
+    .form-control {
+        width: 100% !important;
+    }
+    
+    /* Search dropdown adjustments */
+    .filter-select {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .filter-select-list {
+        padding: 10px 15px;
+        border-bottom: 1px solid #eee;
+        height: auto;
+        min-height: 44px; /* Touch-friendly height */
+    }
+    
+    .filter-select-list:last-child {
+        border-bottom: none;
+    }
+    
+    .filter-select-list p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    
+    /* Two-column layout for some fields on mobile */
+    .mobile-two-col {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .mobile-two-col > .col-3 {
+        flex: 1;
+    }
+}
+
+/* Tablet specific adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .row > [class*="col-"] {
+        margin-bottom: 10px;
+    }
+    
+    /* Client name search - keep original layout */
+    .row:first-child .col-2,
+    .row:first-child .col-8 {
+        flex: 0 0 auto;
+    }
+    
+    .row:first-child .col-2 {
+        max-width: 25%;
+    }
+    
+    .row:first-child .col-8 {
+        max-width: 75%;
+    }
+    
+    /* Other form fields - responsive layout */
+    .col-2 {
+        flex: 0 0 30%;
+        max-width: 30%;
+    }
+    
+    .col-3 {
+        flex: 0 0 35%;
+        max-width: 35%;
+    }
+    
+    .col-8 {
+        flex: 0 0 70%;
+        max-width: 70%;
+    }
+    
+    .control-label {
+        font-size: 13px;
+    }
+    
+    .form-control {
+        font-size: 14px;
+    }
+}
+
+/* Large mobile screens */
+@media (min-width: 576px) and (max-width: 768px) {
+    /* Two-column layout for city/state and zip/country */
+    .row:has(.col-3:nth-child(3)) {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .row:has(.col-3:nth-child(3)) .col-2:first-child {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .row:has(.col-3:nth-child(3)) .col-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 5px;
+    }
+}
+
+/* Ensure proper spacing and touch targets */
+@media (max-width: 1024px) {
+    .form-control {
+        min-height: 44px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 10px 12px;
+    }
+    
+    input[type="number"] {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Better spacing for labels */
+    .control-label {
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+    
+    /* Improve dropdown appearance on mobile */
+    .filter-select {
+        max-height: 200px;
+    }
+    
+    .filter-select-list:hover,
+    .filter-select-list:active {
+        background-color: #f8f9fa;
+    }
+}
+
+/* Accessibility improvements */
+@media (max-width: 768px) {
+    /* Larger touch targets */
+    .filter-select-list {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Better visual hierarchy */
+    .control-label.font-weight-bold {
+        color: #495057;
+        font-size: 15px;
+    }
+}

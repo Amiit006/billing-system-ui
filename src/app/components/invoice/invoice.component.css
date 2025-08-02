@@ -48,3 +48,393 @@ body {
     margin-bottom: 25px;
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
 }
+
+/* Mobile and Tablet Responsive Styles */
+@media (max-width: 767px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .invoice {
+        padding: 20px 15px;
+    }
+    
+    /* Invoice header actions - mobile layout */
+    .row:first-child .col-9 {
+        display: none; /* Hide empty space */
+    }
+    
+    .row:first-child .col-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        text-align: center !important;
+        margin-bottom: 20px;
+    }
+    
+    /* Stack action buttons vertically */
+    .btn {
+        display: block;
+        width: 100%;
+        margin: 5px 0 !important;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+    
+    /* Invoice title - mobile styling */
+    .invoice-title h1 {
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    .invoice-title h2 {
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    
+    .invoice-title .small {
+        font-size: 14px;
+        display: block;
+        text-align: center;
+    }
+    
+    /* Client and order info - stack vertically */
+    .row .col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .row .col-6:last-child {
+        text-align: left !important;
+    }
+    
+    /* Address styling */
+    address {
+        font-size: 14px;
+        line-height: 1.6;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #007bff;
+    }
+    
+    address strong {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 8px;
+        color: #495057;
+    }
+    
+    /* Order Summary title */
+    h3 {
+        font-size: 18px;
+        text-align: center;
+        margin: 25px 0 20px 0;
+        color: #495057;
+        border-bottom: 2px solid #dee2e6;
+        padding-bottom: 10px;
+    }
+    
+    /* Transform table to cards on mobile */
+    .table {
+        display: none; /* Hide the table */
+    }
+    
+    /* Create mobile-friendly item cards */
+    .mobile-invoice-items {
+        display: block;
+    }
+    
+    .mobile-item-card {
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 15px 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    
+    .mobile-item-card::before {
+        content: "#" attr(data-item-number);
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 12px 0 12px 0;
+        font-weight: 700;
+        font-size: 12px;
+    }
+    
+    .mobile-item-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #f1f3f4;
+        font-size: 14px;
+    }
+    
+    .mobile-item-row:last-child {
+        border-bottom: none;
+        font-weight: 600;
+        background-color: #f8f9fa;
+        margin: 10px -20px -20px -20px;
+        padding: 15px 20px;
+        border-radius: 0 0 12px 12px;
+    }
+    
+    .mobile-item-label {
+        font-weight: 600;
+        color: #6c757d;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+    }
+    
+    .mobile-item-value {
+        font-weight: 500;
+        color: #495057;
+        text-align: right;
+    }
+    
+    .mobile-item-value.highlight {
+        color: #007bff;
+        font-weight: 700;
+        font-size: 16px;
+    }
+    
+    /* Summary section - mobile cards */
+    .mobile-summary {
+        display: block;
+        margin-top: 30px;
+    }
+    
+    .mobile-summary-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 15px 0;
+        border-left: 4px solid #28a745;
+    }
+    
+    .mobile-summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        font-size: 15px;
+    }
+    
+    .mobile-summary-row.total {
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        color: white;
+        margin: 15px -20px -20px -20px;
+        padding: 20px;
+        border-radius: 0 0 12px 12px;
+        font-size: 18px;
+        font-weight: 700;
+    }
+    
+    .mobile-summary-label {
+        font-weight: 600;
+    }
+    
+    .mobile-summary-value {
+        font-weight: 500;
+        text-align: right;
+    }
+    
+    /* Plus/minus indicators */
+    .mobile-summary-value .indicator {
+        display: inline-block;
+        width: 20px;
+        text-align: center;
+        margin-right: 8px;
+        font-weight: 700;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .invoice {
+        padding: 25px 20px;
+    }
+    
+    /* Two-column button layout */
+    .row:first-child .col-3 .btn {
+        display: inline-block;
+        width: 48%;
+        margin: 5px 1% !important;
+    }
+    
+    /* Slightly larger cards */
+    .mobile-item-card {
+        padding: 22px;
+    }
+    
+    .mobile-item-row {
+        font-size: 15px;
+        padding: 10px 0;
+    }
+    
+    /* Invoice title adjustments */
+    .invoice-title h1 {
+        font-size: 28px;
+    }
+    
+    .invoice-title h2 {
+        font-size: 22px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .invoice {
+        padding: 25px;
+    }
+    
+    /* Keep some desktop elements but make them smaller */
+    .table {
+        font-size: 13px;
+    }
+    
+    .table td {
+        padding: 8px 4px;
+        vertical-align: middle;
+    }
+    
+    /* Horizontal scroll for table if needed */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Action buttons - horizontal layout */
+    .row:first-child .col-3 .btn {
+        display: inline-block;
+        width: auto;
+        margin: 0 5px 10px 0 !important;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+    
+    /* Client info - side by side but responsive */
+    .row .col-6 {
+        margin-bottom: 15px;
+    }
+    
+    address {
+        font-size: 13px;
+        padding: 12px;
+    }
+}
+
+/* Hide mobile-specific elements on desktop */
+@media (min-width: 768px) {
+    .mobile-invoice-items,
+    .mobile-summary {
+        display: none !important;
+    }
+}
+
+/* Print styles - ensure good printing on all devices */
+@media print {
+    body {
+        background: white;
+        margin: 0;
+    }
+    
+    .container {
+        max-width: none;
+        padding: 0;
+    }
+    
+    .grid {
+        box-shadow: none;
+        margin: 0;
+    }
+    
+    .invoice {
+        padding: 20px;
+    }
+    
+    /* Hide action buttons when printing */
+    .row:first-child {
+        display: none !important;
+    }
+    
+    /* Ensure table prints well */
+    .table {
+        font-size: 12px;
+    }
+    
+    .table td {
+        padding: 6px 4px;
+    }
+    
+    /* Mobile elements should not print */
+    .mobile-invoice-items,
+    .mobile-summary {
+        display: none !important;
+    }
+    
+    /* Force table to show when printing, even on mobile */
+    .table {
+        display: table !important;
+    }
+}
+
+/* Very small screens optimization */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 5px;
+    }
+    
+    .invoice {
+        padding: 15px 10px;
+    }
+    
+    .mobile-item-card {
+        padding: 15px;
+        margin: 10px 0;
+    }
+    
+    .mobile-item-row {
+        font-size: 13px;
+        padding: 6px 0;
+    }
+    
+    .mobile-summary-card {
+        padding: 15px;
+    }
+    
+    .mobile-summary-row {
+        font-size: 14px;
+        padding: 10px 0;
+    }
+    
+    .mobile-summary-row.total {
+        font-size: 16px;
+        padding: 15px;
+    }
+    
+    /* Compact invoice header */
+    .invoice-title h1 {
+        font-size: 20px;
+    }
+    
+    .invoice-title h2 {
+        font-size: 18px;
+    }
+    
+    address {
+        font-size: 13px;
+        padding: 12px;
+    }
+}

@@ -1,3 +1,243 @@
 .show-outstanding {
     margin-bottom: 20px;
 }
+
+/* Mobile and Tablet Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .row {
+        margin: 0 -5px;
+    }
+    
+    .row > [class*="col-"] {
+        padding: 0 5px;
+        margin-bottom: 15px;
+    }
+    
+    /* Stack all form fields vertically on mobile */
+    .col-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    /* Outstanding amount section - mobile layout */
+    .show-outstanding .col-3:first-child {
+        text-align: center !important;
+        margin-bottom: 10px;
+        font-size: 16px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #28a745;
+    }
+    
+    .show-outstanding .col-3:last-child {
+        text-align: center;
+    }
+    
+    /* Full width material form fields */
+    mat-form-field {
+        width: 100% !important;
+    }
+    
+    /* Button styling for mobile */
+    .mat-flat-button {
+        width: 100%;
+        height: 48px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+    
+    /* Date picker improvements */
+    .mat-form-field-appearance-fill .mat-form-field-flex {
+        border-radius: 8px;
+    }
+    
+    /* Select dropdown improvements */
+    .mat-form-field-appearance-fill {
+        background-color: #f8f9fa;
+    }
+    
+    /* Input field improvements */
+    input[type="number"] {
+        font-size: 16px; /* Prevents zoom on iOS */
+        text-align: right;
+        font-weight: 500;
+    }
+}
+
+/* Tablet specific adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .row > [class*="col-"] {
+        margin-bottom: 12px;
+    }
+    
+    /* Outstanding section - tablet layout */
+    .show-outstanding .col-3:first-child {
+        font-size: 15px;
+        padding: 12px;
+    }
+    
+    /* Two-column layout on tablet for form fields */
+    .col-3:nth-child(1),
+    .col-3:nth-child(2) {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .col-3:nth-child(3) {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    /* Adjust mat-form-field for tablet */
+    mat-form-field {
+        width: 100%;
+    }
+}
+
+/* Large mobile screens - hybrid layout */
+@media (min-width: 576px) and (max-width: 768px) {
+    /* Outstanding section can use two columns */
+    .show-outstanding {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #28a745;
+        margin-bottom: 25px;
+    }
+    
+    .show-outstanding .col-3 {
+        flex: 1;
+        margin-bottom: 0;
+    }
+    
+    .show-outstanding .col-3:first-child {
+        background: none;
+        border: none;
+        padding: 0;
+        text-align: left !important;
+        font-weight: 600;
+    }
+    
+    .show-outstanding .col-3:last-child {
+        text-align: right;
+        flex: 0 0 auto;
+    }
+    
+    /* Payment form - two column layout */
+    .row:not(.show-outstanding) .col-3:nth-child(1),
+    .row:not(.show-outstanding) .col-3:nth-child(2) {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .row:not(.show-outstanding) .col-3:nth-child(3) {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    mat-form-field {
+        align-items: start;
+    }
+}
+
+/* Material Design component overrides for better mobile experience */
+@media (max-width: 1024px) {
+    /* Date picker enhancements */
+    ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        align-items: normal;
+    }
+    
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+        border-radius: 8px;
+    }
+    
+    /* Date picker icon */
+    ::ng-deep .mat-datepicker-toggle {
+        color: #6c757d;
+    }
+    
+    /* Select dropdown */
+    ::ng-deep .mat-form-field-appearance-fill .mat-select-arrow {
+        color: #6c757d;
+    }
+    
+    /* Input focus states */
+    ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+        color: #007bff;
+    }
+    
+    /* Button enhancements */
+    ::ng-deep .mat-flat-button.mat-primary {
+        box-shadow: 0 2px 4px rgba(0,123,255,0.2);
+    }
+    
+    ::ng-deep .mat-flat-button:active {
+        transform: translateY(1px);
+    }
+}
+
+/* Accessibility and UX improvements */
+@media (max-width: 768px) {
+    /* Better visual hierarchy */
+    .show-outstanding {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* Improved spacing */
+    .container form .row {
+        gap: 15px 0;
+    }
+    
+    /* Currency input styling */
+    input[type="number"]:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    }
+    
+    /* Payment mode select - full width and touch friendly */
+    ::ng-deep .mat-select-panel {
+        max-width: calc(100vw - 32px) !important;
+    }
+    
+    /* Date picker modal improvements */
+    ::ng-deep .mat-datepicker-content {
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+}
+
+/* Outstanding amount highlight */
+@media (max-width: 768px) {
+    .show-outstanding .font-weight-bold {
+        color: #28a745;
+        font-size: 18px;
+    }
+}
+
+/* Prevent horizontal scroll */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 8px;
+        overflow-x: hidden;
+    }
+    
+    .show-outstanding {
+        margin-left: -8px;
+        margin-right: -8px;
+        border-radius: 0;
+        padding: 15px 16px;
+    }
+}

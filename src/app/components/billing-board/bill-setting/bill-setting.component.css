@@ -3,3 +3,78 @@
     display: flex;
     justify-content: center;
 }
+
+/* Mobile and Tablet Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .row {
+        margin: 0 -5px;
+    }
+    
+    .row > [class*="col-"] {
+        padding: 0 5px;
+        margin-bottom: 15px;
+    }
+    
+    /* Stack form fields vertically on mobile */
+    .col-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    /* Adjust mat-form-field width for mobile */
+    .col-3 mat-form-field {
+        width: 100%;
+    }
+    
+    /* Center the checkbox on mobile */
+    .center {
+        justify-content: flex-start;
+        padding-left: 15px;
+    }
+}
+
+/* Tablet specific adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .row > [class*="col-"] {
+        margin-bottom: 10px;
+    }
+    
+    /* On tablet, keep some horizontal layout but with better spacing */
+    .col-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    /* First item (checkbox) takes full width on tablet */
+    .col-3:first-child {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .col-3 mat-form-field {
+        width: 100%;
+    }
+}
+
+/* Ensure mat-form-field responsive behavior */
+@media (max-width: 1024px) {
+    ::ng-deep mat-form-field {
+        width: 100% !important;
+    }
+    
+    ::ng-deep .mat-form-field-wrapper {
+        width: 100%;
+    }
+    
+    ::ng-deep .mat-form-field-flex {
+        width: 100%;
+    }
+}

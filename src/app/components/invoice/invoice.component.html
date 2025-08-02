@@ -6,10 +6,13 @@
                     <div class="col-9"></div>
                     <div class="col-3 text-right">
                         <div class="btn btn-sm btn-white m-b-10 p-l-5">
-                            <i class="fa fa-info-circle t-plus-1 fa-fw fa-lg" matTooltip="{{remarkFormControl}}"></i></div>
-                        <button [disabled]="invoiceSaveStatus" (click)="onSave()" class="btn btn-sm btn-white m-b-10 p-l-5">
+                            <i class="fa fa-info-circle t-plus-1 fa-fw fa-lg" matTooltip="{{remarkFormControl}}"></i>
+                        </div>
+                        <button [disabled]="invoiceSaveStatus" (click)="onSave()"
+                            class="btn btn-sm btn-white m-b-10 p-l-5">
                             <i class="fa fa-save t-plus-1 fa-fw fa-lg"></i>Save</button>
-                        <button [disabled]="!invoiceSaveStatus" [useExistingCss]="true" printSectionId="print-body" ngxPrint class="btn btn-sm btn-white m-b-10 p-l-5"><i
+                        <button [disabled]="!invoiceSaveStatus" [useExistingCss]="true" printSectionId="print-body"
+                            ngxPrint class="btn btn-sm btn-white m-b-10 p-l-5"><i
                                 class="fa fa-print t-plus-1 fa-fw fa-lg"></i>Print</button>
                     </div>
                 </div>
@@ -74,7 +77,8 @@
                                     <tr>
                                         <td colspan="2"></td>
                                         <td class="text-right" style="font-size: 14px;"><span>Total Qnty</span></td>
-                                        <td class="text-right" style="font-size: 14px;"><span>{{totalQuantity}}</span></td>
+                                        <td class="text-right" style="font-size: 14px;"><span>{{totalQuantity}}</span>
+                                        </td>
                                         <td class="text-right" style="font-size: 14px;"><span>Pc</span></td>
                                         <td colspan="1"></td>
                                         <td class="text-right"><span>Subtotal</span></td>
@@ -83,33 +87,41 @@
                                     </tr>
                                     <tr *ngIf="billAmountDetails?.overallDiscountAmount > 0">
                                         <td colspan="6"></td>
-                                        <td class="text-right"><span>Overall Disc({{billAmountDetails?.overallDiscountPercentage}}%)</span></td>
+                                        <td class="text-right"><span>Overall
+                                                Disc({{billAmountDetails?.overallDiscountPercentage}}%)</span></td>
                                         <td class="text-right">
-                                            <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">-</span>
+                                            <span style="float: left; margin-left: 95px;"
+                                                class="text-110 text-secondary-d1">-</span>
                                             <span>{{billAmountDetails?.overallDiscountAmount |
-                                                indianCurrency}}</span></td>
+                                                indianCurrency}}</span>
+                                        </td>
                                     </tr>
                                     <tr *ngIf="billAmountDetails?.overallDiscountAmount > 0">
                                         <td colspan="6"></td>
                                         <td class="text-right"><span>Total</span></td>
-                                        <td class="text-right"><span>{{billAmountDetails?.subTotalAmount - billAmountDetails?.overallDiscountAmount |
+                                        <td class="text-right"><span>{{billAmountDetails?.subTotalAmount -
+                                                billAmountDetails?.overallDiscountAmount |
                                                 indianCurrency}}</span></td>
                                     </tr>
                                     <tr *ngIf="billAmountDetails?.taxAmount > 0">
                                         <td colspan="6"></td>
                                         <td class="text-right">
                                             <span>Taxes
-                                                ({{billAmountDetails?.taxPercentage}}%)</span></td>
+                                                ({{billAmountDetails?.taxPercentage}}%)</span>
+                                        </td>
                                         <td class="text-right">
-                                            <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">+</span>
+                                            <span style="float: left; margin-left: 95px;"
+                                                class="text-110 text-secondary-d1">+</span>
                                             <span>{{billAmountDetails?.taxAmount |
-                                                indianCurrency}}</span></td>
+                                                indianCurrency}}</span>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="6"></td>
                                         <td class="text-right"><span>Payment</span></td>
                                         <td class="text-right">
-                                            <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">-</span>
+                                            <span style="float: left; margin-left: 95px;"
+                                                class="text-110 text-secondary-d1">-</span>
                                             <span>{{paymentForm.paymentAmount ?
                                                 paymentForm.paymentAmount : 0 |
                                                 indianCurrency}}</span>
@@ -128,6 +140,89 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <!-- Add this section after the existing table (around line 52) -->
+                            <!-- Mobile-friendly invoice items (shown only on mobile) -->
+                            <div class="mobile-invoice-items">
+                                <div class="mobile-item-card" *ngFor="let item of billForm.items; let i = index"
+                                    [attr.data-item-number]="item.slNo">
+                                    <div class="mobile-item-row">
+                                        <span class="mobile-item-label">Product</span>
+                                        <span class="mobile-item-value">{{item.perticulars}}</span>
+                                    </div>
+                                    <div class="mobile-item-row">
+                                        <span class="mobile-item-label">Unit Price</span>
+                                        <span class="mobile-item-value">{{item.amount | indianCurrency}}</span>
+                                    </div>
+                                    <div class="mobile-item-row">
+                                        <span class="mobile-item-label">Quantity</span>
+                                        <span class="mobile-item-value">{{item.quanity}} {{item.quantityType}}</span>
+                                    </div>
+                                    <div class="mobile-item-row">
+                                        <span class="mobile-item-label">Subtotal</span>
+                                        <span class="mobile-item-value">{{item.total | indianCurrency}}</span>
+                                    </div>
+                                    <div class="mobile-item-row" *ngIf="item.discount > 0">
+                                        <span class="mobile-item-label">Discount</span>
+                                        <span class="mobile-item-value">{{item.discount}}%</span>
+                                    </div>
+                                    <div class="mobile-item-row">
+                                        <span class="mobile-item-label">Final Amount</span>
+                                        <span class="mobile-item-value highlight">{{item.discountPrice |
+                                            indianCurrency}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mobile-friendly summary (shown only on mobile) -->
+                            <div class="mobile-summary">
+                                <div class="mobile-summary-card">
+                                    <div class="mobile-summary-row">
+                                        <span class="mobile-summary-label">Total Quantity</span>
+                                        <span class="mobile-summary-value">{{totalQuantity}} Pc</span>
+                                    </div>
+                                    <div class="mobile-summary-row">
+                                        <span class="mobile-summary-label">Subtotal</span>
+                                        <span class="mobile-summary-value">{{billAmountDetails?.subTotalAmount |
+                                            indianCurrency}}</span>
+                                    </div>
+                                    <div class="mobile-summary-row"
+                                        *ngIf="billAmountDetails?.overallDiscountAmount > 0">
+                                        <span class="mobile-summary-label">Overall Discount
+                                            ({{billAmountDetails?.overallDiscountPercentage}}%)</span>
+                                        <span class="mobile-summary-value">
+                                            <span class="indicator">-</span>{{billAmountDetails?.overallDiscountAmount |
+                                            indianCurrency}}
+                                        </span>
+                                    </div>
+                                    <div class="mobile-summary-row"
+                                        *ngIf="billAmountDetails?.overallDiscountAmount > 0">
+                                        <span class="mobile-summary-label">After Discount</span>
+                                        <span class="mobile-summary-value">{{billAmountDetails?.subTotalAmount -
+                                            billAmountDetails?.overallDiscountAmount | indianCurrency}}</span>
+                                    </div>
+                                    <div class="mobile-summary-row" *ngIf="billAmountDetails?.taxAmount > 0">
+                                        <span class="mobile-summary-label">Tax
+                                            ({{billAmountDetails?.taxPercentage}}%)</span>
+                                        <span class="mobile-summary-value">
+                                            <span class="indicator">+</span>{{billAmountDetails?.taxAmount |
+                                            indianCurrency}}
+                                        </span>
+                                    </div>
+                                    <div class="mobile-summary-row">
+                                        <span class="mobile-summary-label">Payment</span>
+                                        <span class="mobile-summary-value">
+                                            <span class="indicator">-</span>{{paymentForm.paymentAmount ?
+                                            paymentForm.paymentAmount : 0 | indianCurrency}}
+                                        </span>
+                                    </div>
+                                    <div class="mobile-summary-row total">
+                                        <span class="mobile-summary-label">Outstanding Amount</span>
+                                        <span class="mobile-summary-value">{{billAmountDetails.grandTotalAmount -
+                                            (paymentForm.paymentAmount ? paymentForm.paymentAmount : 0) |
+                                            indianCurrency}}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -135,5 +230,6 @@
         </div>
     </div>
 </div>
-<app-progress-spinner [mode]="mode" [backdropEnabled]="true" [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
+<app-progress-spinner [mode]="mode" [backdropEnabled]="true" [positionGloballyCenter]="true"
+    [displayProgressSpinner]="displayProgressSpinner">
 </app-progress-spinner>

@@ -1,0 +1,314 @@
+/* Mobile and Tablet Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .row {
+        margin: 0 -5px;
+    }
+    
+    .row > [class*="col-"] {
+        padding: 0 5px;
+        margin-bottom: 15px;
+    }
+    
+    /* Stack layout vertically on mobile */
+    .col-12.col-sm-7,
+    .col-12.col-sm-5 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        order: initial;
+    }
+    
+    /* Remark section first on mobile */
+    .col-12.col-sm-7 {
+        order: 1;
+        margin-bottom: 25px;
+    }
+    
+    /* Bill breakdown second on mobile */
+    .col-12.col-sm-5 {
+        order: 2;
+    }
+    
+    /* Remark textarea full width and larger */
+    mat-form-field {
+        width: 100% !important;
+    }
+    
+    mat-form-field textarea {
+        min-height: 80px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Bill breakdown styling */
+    .text-grey {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    
+    /* Financial rows - better mobile layout */
+    .row.my-2 {
+        margin: 12px 0 !important;
+        padding: 12px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .row.my-2:last-child {
+        border-bottom: none;
+    }
+    
+    /* Amount display improvements */
+    .col-7.col-sm-6,
+    .col-5.col-sm-6 {
+        flex: 0 0 auto;
+        padding: 0;
+    }
+    
+    .col-7.col-sm-6 {
+        width: 60%;
+        font-size: 15px;
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .col-5.col-sm-6 {
+        width: 40%;
+        text-align: right;
+    }
+    
+    /* Currency amounts styling */
+    .text-120,
+    .text-110,
+    .text-150 {
+        font-size: 16px !important;
+        font-weight: 600;
+    }
+    
+    /* Highlighted amount sections */
+    .bgc-primary-l3 {
+        background-color: #e3f2fd !important;
+        padding: 15px !important;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 4px solid #2196f3;
+    }
+    
+    .bgc-primary-l3 .col-7.col-sm-6,
+    .bgc-primary-l3 .col-5.col-sm-6 {
+        font-size: 16px !important;
+        font-weight: 600;
+        color: #1976d2;
+    }
+    
+    /* Grand total highlight */
+    .row.my-2:last-child {
+        background-color: #e8f5e8 !important;
+        border-left: 4px solid #28a745;
+        padding: 18px 15px !important;
+        border-radius: 8px;
+        margin: 20px 0 !important;
+    }
+    
+    .row.my-2:last-child .text-150 {
+        font-size: 20px !important;
+        color: #28a745 !important;
+        font-weight: 700;
+    }
+    
+    /* Plus/Minus indicators */
+    span[style*="margin-left: 95px"] {
+        margin-left: 0 !important;
+        margin-right: 8px !important;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    /* Divider improvements */
+    mat-divider {
+        margin: 20px 0 !important;
+        height: 2px;
+        background-color: #dee2e6;
+    }
+}
+
+/* Tablet specific adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    /* Keep side-by-side layout but adjust proportions */
+    .col-12.col-sm-7 {
+        flex: 0 0 45%;
+        max-width: 45%;
+    }
+    
+    .col-12.col-sm-5 {
+        flex: 0 0 55%;
+        max-width: 55%;
+    }
+    
+    /* Remark field adjustments */
+    mat-form-field {
+        width: 100%;
+    }
+    
+    /* Bill breakdown compact styling */
+    .row.my-2 {
+        margin: 8px 0 !important;
+        padding: 8px 0;
+    }
+    
+    .text-120,
+    .text-110,
+    .text-150 {
+        font-size: 14px !important;
+    }
+    
+    /* Responsive font sizes */
+    .col-7.col-sm-6 {
+        font-size: 13px;
+    }
+    
+    .bgc-primary-l3 {
+        padding: 12px !important;
+        margin: 12px 0;
+    }
+}
+
+/* Large mobile screens */
+@media (min-width: 576px) and (max-width: 768px) {
+    /* Larger remark field */
+    mat-form-field textarea {
+        min-height: 100px;
+    }
+    
+    /* Better spacing for financial breakdown */
+    .text-grey {
+        padding: 25px;
+        margin-bottom: 25px;
+    }
+    
+    /* Improved amount display */
+    .col-7.col-sm-6 {
+        width: 65%;
+        font-size: 16px;
+    }
+    
+    .col-5.col-sm-6 {
+        width: 35%;
+    }
+    
+    .text-120,
+    .text-110,
+    .text-150 {
+        font-size: 17px !important;
+    }
+    
+    .row.my-2:last-child .text-150 {
+        font-size: 22px !important;
+    }
+}
+
+/* Material Design overrides for better mobile experience */
+@media (max-width: 1024px) {
+    /* Textarea enhancements */
+    ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+    
+    ::ng-deep .mat-form-field-appearance-fill .mat-form-field-wrapper {
+        padding-bottom: 0;
+    }
+    
+    ::ng-deep .mat-form-field textarea {
+        resize: vertical;
+        line-height: 1.5;
+    }
+    
+    /* Error message styling */
+    ::ng-deep .mat-error {
+        font-size: 14px;
+        margin-top: 8px;
+        color: #dc3545;
+    }
+    
+    /* Label styling */
+    ::ng-deep .mat-form-field-label {
+        font-size: 16px;
+    }
+    
+    /* Required asterisk */
+    ::ng-deep sup {
+        color: #dc3545 !important;
+        font-weight: bold;
+    }
+}
+
+/* Accessibility improvements */
+@media (max-width: 768px) {
+    /* Better contrast for financial data */
+    .text-secondary-d1 {
+        color: #495057 !important;
+    }
+    
+    .text-success-d3 {
+        color: #28a745 !important;
+    }
+    
+    /* Touch-friendly spacing */
+    .row.my-2 {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Improved visual hierarchy */
+    .text-grey-d2 {
+        color: #343a40 !important;
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+}
+
+/* Prevent horizontal scroll on very small screens */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 8px;
+        overflow-x: hidden;
+    }
+    
+    .text-grey {
+        margin-left: -8px;
+        margin-right: -8px;
+        border-radius: 0;
+        padding: 20px 16px;
+    }
+    
+    /* Compact financial display */
+    .col-7.col-sm-6 {
+        width: 55%;
+        font-size: 14px;
+    }
+    
+    .col-5.col-sm-6 {
+        width: 45%;
+    }
+    
+    .text-120,
+    .text-110,
+    .text-150 {
+        font-size: 15px !important;
+    }
+    
+    .row.my-2:last-child .text-150 {
+        font-size: 18px !important;
+    }
+}

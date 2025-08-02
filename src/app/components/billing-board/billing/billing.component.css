@@ -13,3 +13,400 @@
 .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
     background-color: #3f51b5;
 }
+
+/* Desktop: Keep original table-like header */
+@media (min-width: 1025px) {
+    .row.mt-1:first-child {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 12px 0;
+        margin-bottom: 15px;
+        font-weight: 600;
+        color: #495057;
+        border: 1px solid #dee2e6;
+    }
+}
+
+/* Mobile and Tablet: Transform to card-based layout */
+@media (max-width: 1024px) {
+    /* Hide the table header row on mobile - will use labels instead */
+    .row.mt-1:first-child {
+        display: none;
+    }
+    
+    /* Transform each form row into a card */
+    .form-row.mt-1 {
+        background-color: white;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 15px 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    
+    /* Add visual separator between cards */
+    .form-row.mt-1:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 2px;
+        background-color: #e9ecef;
+        border-radius: 1px;
+    }
+    
+    /* Transform columns to full-width stacked layout */
+    .form-row .col-1,
+    .form-row .col-2,
+    .form-row .col-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 15px;
+        position: relative;
+    }
+    
+    /* Add field labels for mobile */
+    .form-row .col-1::before { content: "Sl No"; }
+    .form-row .col-2::before { content: "Particulars"; }
+    .form-row .col-1:nth-child(3)::before { content: "Amount"; }
+    .form-row .col-1:nth-child(4)::before { content: "Quantity"; }
+    .form-row .col-1:nth-child(5)::before { content: "Qty Type"; }
+    .form-row .col-1:nth-child(6)::before { content: "Discount %"; }
+    
+    .form-row [class*="col-"]::before {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #6c757d;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Special handling for the total/discount price columns */
+    .form-row .col-3 {
+        border-top: 1px solid #e9ecef;
+        padding-top: 15px;
+        margin-top: 10px;
+    }
+    
+    .form-row .col-3::before {
+        content: "Totals";
+        border-bottom: 1px solid #e9ecef;
+        padding-bottom: 8px;
+        margin-bottom: 15px;
+    }
+    
+    /* Two-column layout for totals */
+    .form-row .col-3 .row {
+        margin: 0 -5px;
+    }
+    
+    .form-row .col-3 .col-6 {
+        padding: 0 5px;
+        margin-bottom: 10px;
+        position: relative;
+    }
+    
+    .form-row .col-3 .col-6:first-child::before {
+        content: "Total";
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #6c757d;
+        margin-bottom: 5px;
+    }
+    
+    .form-row .col-3 .col-6:last-child::before {
+        content: "After Discount";
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #6c757d;
+        margin-bottom: 5px;
+    }
+    
+    /* Actions section styling */
+    .form-row .col-2:last-child {
+        border-top: 1px solid #e9ecef;
+        padding-top: 15px;
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+    
+    .form-row .col-2:last-child::before {
+        content: "Actions";
+        border-bottom: 1px solid #e9ecef;
+        padding-bottom: 8px;
+        margin-bottom: 15px;
+    }
+    
+    /* Action buttons and checkbox layout */
+    .form-row .col-2:last-child {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .form-row .col-2:last-child mat-checkbox {
+        order: 1;
+        padding: 12px;
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .form-row .col-2:last-child input[type="button"] {
+        order: 2;
+        width: 100%;
+        height: 44px;
+        font-size: 16px;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+    
+    /* Form control styling improvements */
+    .form-control {
+        height: 48px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        border-radius: 6px;
+        border: 1px solid #ced4da;
+        padding: 12px 15px;
+        transition: all 0.2s ease;
+    }
+    
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        outline: none;
+    }
+    
+    /* Select dropdown styling */
+    select.form-control {
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 12px;
+        padding-right: 40px;
+    }
+    
+    /* Number input styling */
+    input[type="number"] {
+        text-align: right;
+        font-weight: 500;
+    }
+    
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    
+    /* Typeahead dropdown improvements */
+    ::ng-deep .dropdown-menu {
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border: 1px solid #dee2e6;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    ::ng-deep .dropdown-item {
+        padding: 12px 16px;
+        font-size: 16px;
+        border-bottom: 1px solid #f8f9fa;
+    }
+    
+    ::ng-deep .dropdown-item:last-child {
+        border-bottom: none;
+    }
+    
+    ::ng-deep .dropdown-item:hover,
+    ::ng-deep .dropdown-item:focus {
+        background-color: #f8f9fa;
+        color: #495057;
+    }
+    
+    /* Add button styling */
+    .col.text-center {
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    
+    .col.text-center button {
+        width: 100%;
+        max-width: 200px;
+        height: 48px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,123,255,0.3);
+    }
+}
+
+/* Tablet specific adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Two-column layout for some fields on tablet */
+    .form-row .col-1:nth-child(3),
+    .form-row .col-1:nth-child(4) {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 5px;
+    }
+    
+    .form-row .col-1:nth-child(5),
+    .form-row .col-1:nth-child(6) {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 5px;
+    }
+    
+    /* Reduce card padding on tablet */
+    .form-row.mt-1 {
+        padding: 18px;
+    }
+    
+    /* Smaller form controls on tablet */
+    .form-control {
+        height: 44px;
+        font-size: 15px;
+        padding: 10px 12px;
+    }
+}
+
+/* Large mobile screens */
+@media (min-width: 576px) and (max-width: 768px) {
+    /* Three-column layout for some fields */
+    .form-row .col-1:nth-child(3),
+    .form-row .col-1:nth-child(4),
+    .form-row .col-1:nth-child(5) {
+        flex: 0 0 33.333%;
+        max-width: 33.333%;
+        padding: 0 5px;
+    }
+    
+    .form-row .col-1:nth-child(6) {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-top: 10px;
+    }
+    
+    /* Actions in horizontal layout */
+    .form-row .col-2:last-child {
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .form-row .col-2:last-child mat-checkbox {
+        flex: 1;
+        order: 1;
+    }
+    
+    .form-row .col-2:last-child input[type="button"] {
+        flex: 0 0 60px;
+        width: 60px;
+        height: 44px;
+        order: 2;
+    }
+}
+
+/* Row hover component adjustments */
+@media (max-width: 1024px) {
+    /* Hide hover add button on mobile - too complex */
+    app-row-optn-on-hover {
+        display: none;
+    }
+    
+    /* Make primary add button more prominent */
+    .col.text-center {
+        position: sticky;
+        bottom: 20px;
+        background-color: white;
+        padding: 15px 0;
+        margin: 20px -20px 0;
+        border-top: 1px solid #dee2e6;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    }
+}
+
+/* Very small screens */
+@media (max-width: 576px) {
+    .form-row.mt-1 {
+        padding: 15px;
+        margin: 10px 0;
+    }
+    
+    .form-control {
+        height: 46px;
+        font-size: 16px;
+        padding: 11px 12px;
+    }
+    
+    /* Stack everything on very small screens */
+    .form-row .col-1:nth-child(3),
+    .form-row .col-1:nth-child(4),
+    .form-row .col-1:nth-child(5),
+    .form-row .col-1:nth-child(6) {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    /* Compact actions */
+    .form-row .col-2:last-child {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .form-row .col-2:last-child input[type="button"] {
+        width: 100%;
+        height: 42px;
+    }
+}
+
+/* Accessibility and UX improvements */
+@media (max-width: 1024px) {
+    /* Better focus indicators */
+    .form-control:focus {
+        border-width: 2px;
+        border-color: #007bff;
+    }
+    
+    /* Disabled state styling */
+    .form-control:disabled {
+        background-color: #e9ecef;
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+    
+    /* Verified row styling */
+    .form-row:has(mat-checkbox[ng-reflect-checked="true"]) {
+        background-color: #f8f9fa;
+        border-color: #28a745;
+        border-width: 2px;
+    }
+    
+    .form-row:has(mat-checkbox[ng-reflect-checked="true"])::before {
+        content: "✓ Verified";
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background-color: #28a745;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
+    /* Error state styling */
+    .form-control.ng-invalid.ng-touched {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 2px rgba(220,53,69,0.25);
+    }
+}
