@@ -11,7 +11,9 @@
         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
             <ng-container matColumnDef="paymentDate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Date</th>
-                <td mat-cell *matCellDef="let element"> {{element.paymentDate}} </td>
+                <td mat-cell *matCellDef="let element"> 
+                    {{ element.paymentDate ? (element.paymentDate | date: 'dd-MMM-yyyy') : 'DD-MMM-YYYY' }}
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="amount">

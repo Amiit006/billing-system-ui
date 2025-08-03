@@ -78,6 +78,19 @@ export class InvoiceDetailsComponent implements OnInit {
     });
   }
 
+  getGrandTotalAmount(invoice) {
+    const rawTotal = 
+                (invoice.subTotalAmount ?? 0) -
+                (invoice.overallDiscountAmount ?? 0) +
+                (invoice.taxAmount ?? 0) -
+                (invoice.payment?.amount ?? 0);
+    const decimalPart = rawTotal % 1;
+    const roundedTotal = decimalPart < 0
+        ? 0
+        : Math.floor(rawTotal);
+    return roundedTotal;
+  }
+
   refreshClientOutstanding(load: boolean) {
     if(load) {
       this.sharedService.reloadClientOutstanding(true);

@@ -11,7 +11,9 @@
         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
             <ng-container matColumnDef="invoiceDate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice Date</th>
-                <td mat-cell *matCellDef="let element"> {{element.invoiceDate}} </td>
+                <td mat-cell *matCellDef="let element"> 
+                    {{ element.invoiceDate ? (element.invoiceDate | date: 'dd-MMM-yyyy') : 'DD-MMM-YYYY' }}
+                </td>
             </ng-container>
             <ng-container matColumnDef="subTotalAmount">
                 <th mat-header-cell *matHeaderCellDef>Subtotal</th>
@@ -31,7 +33,7 @@
             </ng-container>
             <ng-container matColumnDef="grandTotalAmount">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Grand Total</th>
-                <td mat-cell *matCellDef="let element"> {{element.subTotalAmount + element.taxAmount - element.discountAmount - element.payment.amount | indianCurrency}} </td>
+                <td mat-cell *matCellDef="let element"> {{ getGrandTotalAmount(element) | indianCurrency}} </td>
             </ng-container>
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef> Action </th>
