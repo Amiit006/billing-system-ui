@@ -109,6 +109,16 @@
                                         <td class="text-right">{{invoice?.taxAmount | indianCurrency}}
                                         </td>
                                     </tr>
+                                    <tr *ngIf="roundOffAmount !== 0">
+                                        <td colspan="6"></td>
+                                        <td class="text-right"><span>Round Off</span></td>
+                                        <td class="text-right">
+                                            <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">
+                                                {{roundOffAmount < 0 ? '-' : '+'}}
+                                            </span>
+                                            <span>{{roundOffAmount | indianCurrency}}</span>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td colspan="6"></td>
                                         <td class="text-right"><span>Payment</span></td>

@@ -5,4 +5,6 @@ export interface BillAmountDetails {
     overallDiscountPercentage: number;
     overallDiscountAmount: number;
     grandTotalAmount: number;
+    roundOffAmount: number;
+    operationSymbol: string;
 }

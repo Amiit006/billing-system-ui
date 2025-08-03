@@ -116,6 +116,18 @@
                                                 indianCurrency}}</span>
                                         </td>
                                     </tr>
+                                    <tr *ngIf="billAmountDetails?.roundOffAmount > 0">
+                                        <td colspan="6"></td>
+                                        <td class="text-right">
+                                            <span>Round Off</span>
+                                        </td>
+                                        <td class="text-right">
+                                            <span style="float: left; margin-left: 95px;"
+                                                class="text-110 text-secondary-d1">{{operationSymbol}}</span>
+                                            <span>{{billAmountDetails?.roundOffAmount |
+                                                indianCurrency}}</span>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td colspan="6"></td>
                                         <td class="text-right"><span>Payment</span></td>
@@ -205,6 +217,13 @@
                                             ({{billAmountDetails?.taxPercentage}}%)</span>
                                         <span class="mobile-summary-value">
                                             <span class="indicator">+</span>{{billAmountDetails?.taxAmount |
+                                            indianCurrency}}
+                                        </span>
+                                    </div>
+                                    <div class="mobile-summary-row" *ngIf="billAmountDetails?.roundOffAmount > 0">
+                                        <span class="mobile-summary-label">Round Off</span>
+                                        <span class="mobile-summary-value">
+                                            <span class="indicator">{{operationSymbol}}</span>{{billAmountDetails?.roundOffAmount |
                                             indianCurrency}}
                                         </span>
                                     </div>

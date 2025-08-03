@@ -21,7 +21,7 @@ export class ViewInvoiceComponent implements OnInit {
   invoice: any;
   invoices: any = [];
   totalQuantity: number = 0;
-
+  roundOffAmount: number = 0;
   showNext = false;
   showPrev = false;
 
@@ -34,12 +34,7 @@ export class ViewInvoiceComponent implements OnInit {
     this.client = this.router.getCurrentNavigation().extras?.state?.client;
     this.invoice = this.invoices.filter(data => data.invoiceId === this.invoiceId)[0];
     this.totalQuantity = this.invoice.invoiceDetails.map(x => x.quanity).reduce((a, b) => a + b, 0);
-    // if (this.clientId > 0) {
-    //   this.clientService.getClientById(this.clientId).subscribe(data => {
-    //     this.client = data;
-    //   }, error => {
-    //   });
-    // }
+    this.roundOffAmount = this.invoice.grandTotalAmount - (this.invoice.subTotalAmount + this.invoice.taxAmount);
     const index = this.invoices.findIndex(x => x.invoiceId == this.invoiceId);
     if (index < this.invoices.length - 1) {
       this.showNext = true;
@@ -54,11 +49,6 @@ export class ViewInvoiceComponent implements OnInit {
     var index = this.invoices.findIndex(x => x.invoiceId == this.invoiceId);
     if (index != this.invoices.length - 1) {
       const indx = this.invoices[index + 1].invoiceId;
-      // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-      // this.router.onSameUrlNavigation = 'reload';
-      // this.router.navigate(["clients/" + this.clientId + "/invoice/" + indx]
-      //   , { state: { invoice: this.invoices, client: this.client } });
-
       this.router.navigateByUrl('/', { skipLocationChange: true })
         .then(() => this.router.navigate(["clients/" + this.clientId + "/invoice/" + indx]
         , { state: { invoice: this.invoices, client: this.client } }));
@@ -69,10 +59,6 @@ export class ViewInvoiceComponent implements OnInit {
     var index = this.invoices.findIndex(x => x.invoiceId == this.invoiceId);
     if (index > -1) {
       const indx = this.invoices[index - 1].invoiceId;
-      // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-      // this.router.onSameUrlNavigation = 'reload';
-      // this.router.navigate(["clients/" + this.clientId + "/invoice/" + indx]
-      //   , { state: { invoice: this.invoices, client: this.client } });
       this.router.navigateByUrl('/', { skipLocationChange: true })
         .then(() => this.router.navigate(["clients/" + this.clientId + "/invoice/" + indx]
         , { state: { invoice: this.invoices, client: this.client } }));
@@ -84,7 +70,6 @@ export class ViewInvoiceComponent implements OnInit {
   }
 
   onAddDiscountClick(invoiceId) {
-    const clientId = this.activatedRoute.snapshot.paramMap.get("clientId");
     const data = this.invoices.filter(x => x.invoiceId === invoiceId);
     this.openDialog(invoiceId, data[0]);
   }

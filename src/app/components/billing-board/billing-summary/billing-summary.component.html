@@ -49,6 +49,17 @@
                             indianCurrency}}</span>
                     </div>
                 </div>
+                <div *ngIf="roundOffAmount > 0">
+                    <mat-divider class="mt-2 mb-2"></mat-divider>
+                    <div class="row my-2">
+                        <div class="col-7 col-sm-6 text-right"> Round Off</div>
+                        <div class="col-5 col-sm-6">
+                            <span style="float: left; margin-left: 95px;" class="text-110 text-secondary-d1">{{operationSymbol}}</span>
+                            <span id="roundOffAmount" style="float: right;" class="text-110 text-secondary-d1">{{roundOffAmount |
+                                indianCurrency}}</span>
+                        </div>
+                    </div>
+                </div>
                 <mat-divider class="mt-2 mb-2"></mat-divider>
                 <div class="row my-2 align-items-center bgc-primary-l3">
                     <div class="col-7 col-sm-6 text-right"> Total Amount</div>

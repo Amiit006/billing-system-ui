@@ -28,6 +28,8 @@ export class BillingSummaryComponent implements OnInit, OnChanges {
   overallDiscountPercentage = 0;
   overallDiscountAmount = 0;
   grandTotalAmount = 0;
+  operationSymbol = '+';
+  roundOffAmount = 0;
 
   @Input() remarkFormControl = new FormControl('', [Validators.required]);
 
@@ -48,13 +50,19 @@ export class BillingSummaryComponent implements OnInit, OnChanges {
         this.overallDiscountPercentage = 0;
         this.overallDiscountAmount = this.subTotalAmount * this.overallDiscountPercentage / 100;
         this.taxAmount = (this.subTotalAmount - this.overallDiscountAmount) * this.taxPercentage / 100;
-        this.grandTotalAmount = this.subTotalAmount - this.overallDiscountAmount + this.taxAmount;
+        const rounded = this.calculateRoundedTotal(this.subTotalAmount, this.overallDiscountAmount, this.taxAmount);
+        this.grandTotalAmount = rounded.total;
+        this.roundOffAmount = rounded.roundOff;
+        this.operationSymbol = rounded.symbol;
       } else {
         this.taxPercentage = stb.currentValue.taxPercentage;
         this.overallDiscountPercentage = stb.currentValue.overallDiscountPercentage;
         this.overallDiscountAmount = this.subTotalAmount * this.overallDiscountPercentage / 100;
         this.taxAmount = (this.subTotalAmount - this.overallDiscountAmount) * this.taxPercentage / 100;
-        this.grandTotalAmount = this.subTotalAmount - this.overallDiscountAmount + this.taxAmount;
+        const rounded = this.calculateRoundedTotal(this.subTotalAmount, this.overallDiscountAmount, this.taxAmount);
+        this.grandTotalAmount = rounded.total;
+        this.roundOffAmount = rounded.roundOff;
+        this.operationSymbol = rounded.symbol;
       }
     }
     if (changes.subTotalBill) {
@@ -62,11 +70,17 @@ export class BillingSummaryComponent implements OnInit, OnChanges {
       if (stb.currentValue === undefined) {
         this.subTotalAmount = 0;
         this.taxAmount = 0;
-        this.grandTotalAmount = this.subTotalAmount - this.overallDiscountAmount + this.taxAmount;
+        const rounded = this.calculateRoundedTotal(this.subTotalAmount, this.overallDiscountAmount, this.taxAmount);
+        this.grandTotalAmount = rounded.total;
+        this.roundOffAmount = rounded.roundOff;
+        this.operationSymbol = rounded.symbol;
       } else {
         this.subTotalAmount = stb.currentValue;
         this.taxAmount = (this.subTotalAmount - this.overallDiscountAmount) * this.taxPercentage / 100;
-        this.grandTotalAmount = this.subTotalAmount - this.overallDiscountAmount + this.taxAmount;
+        const rounded = this.calculateRoundedTotal(this.subTotalAmount, this.overallDiscountAmount, this.taxAmount);
+        this.grandTotalAmount = rounded.total;
+        this.roundOffAmount = rounded.roundOff;
+        this.operationSymbol = rounded.symbol;
       }
     }
     var val: BillAmountDetails = {
@@ -75,10 +89,29 @@ export class BillingSummaryComponent implements OnInit, OnChanges {
       taxPercentage: this.taxPercentage,
       overallDiscountPercentage: this.overallDiscountPercentage,
       overallDiscountAmount: this.overallDiscountAmount,
-      grandTotalAmount: this.grandTotalAmount
+      grandTotalAmount: this.grandTotalAmount,
+      roundOffAmount: this.roundOffAmount,
+      operationSymbol: this.operationSymbol
     };
     this.billAmountDetails.emit(val);
     this.billingService.setBillAmountDetails(val);
+  }
+
+  calculateRoundedTotal(subTotalAmount, overallDiscountAmount, taxAmount) {
+    const rawTotal = subTotalAmount - overallDiscountAmount + taxAmount;
+    const decimalPart = rawTotal % 1;
+    const roundedTotal = decimalPart >= 0.5
+        ? Math.ceil(rawTotal)
+        : Math.floor(rawTotal);
+    
+    const roundOff = +(roundedTotal - rawTotal).toFixed(2);
+    const symbol = roundOff >= 0 ? '+' : '-';
+
+    return {
+        total: roundedTotal,
+        roundOff: Math.abs(roundOff),
+        symbol: symbol
+    };
   }
 
   ngOnInit(): void {
