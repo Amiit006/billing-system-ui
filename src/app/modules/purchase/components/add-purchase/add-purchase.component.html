@@ -1,3 +1,5 @@
+<!-- src/app/modules/purchase/components/add-purchase/add-purchase.component.html -->
+
 <div class="mt-2 text-center">
     <h3>{{selectedSeason.seasonName}}</h3>
     <p>
@@ -6,34 +8,23 @@
 </div>
 
 <div class="container">
-    <!-- <h2 _ngcontent-akt-c262="" class="starter-template">All Clients</h2> -->
     <mat-card>
-        <mat-card-title>Purchase Details</mat-card-title>
+        <mat-card-title>Enhanced Purchase Details</mat-card-title>
         <mat-divider></mat-divider>
+        
         <form [formGroup]="purchaseForm">
+            <!-- Basic Purchase Information -->
             <div class="row mt-4">
                 <div class="col-6">
                     <mat-form-field appearance="outline">
                         <mat-label>Party Name</mat-label>
                         <input matInput placeholder="Party Name" type="text" formControlName="partyName">
+                        <mat-error *ngIf="purchaseForm.get('partyName')?.hasError('required')">
+                            Party name is required
+                        </mat-error>
                     </mat-form-field>
                 </div>
-                <div class="col-3">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Purchase Amount</mat-label>
-                        <input matInput placeholder="Purchase Amount" type="number" [min]="1" formControlName="purchaseAmount">
-                    </mat-form-field>
-
-                </div>
-                <div class="col-3">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Packing Charges</mat-label>
-                        <input matInput placeholder="Packing Charge" type="text" formControlName="packingCharge">
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4">
+                <div class="col-6">
                     <mat-form-field appearance="outline">
                         <mat-label>Purchase Date</mat-label>
                         <input [max]="maxDate" [min]="minDate" matInput [matDatepicker]="picker" formControlName="purchaseDate">
@@ -41,39 +32,262 @@
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                 </div>
+            </div>
+
+            <!-- Product Breakdown Section -->
+            <mat-card class="product-breakdown-card">
+                <mat-card-title>
+                    Product Breakdown
+                    <span class="total-amount-badge">Total: ₹{{totalPurchaseAmount | number:'1.2-2'}}</span>
+                </mat-card-title>
+                <mat-divider></mat-divider>
+
+                <!-- Validation Errors -->
+                <div *ngIf="!formValidation.isValid" class="validation-errors mt-3">
+                    <mat-error *ngFor="let error of formValidation.errors">
+                        Product {{error.index + 1}}: {{error.message}}
+                    </mat-error>
+                </div>
+
+                <!-- Warnings -->
+                <div *ngIf="formValidation.warnings.length > 0" class="validation-warnings mt-2">
+                    <div class="warning-message" *ngFor="let warning of formValidation.warnings">
+                        <mat-icon class="warning-icon">warning</mat-icon>
+                        {{warning}}
+                    </div>
+                </div>
+
+                <!-- Products Table -->
+                <div class="products-table-container" formArrayName="purchaseProducts">
+                    <table mat-table class="products-table" [dataSource]="purchaseProducts.controls">
+                        
+                        <!-- Product Selection Column with Autocomplete -->
+                        <ng-container matColumnDef="product">
+                            <th mat-header-cell *matHeaderCellDef>Product *</th>
+                            <td mat-cell *matCellDef="let productGroup; let i = index" [formGroupName]="i">
+                                <div class="product-input-container">
+                                    <mat-form-field appearance="outline" class="product-autocomplete">
+                                        <mat-label>Search or type product name</mat-label>
+                                        <input matInput 
+                                               formControlName="productSearch"
+                                               [matAutocomplete]="auto"
+                                               placeholder="Start typing product name...">
+                                        
+                                        <mat-autocomplete #auto="matAutocomplete" 
+                                                        [displayWith]="getProductDisplayName"
+                                                        (optionSelected)="onProductSelected($event, i)">
+                                            <mat-option *ngFor="let product of filteredProductsOptions[i] | async" 
+                                                      [value]="product">
+                                                <div class="product-option">
+                                                    <span class="product-name">{{product.productName}}</span>
+                                                    <span class="product-category">{{product.category}} - {{product.subCategory}}</span>
+                                                </div>
+                                            </mat-option>
+                                            
+                                            <!-- Add New Product Option -->
+                                            <mat-option class="add-new-option" (click)="openAddProductDialog(i)">
+                                                <mat-icon>add_circle</mat-icon>
+                                                <span>Add New Product</span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        
+                                        <button matSuffix 
+                                                mat-icon-button 
+                                                type="button"
+                                                (click)="openAddProductDialog(i)"
+                                                matTooltip="Add New Product">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                        
+                                        <mat-error *ngIf="productGroup.get('productName')?.hasError('required')">
+                                            Product name is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                    
+                                    <!-- New Product Indicator -->
+                                    <div *ngIf="isNewProduct(i)" class="new-product-indicator">
+                                        <mat-chip color="accent" selected>
+                                            <mat-icon matChipAvatar>fiber_new</mat-icon>
+                                            New Product
+                                        </mat-chip>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Quantity Column -->
+                        <ng-container matColumnDef="quantity">
+                            <th mat-header-cell *matHeaderCellDef>Quantity *</th>
+                            <td mat-cell *matCellDef="let productGroup; let i = index" [formGroupName]="i">
+                                <mat-form-field appearance="outline" class="number-input">
+                                    <input matInput type="number" formControlName="quantity" min="1" placeholder="0">
+                                    <mat-error *ngIf="productGroup.get('quantity')?.hasError('required')">
+                                        Quantity is required
+                                    </mat-error>
+                                    <mat-error *ngIf="productGroup.get('quantity')?.hasError('min')">
+                                        Quantity must be greater than 0
+                                    </mat-error>
+                                </mat-form-field>
+                            </td>
+                        </ng-container>
+
+                        <!-- Rate Per Unit Column -->
+                        <ng-container matColumnDef="rate">
+                            <th mat-header-cell *matHeaderCellDef>Rate/Unit *</th>
+                            <td mat-cell *matCellDef="let productGroup; let i = index" [formGroupName]="i">
+                                <mat-form-field appearance="outline" class="number-input">
+                                    <span matPrefix>₹</span>
+                                    <input matInput type="number" formControlName="ratePerUnit" min="0" step="0.01" placeholder="0.00">
+                                    <mat-error *ngIf="productGroup.get('ratePerUnit')?.hasError('required')">
+                                        Rate is required
+                                    </mat-error>
+                                    <mat-error *ngIf="productGroup.get('ratePerUnit')?.hasError('min')">
+                                        Rate must be greater than 0
+                                    </mat-error>
+                                </mat-form-field>
+                            </td>
+                        </ng-container>
+
+                        <!-- Total Amount Column -->
+                        <ng-container matColumnDef="total">
+                            <th mat-header-cell *matHeaderCellDef>Total Amount</th>
+                            <td mat-cell *matCellDef="let productGroup; let i = index" [formGroupName]="i">
+                                <div class="calculated-field">
+                                    ₹{{productGroup.get('totalAmount')?.value | number:'1.2-2'}}
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Percentage Column -->
+                        <ng-container matColumnDef="percentage">
+                            <th mat-header-cell *matHeaderCellDef>% of Purchase</th>
+                            <td mat-cell *matCellDef="let productGroup; let i = index" [formGroupName]="i">
+                                <div class="calculated-field">
+                                    {{productGroup.get('percentageOfPurchase')?.value | number:'1.2-2'}}%
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Final Cost Per Unit Column -->
+                        <ng-container matColumnDef="finalCost">
+                            <th mat-header-cell *matHeaderCellDef>Final Cost/Unit</th>
+                            <td mat-cell *matCellDef="let productGroup; let i = index" [formGroupName]="i">
+                                <div class="calculated-field final-cost">
+                                    ₹{{productGroup.get('finalCostPerUnit')?.value | number:'1.2-2'}}
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Actions Column -->
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef>Actions</th>
+                            <td mat-cell *matCellDef="let productGroup; let i = index">
+                                <button type="button" mat-icon-button color="warn" 
+                                        (click)="removeProduct(i)" 
+                                        [disabled]="purchaseProducts.length <= 1"
+                                        matTooltip="Remove Product">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="['product', 'quantity', 'rate', 'total', 'percentage', 'finalCost', 'actions']"></tr>
+                        <tr mat-row *matRowDef="let row; columns: ['product', 'quantity', 'rate', 'total', 'percentage', 'finalCost', 'actions'];"></tr>
+                    </table>
+                </div>
+
+                <!-- Add Product Button -->
+                <mat-card-actions>
+                    <button type="button" mat-raised-button color="primary" (click)="addProduct()">
+                        <mat-icon>add</mat-icon>
+                        Add Product
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+
+            <!-- Cost Allocation Preview -->
+            <mat-card class="cost-allocation-card">
+                <mat-card-title>Cost Allocation Preview</mat-card-title>
+                <mat-divider></mat-divider>
+                
+                <div class="allocation-grid">
+                    <div class="allocation-item">
+                        <span class="label">Total Product Cost:</span>
+                        <span class="value">₹{{totalPurchaseAmount | number:'1.2-2'}}</span>
+                    </div>
+                    <div class="allocation-item">
+                        <span class="label">Tax Amount:</span>
+                        <span class="value">₹{{overheadCosts.taxAmount | number:'1.2-2'}}</span>
+                    </div>
+                    <div class="allocation-item">
+                        <span class="label">Packing Charges:</span>
+                        <span class="value">₹{{overheadCosts.packingCharge | number:'1.2-2'}}</span>
+                    </div>
+                    <div class="allocation-item">
+                        <span class="label">Transport Charges:</span>
+                        <span class="value">₹{{overheadCosts.transportAmount | number:'1.2-2'}}</span>
+                    </div>
+                    <div class="allocation-item total">
+                        <span class="label">Total Overhead:</span>
+                        <span class="value">₹{{(overheadCosts.taxAmount + overheadCosts.packingCharge + overheadCosts.transportAmount) | number:'1.2-2'}}</span>
+                    </div>
+                    <div class="allocation-item grand-total">
+                        <span class="label">Grand Total:</span>
+                        <span class="value">₹{{(totalPurchaseAmount + overheadCosts.taxAmount + overheadCosts.packingCharge + overheadCosts.transportAmount) | number:'1.2-2'}}</span>
+                    </div>
+                </div>
+            </mat-card>
+
+            <!-- Overhead Costs -->
+            <div class="row mt-4">
+                <div class="col-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Packing Charges</mat-label>
+                        <span matPrefix>₹</span>
+                        <input matInput placeholder="0.00" type="number" min="0" step="0.01" formControlName="packingCharge">
+                    </mat-form-field>
+                </div>
                 <div class="col-4">
                     <mat-form-field appearance="outline">
                         <mat-label>Tax Amount</mat-label>
-                        <input matInput placeholder="Tax Amount" (change)="onTaxAmountChange()" type="number" [min]="0" formControlName="taxAmount">
+                        <span matPrefix>₹</span>
+                        <input matInput placeholder="0.00" type="number" min="0" step="0.01" formControlName="taxAmount">
                     </mat-form-field>
                 </div>
                 <div class="col-4">
                     <mat-form-field appearance="outline">
                         <mat-label>Tax Percent</mat-label>
-                        <input disabled matInput placeholder="Tax Percent" type="number" [min]="0" formControlName="taxPercent">
+                        <input disabled matInput placeholder="0.00" type="number" formControlName="taxPercent">
+                        <span matSuffix>%</span>
                     </mat-form-field>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-4">
                     <mat-form-field appearance="outline">
                         <mat-label>Discount Amount</mat-label>
-                        <input matInput placeholder="Discount Amount" (change)="onDiscountAmountChange()" type="number" formControlName="discountAmount">
+                        <span matPrefix>₹</span>
+                        <input matInput placeholder="0.00" type="number" min="0" step="0.01" formControlName="discountAmount">
                     </mat-form-field>
                 </div>
                 <div class="col-4">
                     <mat-form-field appearance="outline">
                         <mat-label>Discount Percent</mat-label>
-                        <input matInput placeholder="Discount Percent" type="number" formControlName="discountPercent">
+                        <input disabled matInput placeholder="0.00" type="number" formControlName="discountPercent">
+                        <span matSuffix>%</span>
                     </mat-form-field>
                 </div>
                 <div class="col-4">
                     <mat-form-field appearance="outline">
                         <mat-label>Extra Discount Amount</mat-label>
-                        <input matInput placeholder="Extra Discount Amount" type="number" formControlName="extraDiscountAmount">
+                        <span matPrefix>₹</span>
+                        <input matInput placeholder="0.00" type="number" min="0" step="0.01" formControlName="extraDiscountAmount">
                     </mat-form-field>
                 </div>
             </div>
+
+            <!-- Transport Details -->
             <mat-card formGroupName="transport">
                 <mat-card-title>Transport Details</mat-card-title>
                 <mat-divider></mat-divider>
@@ -87,7 +301,8 @@
                     <div class="col-4">
                         <mat-form-field appearance="outline">
                             <mat-label>Transport Amount</mat-label>
-                            <input matInput placeholder="Transport Amount" type="text" formControlName="amount">
+                            <span matPrefix>₹</span>
+                            <input matInput placeholder="0.00" type="number" min="0" step="0.01" formControlName="amount">
                         </mat-form-field>
                     </div>
                     <div class="col-4">
@@ -99,10 +314,11 @@
                 </div>
             </mat-card>
 
+            <!-- Payment Details (Existing functionality) -->
             <mat-card formArrayName="payments">
                 <mat-card-title>Payment Details</mat-card-title>
                 <mat-divider></mat-divider>
-                <div *ngFor="let skill of skills.controls; let i=index">
+                <div *ngFor="let payment of payments.controls; let i=index">
                     <div [formGroupName]="i">
                         <div class="row mt-4">
                             <div class="col-4">
@@ -116,7 +332,8 @@
                             <div class="col-4">
                                 <mat-form-field appearance="outline">
                                     <mat-label>Amount</mat-label>
-                                    <input matInput placeholder="Amount" min="0" type="number" formControlName="amount">
+                                    <span matPrefix>₹</span>
+                                    <input matInput placeholder="0.00" min="0" step="0.01" type="number" formControlName="amount">
                                 </mat-form-field>
                             </div>
                             <div class="col-4">
@@ -144,9 +361,8 @@
                                 </mat-form-field>
                             </div>
                             <div class="col-4">
-                                <!-- row delete button, hidden if there is just one row -->
-                                <button type="button" mat-mini-fab color="warn" (click)="removeUnit(i)">
-                                    <mat-icon>delete forever</mat-icon>
+                                <button type="button" mat-mini-fab color="warn" (click)="removePayment(i)">
+                                    <mat-icon>delete_forever</mat-icon>
                                 </button>
                             </div>
                         </div>
@@ -155,17 +371,26 @@
                 <mat-divider></mat-divider>
                 <mat-card-actions>
                     <button type="button" mat-raised-button (click)="addPayment()">
-                        <mat-icon>add box</mat-icon>
-                        Add new Payment
+                        <mat-icon>add_box</mat-icon>
+                        Add Payment
                     </button>
                 </mat-card-actions>
             </mat-card>
 
         </form>
+        
         <mat-divider></mat-divider>
         <mat-card-actions class="text-center">
-            <button class="btn btn-success" [disabled]="purchaseForm.invalid" (click)="onSave()">Save</button>
+            <button class="btn btn-success" 
+                    [disabled]="!formValidation.isValid || purchaseForm.invalid" 
+                    (click)="onSave()">
+                Save Enhanced Purchase
+            </button>
+            <button class="btn btn-secondary ml-2" 
+                    type="button" 
+                    (click)="onCancel()">
+                Cancel
+            </button>
         </mat-card-actions>
     </mat-card>
-
 </div>

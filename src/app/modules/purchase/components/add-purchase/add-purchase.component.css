@@ -1,3 +1,5 @@
+/* src/app/modules/purchase/components/add-purchase/add-purchase.component.css */
+
 .starter-template {
     padding: 15px 15px 15px 15px;
     text-align: center;
@@ -5,4 +7,331 @@
 
 .mat-form-field {
     width: 100%;
+}
+
+/* Product Breakdown Card */
+.product-breakdown-card {
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.product-breakdown-card .mat-card-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #1976d2;
+}
+
+.total-amount-badge {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Products Table */
+.products-table-container {
+    margin: 20px 0;
+    overflow-x: auto;
+}
+
+.products-table {
+    width: 100%;
+    min-width: 1000px;
+}
+
+.products-table .mat-column-product {
+    min-width: 250px;
+}
+
+.products-table .mat-column-quantity,
+.products-table .mat-column-rate,
+.products-table .mat-column-total,
+.products-table .mat-column-percentage,
+.products-table .mat-column-finalCost {
+    min-width: 120px;
+    text-align: center;
+}
+
+.products-table .mat-column-actions {
+    min-width: 80px;
+    text-align: center;
+}
+
+.product-select {
+    min-width: 220px;
+}
+
+.number-input {
+    min-width: 100px;
+}
+
+/* Calculated Fields */
+.calculated-field {
+    background: #f5f5f5;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 500;
+    color: #666;
+}
+
+.final-cost {
+    background: #e8f5e8;
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+/* Cost Allocation Card */
+.cost-allocation-card {
+    margin: 20px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-left: 4px solid #28a745;
+}
+
+.cost-allocation-card .mat-card-title {
+    color: #28a745;
+}
+
+.allocation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.allocation-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.allocation-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.allocation-item .label {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.allocation-item .value {
+    font-weight: 600;
+    color: #495057;
+}
+
+.allocation-item.total {
+    background: #fff3cd;
+    border-color: #ffc107;
+}
+
+.allocation-item.total .value {
+    color: #856404;
+}
+
+.allocation-item.grand-total {
+    background: #d1ecf1;
+    border-color: #17a2b8;
+    font-size: 1.1em;
+}
+
+.allocation-item.grand-total .value {
+    color: #0c5460;
+    font-weight: 700;
+}
+
+/* Validation Styles */
+.validation-errors {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 15px;
+}
+
+.validation-errors .mat-error {
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+.validation-warnings {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 15px;
+}
+
+.warning-message {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+    color: #856404;
+}
+
+.warning-icon {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* Form Enhancements */
+.mat-card {
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.mat-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: rgba(0,0,0,.12);
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #1976d2;
+}
+
+/* Button Styles */
+.btn {
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-success {
+    background: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+    background: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40,167,69,0.3);
+}
+
+.btn-success:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    border-color: #545b62;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .products-table-container {
+        overflow-x: scroll;
+    }
+    
+    .allocation-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .total-amount-badge {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    .product-breakdown-card .mat-card-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .products-table {
+        min-width: 800px;
+    }
+    
+    .mat-card {
+        margin: 10px 0;
+    }
+}
+
+/* Animation for form transitions */
+.mat-form-field {
+    transition: all 0.3s ease;
+}
+
+.mat-card {
+    transition: box-shadow 0.3s ease;
+}
+
+.mat-card:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* Loading states */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Success indicators */
+.calculated-field.success {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* Error indicators */
+.mat-form-field.ng-invalid.ng-touched .mat-form-field-outline-thick {
+    color: #dc3545 !important;
+}
+
+/* Table header styling */
+.products-table .mat-header-cell {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Row hover effects */
+.products-table .mat-row:hover {
+    background: #f8f9fa;
+}
+
+/* Action buttons in table */
+.products-table .mat-icon-button {
+    transition: all 0.3s ease;
+}
+
+.products-table .mat-icon-button:hover {
+    transform: scale(1.1);
 }
