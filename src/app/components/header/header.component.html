@@ -17,7 +17,7 @@
     </a>
     <a mat-button routerLink="new-bill">New Bill</a>
     <a mat-button routerLink="new-payment">New Payment</a>
-    
+
     <button mat-button [matMenuTriggerFor]="menuClient">
       Clients <mat-icon>arrow_drop_down</mat-icon>
     </button>
@@ -25,9 +25,9 @@
       <button mat-menu-item routerLink="clients/add">Add Client</button>
       <button mat-menu-item routerLink="clients/view-clients">View All Clients</button>
     </mat-menu>
-    
+
     <a mat-button routerLink="particulars">Particulars</a>
-    
+    <a mat-button routerLink="purchase">Purchases</a>
     <button mat-button [matMenuTriggerFor]="menuReport">
       Reports <mat-icon>arrow_drop_down</mat-icon>
     </button>
@@ -39,7 +39,7 @@
       <button mat-menu-item routerLink="reports/particulars">Particulars Report</button>
       <button mat-menu-item routerLink="reports/clientOutstanding">Client Outstanding Report</button>
     </mat-menu>
-    
+
     <!-- User Menu for Desktop -->
     <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-btn">
       <mat-icon>account_circle</mat-icon>
@@ -49,10 +49,6 @@
         <div class="user-name">{{ getUserDisplayName() }}</div>
       </div>
       <mat-divider></mat-divider>
-      <button mat-menu-item routerLink="purchase">
-        <mat-icon>shopping_cart</mat-icon>
-        <span>Purchases</span>
-      </button>
       <button mat-menu-item>
         <mat-icon>settings</mat-icon>
         <span>Settings</span>
@@ -75,7 +71,7 @@
       </div>
     </div>
     <mat-divider></mat-divider>
-    
+
     <button mat-menu-item routerLink="new-bill">
       <mat-icon>note_add</mat-icon>
       <span>New Bill</span>
@@ -97,6 +93,10 @@
     <button mat-menu-item routerLink="particulars">
       <mat-icon>inventory</mat-icon>
       <span>Particulars</span>
+    </button>
+    <button mat-menu-item routerLink="purchase">
+      <mat-icon>shopping_cart</mat-icon>
+      <span>Purchases</span>
     </button>
     <mat-divider></mat-divider>
     <button mat-menu-item routerLink="reports/sells">
@@ -124,10 +124,6 @@
       <span>Outstanding Report</span>
     </button>
     <mat-divider></mat-divider>
-    <button mat-menu-item routerLink="purchase">
-      <mat-icon>shopping_cart</mat-icon>
-      <span>Purchases</span>
-    </button>
     <button mat-menu-item>
       <mat-icon>settings</mat-icon>
       <span>Settings</span>
