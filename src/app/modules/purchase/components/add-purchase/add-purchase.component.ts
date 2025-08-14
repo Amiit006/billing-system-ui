@@ -1,25 +1,17 @@
 // src/app/modules/purchase/components/add-purchase/add-purchase.component.ts
-// COMPLETE VERSION with existing + enhanced features
+// Following the proven billing component pattern
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Observable,of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, startWith } from 'rxjs/operators';
+import { Observable, OperatorFunction } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
-import { EnhancedPurchaseService } from '../../services/enhanced-purchase.service';
 import { ProductService } from '../../services/product.service';
-import { PurchaseService } from '../../services/purchase.service'; // Keep for backward compatibility
-import { 
-  Product, 
-  PurchaseProduct, 
-  EnhancedPurchaseRequest,
-  OverheadCosts,
-  PurchaseFormValidation 
-} from '../../model/enhanced-purchase.model';
+import { PurchaseService } from '../../services/purchase.service';
+import { Product } from '../../model/enhanced-purchase.model';
 import { AddProductDialogComponent } from './add-product-dialog/add-product-dialog';
 
 @Component({
@@ -29,44 +21,39 @@ import { AddProductDialogComponent } from './add-product-dialog/add-product-dial
 })
 export class AddPurchaseComponent implements OnInit {
 
-  // Form and data properties
-  purchaseForm: FormGroup;
-  products: Product[] = [];
-  filteredProductsOptions: Observable<Product[]>[] = []; // Array for each product row
+  slNoCount = 0;
   selectedSeason: any;
   maxDate = new Date();
   minDate = new Date();
   
-  // Real-time calculations
+  // Products and calculations
+  products: Product[] = [];
   totalPurchaseAmount = 0;
-  overheadCosts: OverheadCosts = {
-    taxAmount: 0,
-    packingCharge: 0,
-    transportAmount: 0
-  };
+  grandTotal = 0;
 
-  // Form validation
-  formValidation: PurchaseFormValidation = {
-    isValid: true,
-    errors: [],
-    warnings: []
-  };
-
-  // Payment modes (existing)
+  // Payment modes
   paymentModes = [
     { 'viewValue': 'Cash', 'value': 'cash' },
     { 'viewValue': 'Bank Transfer', 'value': 'bankTransfer' },
     { 'viewValue': 'Cheque', 'value': 'cheque' }
   ];
 
+  @ViewChildren('inputToFocus') set inputF(inputF: QueryList<ElementRef>) {
+    const inputToFocus = inputF.filter(x => x?.nativeElement.value === "");
+    if (inputToFocus.length > 0) {
+      inputToFocus[0].nativeElement.focus();
+    }
+    this.cdRef.detectChanges();
+  }
+
   constructor(
-    private router: Router,
-    private toastrService: ToastrService,
     private fb: FormBuilder,
+    private router: Router,
     private activeRoute: ActivatedRoute,
-    private enhancedPurchaseService: EnhancedPurchaseService,
+    private toastrService: ToastrService,
+    private cdRef: ChangeDetectorRef,
     private productService: ProductService,
-    private purchaseService: PurchaseService, // Keep for compatibility
+    private purchaseService: PurchaseService,
     private dialog: MatDialog
   ) {
     // Get selected season from navigation state
@@ -75,65 +62,28 @@ export class AddPurchaseComponent implements OnInit {
       this.minDate = new Date(this.selectedSeason.startDate);
       this.maxDate = new Date(this.selectedSeason.endDate);
     }
-
-    this.initializeForm();
   }
 
   ngOnInit(): void {
     this.loadProducts();
-    this.setupFormSubscriptions();
-    this.addProduct(); // Add one initial product row
-  }
-
-  /**
-   * Initialize the reactive form with enhanced structure
-   */
-  private initializeForm(): void {
-    this.purchaseForm = this.fb.group({
-      'partyName': ['', Validators.required],
-      'purchaseDate': [new Date(), Validators.required],
-      'purchaseProducts': this.fb.array([]), // Dynamic product array
-      'packingCharge': [0, [Validators.required, Validators.min(0)]],
-      'taxAmount': [0, [Validators.required, Validators.min(0)]],
-      'taxPercent': [{ value: 0, disabled: true }],
-      'discountAmount': [0, [Validators.required, Validators.min(0)]],
-      'discountPercent': [{ value: 0, disabled: true }],
-      'extraDiscountAmount': [0, [Validators.required, Validators.min(0)]],
-      'transport': this.fb.group({
-        'transportName': [''],
-        'amount': [0, [Validators.min(0)]],
-        'consignmentNumber': ['']
-      }),
-      'payments': this.fb.array([])
-    });
-  }
-
-  /**
-   * Setup form value change subscriptions for real-time calculations
-   */
-  private setupFormSubscriptions(): void {
-    // Watch for changes in purchase products
-    this.purchaseProducts.valueChanges.pipe(
-      debounceTime(300)
-    ).subscribe(() => {
+    this.purchaseForm.valueChanges.subscribe(() => {
       this.calculateTotals();
-      this.validateForm();
     });
-
-    // Watch for overhead cost changes
-    this.purchaseForm.get('taxAmount')?.valueChanges.subscribe(() => this.calculateTotals());
-    this.purchaseForm.get('packingCharge')?.valueChanges.subscribe(() => this.calculateTotals());
-    this.purchaseForm.get('transport.amount')?.valueChanges.subscribe(() => this.calculateTotals());
+    
+    // Debug: Check if products are loaded
+    setTimeout(() => {
+      console.log('Products loaded:', this.products);
+    }, 2000);
   }
 
   /**
-   * Load products from API
+   * Load products for autocomplete
    */
-  private loadProducts(): void {
+  loadProducts(): void {
     this.productService.getAllProducts().subscribe(
       (products) => {
-        this.products = products;
-        console.log('Products loaded:', products.length, 'items');
+        this.products = products || [];
+        console.log('Products loaded:', this.products.length, 'items');
       },
       (error) => {
         console.error('Error loading products:', error);
@@ -143,182 +93,320 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   /**
-   * Get purchase products FormArray
+   * Main purchase form following billing pattern
    */
-  get purchaseProducts(): FormArray {
-    return this.purchaseForm.get('purchaseProducts') as FormArray;
+  purchaseForm = this.fb.group({
+    // Basic purchase info
+    partyName: ['', Validators.required],
+    purchaseDate: [new Date(), Validators.required],
+    
+    // Product items array
+    items: this.fb.array([this.createProductFormGroup()]),
+    
+    // Overhead costs
+    packingCharge: [0, [Validators.min(0)]],
+    taxAmount: [0, [Validators.min(0)]],
+    taxPercent: [{ value: 0, disabled: true }],
+    discountAmount: [0, [Validators.min(0)]],
+    discountPercent: [{ value: 0, disabled: true }],
+    extraDiscountAmount: [0, [Validators.min(0)]],
+    
+    // Transport details
+    transport: this.fb.group({
+      transportName: [''],
+      amount: [0, [Validators.min(0)]],
+      consignmentNumber: ['']
+    }),
+    
+    // Payments array
+    payments: this.fb.array([])
+  });
+
+  /**
+   * Create product form group (similar to addbillFormGroup)
+   */
+  createProductFormGroup(): FormGroup {
+    this.slNoCount += 1;
+    return this.fb.group({
+      slNo: [{ value: this.slNoCount, disabled: true }],
+      productId: [null],
+      productName: ['', Validators.required],
+      quantity: [0, [Validators.required, Validators.min(1)]],
+      ratePerUnit: [0, [Validators.required, Validators.min(0)]],
+      total: [{ value: 0, disabled: true }],
+      
+      // Calculated overhead allocation fields
+      percentageOfPurchase: [{ value: 0, disabled: true }],
+      allocatedTax: [{ value: 0, disabled: true }],
+      allocatedTransport: [{ value: 0, disabled: true }],
+      allocatedPackingCharge: [{ value: 0, disabled: true }],
+      totalAllocatedOverhead: [{ value: 0, disabled: true }],
+      finalCostPerUnit: [{ value: 0, disabled: true }],
+      
+      // Product details
+      category: [''],
+      subCategory: [''],
+      unit: ['pieces'],
+      isNewProduct: [false]
+    });
   }
 
   /**
-   * Get payments FormArray (existing functionality)
+   * Get items FormArray
+   */
+  get items(): FormArray {
+    return this.purchaseForm.get('items') as FormArray;
+  }
+
+  /**
+   * Get payments FormArray
    */
   get payments(): FormArray {
     return this.purchaseForm.get('payments') as FormArray;
   }
 
   /**
-   * Create a new product FormGroup with autocomplete capabilities
+   * Add new product row
    */
-  private createProductFormGroup(): FormGroup {
-    return this.fb.group({
-      'productId': [null],
-      'productName': ['', Validators.required], // Now required as user can type
-      'productSearch': [''], // Search field for autocomplete
-      'quantity': [0, [Validators.required, Validators.min(1)]],
-      'ratePerUnit': [0, [Validators.required, Validators.min(0)]],
-      'totalAmount': [{ value: 0, disabled: true }],
-      // Calculated overhead allocation fields (read-only)
-      'percentageOfPurchase': [{ value: 0, disabled: true }],
-      'allocatedTax': [{ value: 0, disabled: true }],
-      'allocatedTransport': [{ value: 0, disabled: true }],
-      'allocatedPackingCharge': [{ value: 0, disabled: true }],
-      'totalAllocatedOverhead': [{ value: 0, disabled: true }],
-      'finalCostPerUnit': [{ value: 0, disabled: true }],
-      // New product creation fields (hidden by default)
-      'isNewProduct': [false],
-      'category': [''],
-      'subCategory': [''],
-      'unit': ['pieces']
+  addRow(): void {
+    this.items.push(this.createProductFormGroup());
+  }
+
+  /**
+   * Remove product row with undo functionality
+   */
+  removeRow(index: number): void {
+    if (this.items.length === 1) {
+      this.toastrService.warning('At least one product is required');
+      return;
+    }
+
+    const tempRow = this.items.at(index);
+    this.items.removeAt(index);
+    this.reassignSlNo();
+    this.cdRef.detectChanges();
+
+    // Show undo option
+    const toastRef = this.toastrService.info('Product removed', 'Undo', {
+      timeOut: 3000,
+      tapToDismiss: false,
+      closeButton: true
+    });
+
+    // Handle undo action
+    toastRef.onTap.subscribe(() => {
+      this.items.insert(index, tempRow);
+      this.reassignSlNo();
+      this.cdRef.detectChanges();
+      this.toastrService.clear();
     });
   }
 
   /**
-   * Add a new product row
+   * Reassign serial numbers
    */
-  addProduct(): void {
-    const productGroup = this.createProductFormGroup();
-    this.purchaseProducts.push(productGroup);
-    
-    const index = this.purchaseProducts.length - 1;
-    
-    // Setup product-specific subscriptions
-    this.setupProductSubscriptions(index);
-    
-    // Setup autocomplete for this row
-    this.setupAutocomplete(index);
+  reassignSlNo(): void {
+    let value = 1;
+    this.items.controls.forEach(control => {
+      control.get('slNo')?.setValue(value);
+      value += 1;
+    });
+    this.slNoCount = value - 1;
   }
 
   /**
-   * Remove a product row
+   * Product search function for ngbTypeahead
    */
-  removeProduct(index: number): void {
-    if (this.purchaseProducts.length > 1) {
-      this.purchaseProducts.removeAt(index);
-      this.filteredProductsOptions.splice(index, 1);
-      this.calculateTotals();
-    } else {
-      this.toastrService.warning('At least one product is required');
-    }
-  }
+  searchProducts: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => {
+        console.log('Search term:', term, 'Products available:', this.products.length);
+        
+        if (term.length < 2) {
+          return [];
+        }
+        
+        const filtered = this.products
+          .filter(p => p.productName.toLowerCase().indexOf(term.toLowerCase()) > -1)
+          .map(p => p.productName)
+          .slice(0, 10);
+          
+        console.log('Filtered results:', filtered);
+        return filtered;
+      })
+    );
 
   /**
-   * Setup autocomplete for product search
+   * Test search function (simplified)
    */
-  private setupAutocomplete(index: number): void {
-    const productGroup = this.purchaseProducts.at(index) as FormGroup;
-    const searchControl = productGroup.get('productSearch');
-    
-    if (searchControl) {
-      const filteredProducts = searchControl.valueChanges.pipe(
-        startWith(''),
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap(value => {
-          if (typeof value === 'string' && value.length >= 2) {
-            return this.productService.searchProducts(value);
-          } else {
-            return of(this.products.slice(0, 10)); // Show first 10 products by default
-          }
-        })
-      );
-      
-      // Ensure array is large enough
-      while (this.filteredProductsOptions.length <= index) {
-        this.filteredProductsOptions.push(of([]));
-      }
-      
-      this.filteredProductsOptions[index] = filteredProducts;
-    }
-  }
+  testSearch: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => {
+        console.log('Test search called with:', term);
+        return term.length < 2 ? [] : ['Test Product 1', 'Test Product 2', 'Test Product 3'];
+      })
+    );
 
   /**
-   * Handle product selection from autocomplete
+   * Input formatter for ngbTypeahead
    */
-  onProductSelected(event: MatAutocompleteSelectedEvent, index: number): void {
-    const selectedProduct = event.option.value as Product;
-    const productGroup = this.purchaseProducts.at(index) as FormGroup;
+  inputFormatter = (value: string) => value;
+
+  /**
+   * Result template for ngbTypeahead
+   */
+  resultTemplate = (result: string) => result;
+
+  /**
+   * Handle product selection
+   */
+  onProductSelected(event: any, index: number): void {
+    const selectedProductName = event.item;
+    const selectedProduct = this.products.find(p => p.productName === selectedProductName);
     
-    if (selectedProduct && selectedProduct.productId) {
-      // Existing product selected
-      productGroup.patchValue({
+    if (selectedProduct) {
+      const productControl = this.items.at(index);
+      productControl.patchValue({
         productId: selectedProduct.productId,
         productName: selectedProduct.productName,
-        productSearch: this.getProductDisplayName(selectedProduct),
-        isNewProduct: false,
         category: selectedProduct.category,
         subCategory: selectedProduct.subCategory,
-        unit: selectedProduct.unit
+        unit: selectedProduct.unit,
+        isNewProduct: false
+      });
+    } else {
+      // Mark as new product if not found
+      const productControl = this.items.at(index);
+      productControl.patchValue({
+        productId: null,
+        productName: selectedProductName,
+        isNewProduct: true
       });
     }
   }
 
   /**
-   * Handle manual product name entry (for new products)
+   * Handle quantity change
    */
-  onProductNameChange(index: number): void {
-    const productGroup = this.purchaseProducts.at(index) as FormGroup;
-    const searchValue = productGroup.get('productSearch')?.value;
+  onQuantityChange(index: number): void {
+    this.calculateProductTotal(index);
+  }
+
+  /**
+   * Handle rate change
+   */
+  onRateChange(index: number): void {
+    this.calculateProductTotal(index);
+  }
+
+  /**
+   * Calculate individual product total
+   */
+  calculateProductTotal(index: number): void {
+    const productControl = this.items.at(index);
+    const quantity = productControl.get('quantity')?.value || 0;
+    const rate = productControl.get('ratePerUnit')?.value || 0;
+    const total = quantity * rate;
     
-    if (typeof searchValue === 'string' && searchValue.length > 0) {
-      // Check if it's an existing product
-      const existingProduct = this.products.find(p => 
-        p.productName.toLowerCase() === searchValue.toLowerCase()
-      );
+    productControl.get('total')?.setValue(total);
+    this.calculateTotals();
+  }
+
+  /**
+   * Calculate all totals and overhead allocation
+   */
+  calculateTotals(): void {
+    // Calculate total purchase amount
+    this.totalPurchaseAmount = 0;
+    this.items.controls.forEach(control => {
+      this.totalPurchaseAmount += control.get('total')?.value || 0;
+    });
+
+    // Get overhead costs
+    const taxAmount = this.purchaseForm.get('taxAmount')?.value || 0;
+    const packingCharge = this.purchaseForm.get('packingCharge')?.value || 0;
+    const transportAmount = this.purchaseForm.get('transport.amount')?.value || 0;
+    const totalOverhead = taxAmount + packingCharge + transportAmount;
+
+    // Calculate overhead allocation for each product
+    this.items.controls.forEach(control => {
+      const productTotal = control.get('total')?.value || 0;
+      const quantity = control.get('quantity')?.value || 0;
       
-      if (existingProduct) {
-        // Found existing product
-        this.onProductSelected({ option: { value: existingProduct } } as any, index);
-      } else {
-        // New product - mark for creation
-        productGroup.patchValue({
-          productId: null,
-          productName: searchValue,
-          isNewProduct: true
+      if (this.totalPurchaseAmount > 0) {
+        const percentage = (productTotal / this.totalPurchaseAmount) * 100;
+        const allocatedTax = (taxAmount * productTotal) / this.totalPurchaseAmount;
+        const allocatedPacking = (packingCharge * productTotal) / this.totalPurchaseAmount;
+        const allocatedTransport = (transportAmount * productTotal) / this.totalPurchaseAmount;
+        const totalAllocatedOverhead = allocatedTax + allocatedPacking + allocatedTransport;
+        const finalCostPerUnit = quantity > 0 ? (productTotal + totalAllocatedOverhead) / quantity : 0;
+
+        control.patchValue({
+          percentageOfPurchase: Math.round(percentage * 100) / 100,
+          allocatedTax: Math.round(allocatedTax * 100) / 100,
+          allocatedPackingCharge: Math.round(allocatedPacking * 100) / 100,
+          allocatedTransport: Math.round(allocatedTransport * 100) / 100,
+          totalAllocatedOverhead: Math.round(totalAllocatedOverhead * 100) / 100,
+          finalCostPerUnit: Math.round(finalCostPerUnit * 100) / 100
         });
       }
+    });
+
+    // Calculate grand total
+    const discountAmount = this.purchaseForm.get('discountAmount')?.value || 0;
+    const extraDiscountAmount = this.purchaseForm.get('extraDiscountAmount')?.value || 0;
+    this.grandTotal = this.totalPurchaseAmount + totalOverhead - discountAmount - extraDiscountAmount;
+
+    // Update percentage fields
+    this.updatePercentages();
+  }
+
+  /**
+   * Update tax and discount percentages
+   */
+  updatePercentages(): void {
+    if (this.totalPurchaseAmount > 0) {
+      const taxAmount = this.purchaseForm.get('taxAmount')?.value || 0;
+      const taxPercent = (taxAmount / this.totalPurchaseAmount) * 100;
+      this.purchaseForm.get('taxPercent')?.setValue(Math.round(taxPercent * 100) / 100);
+
+      const discountAmount = this.purchaseForm.get('discountAmount')?.value || 0;
+      const discountPercent = (discountAmount / (this.totalPurchaseAmount + taxAmount)) * 100;
+      this.purchaseForm.get('discountPercent')?.setValue(Math.round(discountPercent * 100) / 100);
     }
   }
 
   /**
-   * Open dialog to add new product with full details
+   * Open dialog to create new product
    */
   openAddProductDialog(index: number): void {
-    const productGroup = this.purchaseProducts.at(index) as FormGroup;
-    const currentName = productGroup.get('productSearch')?.value || '';
+    const productControl = this.items.at(index);
+    const currentName = productControl.get('productName')?.value || '';
     
     const dialogRef = this.dialog.open(AddProductDialogComponent, {
       width: '600px',
       data: { 
         productName: currentName,
-        categories: [] // You can load categories if needed
+        categories: []
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.success) {
-        // New product created successfully
         const newProduct = result.product;
-        this.products.push(newProduct); // Add to local array
+        this.products.push(newProduct);
         
-        // Update the form with new product
-        productGroup.patchValue({
+        productControl.patchValue({
           productId: newProduct.productId,
           productName: newProduct.productName,
-          productSearch: this.getProductDisplayName(newProduct),
-          isNewProduct: false,
           category: newProduct.category,
           subCategory: newProduct.subCategory,
-          unit: newProduct.unit
+          unit: newProduct.unit,
+          isNewProduct: false
         });
         
         this.toastrService.success('Product created successfully!');
@@ -327,169 +415,49 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   /**
-   * Setup subscriptions for individual product changes
-   */
-  private setupProductSubscriptions(index: number): void {
-    const productGroup = this.purchaseProducts.at(index) as FormGroup;
-    
-    // Watch for quantity or rate changes to calculate total
-    const quantityControl = productGroup.get('quantity');
-    const rateControl = productGroup.get('ratePerUnit');
-    
-    [quantityControl, rateControl].forEach(control => {
-      control?.valueChanges.pipe(debounceTime(300)).subscribe(() => {
-        this.calculateProductTotal(index);
-      });
-    });
-
-    // Watch for product search changes
-    productGroup.get('productSearch')?.valueChanges.pipe(
-      debounceTime(500)
-    ).subscribe(() => {
-      this.onProductNameChange(index);
-    });
-  }
-
-  /**
-   * Calculate total amount for a specific product
-   */
-  private calculateProductTotal(index: number): void {
-    const productGroup = this.purchaseProducts.at(index) as FormGroup;
-    const quantity = productGroup.get('quantity')?.value || 0;
-    const rate = productGroup.get('ratePerUnit')?.value || 0;
-    
-    const total = this.enhancedPurchaseService.calculateProductTotal(quantity, rate);
-    productGroup.get('totalAmount')?.setValue(total);
-  }
-
-  /**
-   * Calculate all totals and overhead allocations
-   */
-  private calculateTotals(): void {
-    // Get current product data
-    const productsValue = this.purchaseProducts.getRawValue() as PurchaseProduct[];
-    
-    // Update overhead costs
-    this.overheadCosts = {
-      taxAmount: this.purchaseForm.get('taxAmount')?.value || 0,
-      packingCharge: this.purchaseForm.get('packingCharge')?.value || 0,
-      transportAmount: this.purchaseForm.get('transport.amount')?.value || 0
-    };
-
-    // Calculate total purchase amount
-    this.totalPurchaseAmount = this.enhancedPurchaseService.calculateTotalPurchaseAmount(productsValue);
-
-    // Calculate overhead allocation for each product
-    const enhancedProducts = this.enhancedPurchaseService.calculateOverheadAllocation(
-      productsValue,
-      this.overheadCosts
-    );
-
-    // Update form with calculated values
-    enhancedProducts.forEach((product, index) => {
-      const productGroup = this.purchaseProducts.at(index) as FormGroup;
-      productGroup.get('percentageOfPurchase')?.setValue(product.percentageOfPurchase);
-      productGroup.get('allocatedTax')?.setValue(product.allocatedTax);
-      productGroup.get('allocatedTransport')?.setValue(product.allocatedTransport);
-      productGroup.get('allocatedPackingCharge')?.setValue(product.allocatedPackingCharge);
-      productGroup.get('totalAllocatedOverhead')?.setValue(product.totalAllocatedOverhead);
-      productGroup.get('finalCostPerUnit')?.setValue(product.finalCostPerUnit);
-    });
-
-    // Update tax and discount percentages
-    this.updatePercentages();
-  }
-
-  /**
-   * Update tax and discount percentages based on amounts
-   */
-  private updatePercentages(): void {
-    if (this.totalPurchaseAmount > 0) {
-      const taxPercent = ((this.overheadCosts.taxAmount / this.totalPurchaseAmount) * 100).toFixed(2);
-      this.purchaseForm.get('taxPercent')?.setValue(taxPercent);
-
-      const discountAmount = this.purchaseForm.get('discountAmount')?.value || 0;
-      const discountPercent = ((discountAmount / (this.totalPurchaseAmount + this.overheadCosts.taxAmount)) * 100).toFixed(2);
-      this.purchaseForm.get('discountPercent')?.setValue(discountPercent);
-    }
-  }
-
-  /**
-   * Validate the entire form including new products
-   */
-  private validateForm(): void {
-    const productsValue = this.purchaseProducts.getRawValue() as PurchaseProduct[];
-    this.formValidation = this.enhancedPurchaseService.validatePurchaseProducts(productsValue);
-    
-    // Additional validation for new products
-    this.purchaseProducts.controls.forEach((control, index) => {
-      const productGroup = control as FormGroup;
-      const isNewProduct = productGroup.get('isNewProduct')?.value;
-      const productName = productGroup.get('productName')?.value;
-      
-      if (isNewProduct && (!productName || productName.trim().length < 2)) {
-        this.formValidation.errors.push({
-          index,
-          field: 'productName',
-          message: 'Product name must be at least 2 characters'
-        });
-        this.formValidation.isValid = false;
-      }
-    });
-  }
-
-  /**
-   * Get product display name for dropdown/autocomplete
-   */
-  getProductDisplayName(product: Product): string {
-    return this.productService.getProductDisplayName(product);
-  }
-
-  /**
-   * Check if product at index is new product
+   * Check if product is new
    */
   isNewProduct(index: number): boolean {
-    const productGroup = this.purchaseProducts.at(index) as FormGroup;
-    return productGroup.get('isNewProduct')?.value || false;
+    return this.items.at(index).get('isNewProduct')?.value || false;
   }
 
   // ============================================
-  // EXISTING PAYMENT FUNCTIONALITY (unchanged)
+  // PAYMENT METHODS
   // ============================================
 
   /**
-   * Get payment FormGroup template (existing functionality)
+   * Create payment form group
    */
-  getPayment(): FormGroup {
+  createPaymentFormGroup(): FormGroup {
     return this.fb.group({
-      'mode': ['cash'],
-      'chequeNo': [''],
-      'paymentDate': [new Date(), Validators.required],
-      'remark': [''],
-      'amount': [0, [Validators.required, Validators.min(0)]]
+      mode: ['cash'],
+      chequeNo: [''],
+      paymentDate: [new Date(), Validators.required],
+      remark: [''],
+      amount: [0, [Validators.required, Validators.min(0)]]
     });
   }
 
   /**
-   * Add payment method (existing functionality)
+   * Add payment
    */
   addPayment(): void {
-    const paymentGroup = this.getPayment();
+    const paymentGroup = this.createPaymentFormGroup();
     this.payments.push(paymentGroup);
-    this.onChange('cash', this.payments.length - 1);
+    this.onPaymentModeChange('cash', this.payments.length - 1);
   }
 
   /**
-   * Remove payment method (existing functionality)
+   * Remove payment
    */
   removePayment(index: number): void {
     this.payments.removeAt(index);
   }
 
   /**
-   * Handle payment mode change (existing functionality)
+   * Handle payment mode change
    */
-  onChange(value: string, index: number): void {
+  onPaymentModeChange(value: string, index: number): void {
     const paymentGroup = this.payments.at(index) as FormGroup;
     const chequeNoControl = paymentGroup.get('chequeNo');
     
@@ -506,47 +474,15 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   // ============================================
-  // TAX/DISCOUNT CALCULATION METHODS (existing)
+  // SAVE AND NAVIGATION
   // ============================================
 
   /**
-   * Handle tax amount change (existing functionality)
-   */
-  onTaxAmountChange(): void {
-    console.log("Tax amount changed");
-    const control = this.purchaseForm;
-    const taxAmount = control.get("taxAmount")?.value || 0;
-    
-    if (this.totalPurchaseAmount > 0) {
-      const taxPercent = ((taxAmount / this.totalPurchaseAmount) * 100).toFixed(2);
-      control.get("taxPercent")?.setValue(taxPercent);
-    }
-  }
-
-  /**
-   * Handle discount amount change (existing functionality)
-   */
-  onDiscountAmountChange(): void {
-    const control = this.purchaseForm;
-    const discountAmount = control.get("discountAmount")?.value || 0;
-    const taxAmount = control.get("taxAmount")?.value || 0;
-    
-    if (this.totalPurchaseAmount > 0) {
-      const discountPercent = ((discountAmount / (this.totalPurchaseAmount + taxAmount)) * 100).toFixed(2);
-      control.get("discountPercent")?.setValue(discountPercent);
-    }
-  }
-
-  // ============================================
-  // ENHANCED SAVE METHOD
-  // ============================================
-
-  /**
-   * Enhanced save method with new product creation
+   * Save purchase
    */
   async onSave(): Promise<void> {
-    if (!this.formValidation.isValid) {
-      this.toastrService.error('Please fix form errors before saving');
+    if (this.purchaseForm.invalid) {
+      this.toastrService.error('Please fill all required fields');
       return;
     }
 
@@ -557,20 +493,20 @@ export class AddPurchaseComponent implements OnInit {
     }
 
     try {
-      // First, create any new products
+      // Create new products first
       await this.createNewProducts();
-      
-      // Prepare enhanced purchase data
+
+      // Prepare purchase data
       const formValue = this.purchaseForm.getRawValue();
-      const enhancedPurchaseData: EnhancedPurchaseRequest = {
+      const purchaseData = {
         partyName: formValue.partyName,
         purchaseDate: formValue.purchaseDate,
-        purchaseProducts: formValue.purchaseProducts.map(p => ({
-          productId: p.productId,
-          productName: p.productName,
-          quantity: p.quantity,
-          ratePerUnit: p.ratePerUnit,
-          totalAmount: p.totalAmount
+        purchaseProducts: formValue.items.map(item => ({
+          productId: item.productId,
+          productName: item.productName,
+          quantity: item.quantity,
+          ratePerUnit: item.ratePerUnit,
+          totalAmount: item.total
         })),
         packingCharge: formValue.packingCharge,
         taxAmount: formValue.taxAmount,
@@ -582,17 +518,15 @@ export class AddPurchaseComponent implements OnInit {
         payments: formValue.payments
       };
 
-      // Use enhanced purchase service
-      this.enhancedPurchaseService.createPurchaseWithProducts(seasonId, enhancedPurchaseData).subscribe(
+      // Save purchase
+      this.purchaseService.createPurchase(seasonId, purchaseData).subscribe(
         (response) => {
-          this.toastrService.success('Purchase added successfully with product breakdown!');
-          this.router.navigateByUrl(`/purchase/season/${seasonId}`, {
-            state: { selectedSeason: this.selectedSeason }
-          });
+          this.toastrService.success('Purchase saved successfully!');
+          this.onCancel();
         },
         (error) => {
           console.error('Error saving purchase:', error);
-          this.toastrService.error(error?.error?.message || 'Error while saving purchase!');
+          this.toastrService.error('Error saving purchase');
         }
       );
     } catch (error) {
@@ -602,35 +536,31 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   /**
-   * Create new products that don't exist yet
+   * Create new products
    */
   private async createNewProducts(): Promise<void> {
     const newProductPromises = [];
     
-    for (let i = 0; i < this.purchaseProducts.length; i++) {
-      const productGroup = this.purchaseProducts.at(i) as FormGroup;
-      const isNewProduct = productGroup.get('isNewProduct')?.value;
+    for (let i = 0; i < this.items.length; i++) {
+      const productControl = this.items.at(i);
+      const isNewProduct = productControl.get('isNewProduct')?.value;
       
       if (isNewProduct) {
         const productData = {
-          productName: productGroup.get('productName')?.value,
-          category: productGroup.get('category')?.value || 'Tops',
-          subCategory: productGroup.get('subCategory')?.value || 'Shirts',
-          unit: productGroup.get('unit')?.value || 'pieces',
+          productName: productControl.get('productName')?.value,
+          category: productControl.get('category')?.value || 'Tops',
+          subCategory: productControl.get('subCategory')?.value || 'Shirts',
+          unit: productControl.get('unit')?.value || 'pieces',
           gender: 'Men'
         };
         
         const promise = this.productService.createProduct(productData).toPromise()
           .then(newProduct => {
-            // Update the form with the new product ID
-            productGroup.patchValue({
+            productControl.patchValue({
               productId: newProduct.productId,
               isNewProduct: false
             });
-            
-            // Add to local products array
             this.products.push(newProduct);
-            
             return newProduct;
           });
           
@@ -643,8 +573,13 @@ export class AddPurchaseComponent implements OnInit {
       this.toastrService.success(`${newProductPromises.length} new product(s) created!`);
     }
   }
+
+  /**
+   * Cancel and go back
+   */
   onCancel(): void {
-    this.router.navigateByUrl(`/purchase/season/${this.activeRoute.snapshot.paramMap.get('seasonId')}`, {
+    const seasonId = this.activeRoute.snapshot.paramMap.get('seasonId');
+    this.router.navigateByUrl(`/purchase/season/${seasonId}`, {
       state: { selectedSeason: this.selectedSeason }
     });
   }

@@ -1,196 +1,225 @@
 /* src/app/modules/purchase/components/add-purchase/add-purchase.component.css */
+/* Following the billing component pattern with enhanced styling */
 
 .starter-template {
     padding: 15px 15px 15px 15px;
     text-align: center;
 }
 
-.mat-form-field {
-    width: 100%;
+.w-100 {
+    width: 100% !important;
 }
 
-/* Product Breakdown Card */
-.product-breakdown-card {
-    margin: 20px 0;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+/* Product Table Styling */
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.product-breakdown-card .mat-card-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #1976d2;
+.table {
+    margin-bottom: 0;
 }
 
-.total-amount-badge {
-    background: #e3f2fd;
-    color: #1976d2;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 14px;
+.table thead th {
+    background-color: #f8f9fa;
+    border: none;
     font-weight: 600;
+    color: #495057;
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px 8px;
 }
 
-/* Products Table */
-.products-table-container {
-    margin: 20px 0;
-    overflow-x: auto;
+.table tbody td {
+    vertical-align: middle;
+    padding: 8px;
+    border-color: #e9ecef;
 }
 
-.products-table {
-    width: 100%;
-    min-width: 1000px;
+.product-row:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
 }
 
-.products-table .mat-column-product {
-    min-width: 250px;
+/* Form Controls */
+.form-control {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.products-table .mat-column-quantity,
-.products-table .mat-column-rate,
-.products-table .mat-column-total,
-.products-table .mat-column-percentage,
-.products-table .mat-column-finalCost {
-    min-width: 120px;
+.form-control:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.25);
+}
+
+.form-control.text-center {
     text-align: center;
 }
 
-.products-table .mat-column-actions {
-    min-width: 80px;
-    text-align: center;
+.form-control.text-right {
+    text-align: right;
 }
 
-.product-select {
-    min-width: 220px;
-}
-
-.number-input {
-    min-width: 100px;
+/* Input Group Styling */
+.input-group-text {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+    color: #6c757d;
+    font-weight: 500;
 }
 
 /* Calculated Fields */
 .calculated-field {
-    background: #f5f5f5;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     padding: 8px 12px;
     border-radius: 4px;
     text-align: center;
     font-weight: 500;
-    color: #666;
-}
-
-.final-cost {
-    background: #e8f5e8;
-    color: #2e7d32;
-    font-weight: 600;
-}
-
-/* Cost Allocation Card */
-.cost-allocation-card {
-    margin: 20px 0;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-left: 4px solid #28a745;
-}
-
-.cost-allocation-card .mat-card-title {
-    color: #28a745;
-}
-
-.allocation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.allocation-item {
+    color: #495057;
+    border: 1px solid #e9ecef;
+    min-height: 38px;
     display: flex;
-    justify-content: space-between;
-    padding: 10px 15px;
-    background: white;
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
+    align-items: center;
+    justify-content: center;
     transition: all 0.3s ease;
 }
 
-.allocation-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.allocation-item .label {
-    font-weight: 500;
-    color: #6c757d;
-}
-
-.allocation-item .value {
+.calculated-field.final-cost {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+    border-color: #c3e6cb;
     font-weight: 600;
-    color: #495057;
 }
 
-.allocation-item.total {
-    background: #fff3cd;
-    border-color: #ffc107;
+.calculated-field:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.allocation-item.total .value {
-    color: #856404;
+/* Badge Styling */
+.badge {
+    font-size: 0.875em;
+    padding: 0.5em 0.75em;
+    border-radius: 6px;
 }
 
-.allocation-item.grand-total {
-    background: #d1ecf1;
-    border-color: #17a2b8;
-    font-size: 1.1em;
+.badge-primary {
+    background-color: #1976d2;
 }
 
-.allocation-item.grand-total .value {
-    color: #0c5460;
-    font-weight: 700;
+.badge-success {
+    background-color: #28a745;
+    animation: pulse 2s infinite;
 }
 
-/* Validation Styles */
-.validation-errors {
-    background: #f8d7da;
-    border: 1px solid #f5c6cb;
-    border-radius: 4px;
-    padding: 12px;
-    margin-bottom: 15px;
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
-.validation-errors .mat-error {
-    margin: 4px 0;
-    font-size: 14px;
+/* Button Styling */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-.validation-warnings {
-    background: #fff3cd;
-    border: 1px solid #ffeaa7;
-    border-radius: 4px;
-    padding: 12px;
-    margin-bottom: 15px;
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-.warning-message {
-    display: flex;
-    align-items: center;
-    margin: 4px 0;
-    color: #856404;
+.btn-primary {
+    background-color: #1976d2;
+    border-color: #1976d2;
 }
 
-.warning-icon {
-    margin-right: 8px;
-    font-size: 18px;
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
 }
 
-/* Form Enhancements */
-.mat-card {
-    margin-bottom: 20px;
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-primary {
+    color: #1976d2;
+    border-color: #1976d2;
+}
+
+.btn-outline-primary:hover {
+    background-color: #1976d2;
+    border-color: #1976d2;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.125rem;
+}
+
+/* Card Styling */
+.card {
     border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: none;
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+/* Material Design Card */
+.mat-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s ease;
+}
+
+.mat-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
 .mat-card-title {
     font-size: 18px;
     font-weight: 600;
+    color: #495057;
     margin-bottom: 10px;
+}
+
+/* Form Field Styling */
+.mat-form-field {
+    width: 100%;
 }
 
 .mat-form-field-appearance-outline .mat-form-field-outline {
@@ -201,95 +230,120 @@
     color: #1976d2;
 }
 
-/* Button Styles */
-.btn {
-    padding: 12px 24px;
+/* Position utilities */
+.position-relative {
+    position: relative !important;
+}
+
+.position-absolute {
+    position: absolute !important;
+}
+
+/* Validation Styling */
+.is-invalid {
+    border-color: #dc3545;
+}
+
+.invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+
+/* Payment Row Styling */
+.payment-row {
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.payment-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* Typeahead Dropdown */
+.dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto;
     border-radius: 6px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
-.btn-success {
-    background: #28a745;
-    border-color: #28a745;
-    color: white;
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
 }
 
-.btn-success:hover:not(:disabled) {
-    background: #218838;
-    border-color: #1e7e34;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(40,167,69,0.3);
-}
-
-.btn-success:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.btn-secondary {
-    background: #6c757d;
-    border-color: #6c757d;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background: #5a6268;
-    border-color: #545b62;
+.dropdown-item:hover {
+    background-color: #f8f9fa;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .products-table-container {
-        overflow-x: scroll;
+    .table-responsive {
+        font-size: 0.875rem;
     }
     
-    .allocation-grid {
-        grid-template-columns: 1fr;
+    .btn-lg {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
     }
     
-    .total-amount-badge {
-        font-size: 12px;
-        padding: 6px 12px;
+    .card-body {
+        padding: 1rem;
     }
     
-    .product-breakdown-card .mat-card-title {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+    .col-4, .col-3 {
+        margin-bottom: 1rem;
     }
 }
 
 @media (max-width: 576px) {
-    .container {
-        padding: 0 10px;
+    .table thead th {
+        font-size: 0.75rem;
+        padding: 8px 4px;
     }
     
-    .products-table {
-        min-width: 800px;
+    .table tbody td {
+        padding: 6px 4px;
     }
     
-    .mat-card {
-        margin: 10px 0;
+    .btn {
+        font-size: 0.875rem;
+    }
+    
+    .calculated-field {
+        font-size: 0.875rem;
+        padding: 6px 8px;
     }
 }
 
-/* Animation for form transitions */
-.mat-form-field {
-    transition: all 0.3s ease;
+/* Animation Classes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.mat-card {
-    transition: box-shadow 0.3s ease;
+.product-row {
+    animation: fadeIn 0.3s ease-out;
 }
 
-.mat-card:hover {
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+/* Focus Management */
+.form-control:focus,
+.mat-form-field.mat-focused {
+    z-index: 2;
 }
 
-/* Loading states */
+/* Loading State */
 .loading-overlay {
     position: absolute;
     top: 0;
@@ -303,35 +357,80 @@
     z-index: 1000;
 }
 
-/* Success indicators */
-.calculated-field.success {
-    background: #d4edda;
-    color: #155724;
+/* Success States */
+.text-success {
+    color: #28a745 !important;
 }
 
-/* Error indicators */
-.mat-form-field.ng-invalid.ng-touched .mat-form-field-outline-thick {
-    color: #dc3545 !important;
+/* Utility Classes */
+.mr-2 {
+    margin-right: 0.5rem !important;
 }
 
-/* Table header styling */
-.products-table .mat-header-cell {
-    background: #f8f9fa;
-    font-weight: 600;
-    color: #495057;
-    border-bottom: 2px solid #dee2e6;
+.mr-3 {
+    margin-right: 1rem !important;
 }
 
-/* Row hover effects */
-.products-table .mat-row:hover {
-    background: #f8f9fa;
+.mt-2 {
+    margin-top: 0.5rem !important;
 }
 
-/* Action buttons in table */
-.products-table .mat-icon-button {
-    transition: all 0.3s ease;
+.mt-3 {
+    margin-top: 1rem !important;
 }
 
-.products-table .mat-icon-button:hover {
-    transform: scale(1.1);
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.ml-2 {
+    margin-left: 0.5rem !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+/* Font Awesome Icons */
+.fa {
+    margin-right: 0.25rem;
+}
+
+/* Enhanced Focus Indicators */
+.form-control:focus,
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.25);
+}
+
+/* Print Styles */
+@media print {
+    .btn,
+    .mat-card-actions {
+        display: none !important;
+    }
+    
+    .table {
+        font-size: 0.75rem;
+    }
 }
