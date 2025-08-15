@@ -1,5 +1,5 @@
 // src/app/modules/purchase/components/add-purchase/add-purchase.component.ts
-// Following the proven billing component pattern
+// Updated version with better UX and mobile support
 
 import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -29,8 +29,43 @@ export class AddPurchaseComponent implements OnInit {
   // Products and calculations
   products: Product[] = [];
   totalPurchaseAmount = 0;
+  totalOverhead = 0;
   grandTotal = 0;
 
+  /**
+   * Main purchase form following billing pattern
+   */
+  purchaseForm = this.fb.group({
+    // Basic purchase info
+    partyName: ['', Validators.required],
+    purchaseDate: [new Date(), Validators.required],
+    purchaseAmount: [{ value: 0, disabled: true }],
+    // Product items array
+    items: this.fb.array([this.createProductFormGroup()]),
+    
+    // Overhead costs
+    packingCharge: [0, [Validators.min(0)]],
+    taxAmount: [0, [Validators.min(0)]],
+    taxPercent: [{ value: 0, disabled: true }],
+    discountAmount: [0, [Validators.min(0)]],
+    discountPercent: [{ value: 0, disabled: true }],
+    extraDiscountAmount: [0, [Validators.min(0)]],
+    
+    // Transport details
+    transport: this.fb.group({
+      transportName: [''],
+      amount: [0, [Validators.min(0)]],
+      consignmentNumber: ['']
+    }),
+    
+    // Payments array
+    payments: this.fb.array([])
+  });
+
+  // Track field interactions for better UX
+  private fieldTouched = new Set<string>();
+  private fieldValues = new Map<string, any>();
+  
   // Payment modes
   paymentModes = [
     { 'viewValue': 'Cash', 'value': 'cash' },
@@ -69,15 +104,30 @@ export class AddPurchaseComponent implements OnInit {
     this.purchaseForm.valueChanges.subscribe(() => {
       this.calculateTotals();
     });
-    
-    // Debug: Check if products are loaded
-    setTimeout(() => {
-      console.log('Products loaded:', this.products);
-    }, 2000);
+    this.setupFormSubscriptions();
   }
 
   /**
-   * Load products for autocomplete
+   * Setup form value change subscriptions for real-time calculations
+   */
+  private setupFormSubscriptions(): void {
+    // Watch for overhead cost changes
+    this.purchaseForm.get('taxAmount')?.valueChanges.subscribe(() => this.calculateTotals());
+    this.purchaseForm.get('discountAmount')?.valueChanges.subscribe(() => this.calculateTotals());
+    this.purchaseForm.get('extraDiscountAmount')?.valueChanges.subscribe(() => this.calculateTotals());
+    this.purchaseForm.get('packingCharge')?.valueChanges.subscribe(() => this.calculateTotals());
+    this.purchaseForm.get('transport.amount')?.valueChanges.subscribe(() => this.calculateTotals());
+    
+    // Watch for discount percentage changes and calculate discount amount
+    this.purchaseForm.get('discountPercent')?.valueChanges.subscribe((percent) => {
+      if (this.fieldTouched.has('discountPercent') && percent !== null && percent !== undefined) {
+        this.calculateDiscountFromPercent(percent);
+      }
+    });
+  }
+
+  /**
+   * Load products for typeahead
    */
   loadProducts(): void {
     this.productService.getAllProducts().subscribe(
@@ -92,38 +142,90 @@ export class AddPurchaseComponent implements OnInit {
     );
   }
 
-  /**
-   * Main purchase form following billing pattern
-   */
-  purchaseForm = this.fb.group({
-    // Basic purchase info
-    partyName: ['', Validators.required],
-    purchaseDate: [new Date(), Validators.required],
-    
-    // Product items array
-    items: this.fb.array([this.createProductFormGroup()]),
-    
-    // Overhead costs
-    packingCharge: [0, [Validators.min(0)]],
-    taxAmount: [0, [Validators.min(0)]],
-    taxPercent: [{ value: 0, disabled: true }],
-    discountAmount: [0, [Validators.min(0)]],
-    discountPercent: [{ value: 0, disabled: true }],
-    extraDiscountAmount: [0, [Validators.min(0)]],
-    
-    // Transport details
-    transport: this.fb.group({
-      transportName: [''],
-      amount: [0, [Validators.min(0)]],
-      consignmentNumber: ['']
-    }),
-    
-    // Payments array
-    payments: this.fb.array([])
-  });
 
   /**
-   * Create product form group (similar to addbillFormGroup)
+   * Handle discount percent field interactions
+   */
+  onDiscountPercentFocus(event: any): void {
+    this.fieldTouched.add('discountPercent');
+    this.selectFieldContent(event);
+  }
+
+  onDiscountPercentDoubleClick(): void {
+    const discountPercentControl = this.purchaseForm.get('discountPercent');
+    if (discountPercentControl) {
+      discountPercentControl.enable();  
+    }
+  }
+
+  onDiscountPercentBlur(): void {
+    const discountPercentControl = this.purchaseForm.get('discountPercent');
+    if (discountPercentControl) {
+      discountPercentControl.disable();
+    }
+  }
+
+  /**
+   * Calculate discount amount from percentage
+   */
+  private calculateDiscountFromPercent(percent: number): void {
+    if (percent > 0 && this.totalPurchaseAmount > 0) {
+      const taxAmount = this.purchaseForm.get('taxAmount')?.value || 0;
+      const baseAmount = this.totalPurchaseAmount + taxAmount;
+      const discountAmount = Math.ceil((baseAmount * percent) / 100); // Round up to next integer
+      
+      this.purchaseForm.get('discountAmount')?.setValue(discountAmount, { emitEvent: false });
+      this.calculateTotals();
+    }
+  }
+
+  /**
+   * Handle field focus for better UX
+   */
+  onFieldFocus(event: any, fieldName: string): void {
+    this.fieldTouched.add(fieldName);
+    this.selectFieldContent(event);
+  }
+
+  /**
+   * Select all content when focusing on number fields
+   */
+  private selectFieldContent(event: any): void {
+    // Only select content if field has default value (0) and hasn't been changed by user
+    const target = event.target;
+    const currentValue = target.value;
+    
+    if (currentValue === '0' || currentValue === 0) {
+      setTimeout(() => {
+        target.select();
+      }, 0);
+    }
+  }
+
+  /**
+   * Check if field has been touched for validation display
+   */
+  isFieldTouched(fieldName: string): boolean {
+    return this.fieldTouched.has(fieldName);
+  }
+
+  /**
+   * Check if item field has been touched
+   */
+  isItemFieldTouched(index: number, fieldName: string): boolean {
+    return this.fieldTouched.has(`item_${index}_${fieldName}`);
+  }
+
+  /**
+   * Handle item field focus
+   */
+  onItemFieldFocus(event: any, index: number, fieldName: string): void {
+    this.fieldTouched.add(`item_${index}_${fieldName}`);
+    this.selectFieldContent(event);
+  }
+
+  /**
+   * Create product form group (similar to billing addbillFormGroup)
    */
   createProductFormGroup(): FormGroup {
     this.slNoCount += 1;
@@ -131,7 +233,7 @@ export class AddPurchaseComponent implements OnInit {
       slNo: [{ value: this.slNoCount, disabled: true }],
       productId: [null],
       productName: ['', Validators.required],
-      quantity: [0, [Validators.required, Validators.min(1)]],
+      quantity: [1, [Validators.required, Validators.min(1)]], // Start with 1 instead of 0
       ratePerUnit: [0, [Validators.required, Validators.min(0)]],
       total: [{ value: 0, disabled: true }],
       
@@ -184,9 +286,13 @@ export class AddPurchaseComponent implements OnInit {
     const tempRow = this.items.at(index);
     this.items.removeAt(index);
     this.reassignSlNo();
+    
+    // Remove touched state for this row
+    this.cleanupFieldTouchedState(index);
+    
     this.cdRef.detectChanges();
 
-    // Show undo option
+    // Show undo option using toastr
     const toastRef = this.toastrService.info('Product removed', 'Undo', {
       timeOut: 3000,
       tapToDismiss: false,
@@ -203,6 +309,29 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   /**
+   * Clean up touched state when removing rows
+   */
+  private cleanupFieldTouchedState(removedIndex: number): void {
+    const keysToRemove = Array.from(this.fieldTouched).filter(key => 
+      key.startsWith(`item_${removedIndex}_`)
+    );
+    keysToRemove.forEach(key => this.fieldTouched.delete(key));
+    
+    // Update indices for remaining items
+    const keysToUpdate = Array.from(this.fieldTouched).filter(key => 
+      key.match(/^item_(\d+)_/) && parseInt(key.split('_')[1]) > removedIndex
+    );
+    
+    keysToUpdate.forEach(key => {
+      this.fieldTouched.delete(key);
+      const parts = key.split('_');
+      const oldIndex = parseInt(parts[1]);
+      const newKey = `item_${oldIndex - 1}_${parts[2]}`;
+      this.fieldTouched.add(newKey);
+    });
+  }
+
+  /**
    * Reassign serial numbers
    */
   reassignSlNo(): void {
@@ -215,56 +344,23 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   /**
-   * Product search function for ngbTypeahead
+   * Product search function for ngbTypeahead (same as billing pattern)
    */
-  searchProducts: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
+  search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      map(term => {
-        console.log('Search term:', term, 'Products available:', this.products.length);
-        
-        if (term.length < 2) {
-          return [];
-        }
-        
-        const filtered = this.products
+      map(term => term.length < 2 ? []
+        : this.products
           .filter(p => p.productName.toLowerCase().indexOf(term.toLowerCase()) > -1)
           .map(p => p.productName)
-          .slice(0, 10);
-          
-        console.log('Filtered results:', filtered);
-        return filtered;
-      })
+          .slice(0, 10))
     );
 
   /**
-   * Test search function (simplified)
+   * Handle product selection (same as billing selectedItem)
    */
-  testSearch: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => {
-        console.log('Test search called with:', term);
-        return term.length < 2 ? [] : ['Test Product 1', 'Test Product 2', 'Test Product 3'];
-      })
-    );
-
-  /**
-   * Input formatter for ngbTypeahead
-   */
-  inputFormatter = (value: string) => value;
-
-  /**
-   * Result template for ngbTypeahead
-   */
-  resultTemplate = (result: string) => result;
-
-  /**
-   * Handle product selection
-   */
-  onProductSelected(event: any, index: number): void {
+  selectedItem(event: any, index: number): void {
     const selectedProductName = event.item;
     const selectedProduct = this.products.find(p => p.productName === selectedProductName);
     
@@ -290,29 +386,28 @@ export class AddPurchaseComponent implements OnInit {
   }
 
   /**
-   * Handle quantity change
+   * Handle quantity change (same as billing pattern)
    */
   onQuantityChange(index: number): void {
-    this.calculateProductTotal(index);
+    this.calculateAndPopulateTotal(index);
   }
 
   /**
-   * Handle rate change
+   * Handle rate change (same as billing pattern)
    */
   onRateChange(index: number): void {
-    this.calculateProductTotal(index);
+    this.calculateAndPopulateTotal(index);
   }
 
   /**
-   * Calculate individual product total
+   * Calculate individual product total (same as billing pattern)
    */
-  calculateProductTotal(index: number): void {
-    const productControl = this.items.at(index);
-    const quantity = productControl.get('quantity')?.value || 0;
-    const rate = productControl.get('ratePerUnit')?.value || 0;
-    const total = quantity * rate;
+  calculateAndPopulateTotal(index: number): void {
+    const quantity = this.purchaseForm.get("items").value[index]["quantity"];
+    const ratePerUnit = this.purchaseForm.get("items").value[index]["ratePerUnit"];
+    const total = quantity * ratePerUnit;
     
-    productControl.get('total')?.setValue(total);
+    (<FormArray>this.purchaseForm.get("items")).controls[index].get("total").setValue(total);
     this.calculateTotals();
   }
 
@@ -330,8 +425,14 @@ export class AddPurchaseComponent implements OnInit {
     const taxAmount = this.purchaseForm.get('taxAmount')?.value || 0;
     const packingCharge = this.purchaseForm.get('packingCharge')?.value || 0;
     const transportAmount = this.purchaseForm.get('transport.amount')?.value || 0;
-    const totalOverhead = taxAmount + packingCharge + transportAmount;
+    const discountAmount = this.purchaseForm.get('discountAmount')?.value || 0;
+    const extraDiscountAmount = this.purchaseForm.get('extraDiscountAmount')?.value || 0;
+    
+    this.totalOverhead = taxAmount + packingCharge + transportAmount - discountAmount - extraDiscountAmount;
 
+    // Calculate grand total (including discounts)
+    this.grandTotal = this.totalPurchaseAmount + this.totalOverhead;
+    this.purchaseForm.get('purchaseAmount').setValue(this.totalPurchaseAmount);
     // Calculate overhead allocation for each product
     this.items.controls.forEach(control => {
       const productTotal = control.get('total')?.value || 0;
@@ -343,7 +444,12 @@ export class AddPurchaseComponent implements OnInit {
         const allocatedPacking = (packingCharge * productTotal) / this.totalPurchaseAmount;
         const allocatedTransport = (transportAmount * productTotal) / this.totalPurchaseAmount;
         const totalAllocatedOverhead = allocatedTax + allocatedPacking + allocatedTransport;
-        const finalCostPerUnit = quantity > 0 ? (productTotal + totalAllocatedOverhead) / quantity : 0;
+        
+        // Calculate final cost per unit (after discounts)
+        const productShare = productTotal / this.totalPurchaseAmount;
+        const allocatedDiscount = (discountAmount + extraDiscountAmount) * productShare;
+        const finalProductCost = productTotal + totalAllocatedOverhead - allocatedDiscount;
+        const finalCostPerUnit = quantity > 0 ? finalProductCost / quantity : 0;
 
         control.patchValue({
           percentageOfPurchase: Math.round(percentage * 100) / 100,
@@ -356,13 +462,10 @@ export class AddPurchaseComponent implements OnInit {
       }
     });
 
-    // Calculate grand total
-    const discountAmount = this.purchaseForm.get('discountAmount')?.value || 0;
-    const extraDiscountAmount = this.purchaseForm.get('extraDiscountAmount')?.value || 0;
-    this.grandTotal = this.totalPurchaseAmount + totalOverhead - discountAmount - extraDiscountAmount;
-
-    // Update percentage fields
-    this.updatePercentages();
+    // Update percentage fields only if discount percent is not being edited
+    if (!this.purchaseForm.get('discountPercent')?.enabled) {
+      this.updatePercentages();
+    }
   }
 
   /**
@@ -481,6 +584,9 @@ export class AddPurchaseComponent implements OnInit {
    * Save purchase
    */
   async onSave(): Promise<void> {
+    // Mark all fields as touched for validation
+    this.markAllFieldsAsTouched();
+    
     if (this.purchaseForm.invalid) {
       this.toastrService.error('Please fill all required fields');
       return;
@@ -501,6 +607,7 @@ export class AddPurchaseComponent implements OnInit {
       const purchaseData = {
         partyName: formValue.partyName,
         purchaseDate: formValue.purchaseDate,
+        purchaseAmount: formValue.purchaseAmount,
         purchaseProducts: formValue.items.map(item => ({
           productId: item.productId,
           productName: item.productName,
@@ -519,7 +626,7 @@ export class AddPurchaseComponent implements OnInit {
       };
 
       // Save purchase
-      this.purchaseService.createPurchase(seasonId, purchaseData).subscribe(
+      this.purchaseService.createPurchaseWithProducts(seasonId, purchaseData).subscribe(
         (response) => {
           this.toastrService.success('Purchase saved successfully!');
           this.onCancel();
@@ -533,6 +640,22 @@ export class AddPurchaseComponent implements OnInit {
       console.error('Error in save process:', error);
       this.toastrService.error('Error creating new products');
     }
+  }
+
+  /**
+   * Mark all fields as touched for validation
+   */
+  private markAllFieldsAsTouched(): void {
+    // Mark basic fields
+    this.fieldTouched.add('partyName');
+    this.fieldTouched.add('purchaseDate');
+    
+    // Mark item fields
+    this.items.controls.forEach((control, index) => {
+      this.fieldTouched.add(`item_${index}_productName`);
+      this.fieldTouched.add(`item_${index}_quantity`);
+      this.fieldTouched.add(`item_${index}_ratePerUnit`);
+    });
   }
 
   /**

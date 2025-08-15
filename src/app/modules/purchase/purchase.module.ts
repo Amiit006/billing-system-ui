@@ -61,6 +61,7 @@ import { DashboardServiceService } from './services/dashboard-service.service';
 import { EnhancedPurchaseService } from './services/enhanced-purchase.service';
 import { ProductService } from './services/product.service';
 import { AddProductDialogComponent } from './components/add-purchase/add-product-dialog/add-product-dialog';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,13 @@ import { AddProductDialogComponent } from './components/add-purchase/add-product
     // ============================================
     // CHARTS MODULE
     // ============================================
-    NgxChartsModule
+    NgxChartsModule,
+
+    // ============================================
+    // NG-BOOTSTRAP (primary UI framework)
+    // ============================================
+    NgbModule,
+
   ],
   providers: [
     // ============================================

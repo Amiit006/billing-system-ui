@@ -1,381 +1,641 @@
 <!-- src/app/modules/purchase/components/add-purchase/add-purchase.component.html -->
-<!-- COMPLETE VERSION - Following the proven billing component pattern -->
+<!-- Updated version with better UX and mobile support -->
 
-<div class="mt-2 text-center">
-    <h3>{{selectedSeason?.seasonName}}</h3>
-    <p>
-        {{selectedSeason?.startDate | date : 'dd-MMM-yyyy'}} to {{selectedSeason?.endDate | date : 'dd-MMM-yyyy'}}
+<div class="container-fluid">
+  <!-- Season Header -->
+  <div class="text-center mb-4">
+    <h4 class="season-title">{{selectedSeason?.seasonName}}</h4>
+    <p class="season-dates">
+      {{selectedSeason?.startDate | date : 'dd-MMM-yyyy'}} to {{selectedSeason?.endDate | date : 'dd-MMM-yyyy'}}
     </p>
-</div>
+  </div>
 
-<div class="container">
-    <form [formGroup]="purchaseForm">
+  <form [formGroup]="purchaseForm">
+    
+    <!-- Enhanced Purchase Details Card -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">Enhanced Purchase Details</h5>
+      </div>
+      <div class="card-body">
         
         <!-- Basic Purchase Information -->
-        <mat-card>
-            <mat-card-title>Purchase Details</mat-card-title>
-            <mat-divider></mat-divider>
-            
-            <div class="row mt-4">
-                <div class="col-6">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Party Name</mat-label>
-                        <input matInput placeholder="Party Name" type="text" formControlName="partyName">
-                        <mat-error *ngIf="purchaseForm.get('partyName')?.hasError('required')">
-                            Party name is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-                <div class="col-6">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Purchase Date</mat-label>
-                        <input [max]="maxDate" [min]="minDate" matInput [matDatepicker]="picker" formControlName="purchaseDate">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="partyName">Party Name <span class="text-danger">*</span></label>
+              <input type="text" 
+                     class="form-control" 
+                     id="partyName"
+                     placeholder="Party Name" 
+                     formControlName="partyName"
+                     (focus)="onFieldFocus($event, 'partyName')"
+                     [class.is-invalid]="purchaseForm.get('partyName')?.invalid && isFieldTouched('partyName')">
+              <div *ngIf="purchaseForm.get('partyName')?.invalid && isFieldTouched('partyName')" 
+                   class="invalid-feedback">
+                Party name is required
+              </div>
             </div>
-        </mat-card>
-
-        <!-- Product Breakdown Section -->
-        <mat-card class="mt-3">
-            <mat-card-title>
-                Product Breakdown
-                <span class="badge badge-primary ml-2">Total: ₹{{totalPurchaseAmount | number:'1.2-2'}}</span>
-            </mat-card-title>
-            <mat-divider></mat-divider>
-
-            <!-- Products Table -->
-            <div class="table-responsive mt-3" formArrayName="items">
-                <table class="table table-bordered">
-                    <thead class="thead-light">
-                        <tr>
-                            <th style="width: 50px;">Sl No</th>
-                            <th style="width: 250px;">Product Name *</th>
-                            <th style="width: 100px;">Quantity *</th>
-                            <th style="width: 100px;">Rate/Unit *</th>
-                            <th style="width: 120px;">Total Amount</th>
-                            <th style="width: 100px;">% Share</th>
-                            <th style="width: 120px;">Final Cost/Unit</th>
-                            <th style="width: 80px;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="product-row">
-                            
-                            <!-- Serial Number -->
-                            <td class="text-center">
-                                <input type="text" class="form-control text-center" formControlName="slNo" readonly>
-                            </td>
-
-                            <!-- Product Name with Typeahead -->
-                            <td>
-                                <div class="position-relative">
-                                    <input 
-                                        type="text" 
-                                        #inputToFocus 
-                                        class="form-control" 
-                                        placeholder="Type product name..." 
-                                        formControlName="productName"
-                                        [ngbTypeahead]="searchProducts"
-                                        (selectItem)="onProductSelected($event, i)"
-                                        [class.is-invalid]="item.get('productName')?.invalid && item.get('productName')?.touched">
-                                    
-                                    <!-- New Product Indicator -->
-                                    <span *ngIf="isNewProduct(i)" class="badge badge-success position-absolute" 
-                                          style="top: -8px; right: -8px; font-size: 10px;">NEW</span>
-                                    
-                                    <!-- Add Product Button -->
-                                    <button type="button" 
-                                            class="btn btn-sm btn-outline-primary position-absolute" 
-                                            style="top: 2px; right: 2px; padding: 2px 6px;"
-                                            (click)="openAddProductDialog(i)">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                    
-                                    <div *ngIf="item.get('productName')?.invalid && item.get('productName')?.touched" 
-                                         class="invalid-feedback">
-                                        Product name is required
-                                    </div>
-                                </div>
-                            </td>
-
-                            <!-- Quantity -->
-                            <td>
-                                <input 
-                                    type="number" 
-                                    class="form-control text-center" 
-                                    placeholder="0"
-                                    formControlName="quantity"
-                                    (input)="onQuantityChange(i)"
-                                    min="1"
-                                    [class.is-invalid]="item.get('quantity')?.invalid && item.get('quantity')?.touched">
-                                <div *ngIf="item.get('quantity')?.invalid && item.get('quantity')?.touched" 
-                                     class="invalid-feedback">
-                                    Quantity required (min: 1)
-                                </div>
-                            </td>
-
-                            <!-- Rate Per Unit -->
-                            <td>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">₹</span>
-                                    </div>
-                                    <input 
-                                        type="number" 
-                                        class="form-control text-right" 
-                                        placeholder="0.00"
-                                        formControlName="ratePerUnit"
-                                        (input)="onRateChange(i)"
-                                        min="0"
-                                        step="0.01"
-                                        [class.is-invalid]="item.get('ratePerUnit')?.invalid && item.get('ratePerUnit')?.touched">
-                                </div>
-                                <div *ngIf="item.get('ratePerUnit')?.invalid && item.get('ratePerUnit')?.touched" 
-                                     class="invalid-feedback">
-                                    Rate required (min: 0)
-                                </div>
-                            </td>
-
-                            <!-- Total Amount -->
-                            <td>
-                                <div class="calculated-field">
-                                    ₹{{item.get('total')?.value | number:'1.2-2'}}
-                                </div>
-                            </td>
-
-                            <!-- Percentage Share -->
-                            <td>
-                                <div class="calculated-field">
-                                    {{item.get('percentageOfPurchase')?.value | number:'1.2-2'}}%
-                                </div>
-                            </td>
-
-                            <!-- Final Cost Per Unit -->
-                            <td>
-                                <div class="calculated-field final-cost">
-                                    ₹{{item.get('finalCostPerUnit')?.value | number:'1.2-2'}}
-                                </div>
-                            </td>
-
-                            <!-- Actions -->
-                            <td class="text-center">
-                                <button type="button" 
-                                        class="btn btn-sm btn-outline-danger"
-                                        (click)="removeRow(i)"
-                                        [disabled]="items.length <= 1">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="purchaseDate">Purchase Date <span class="text-danger">*</span></label>
+              <input type="date" 
+                     class="form-control" 
+                     id="purchaseDate"
+                     formControlName="purchaseDate"
+                     (focus)="onFieldFocus($event, 'purchaseDate')"
+                     [max]="maxDate | date:'yyyy-MM-dd'"
+                     [min]="minDate | date:'yyyy-MM-dd'">
             </div>
-
-            <!-- Add Product Button -->
-            <div class="text-right mt-2 mb-3">
-                <button type="button" class="btn btn-primary" (click)="addRow()">
-                    <i class="fa fa-plus"></i> Add Product
-                </button>
-            </div>
-        </mat-card>
-
-        <!-- Cost Allocation Preview -->
-        <mat-card class="mt-3">
-            <mat-card-title>Cost Allocation Summary</mat-card-title>
-            <mat-divider></mat-divider>
-            
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <h6 class="card-title">Purchase Breakdown</h6>
-                            <div class="d-flex justify-content-between">
-                                <span>Total Product Cost:</span>
-                                <strong>₹{{totalPurchaseAmount | number:'1.2-2'}}</strong>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <span>Tax Amount:</span>
-                                <span>₹{{purchaseForm.get('taxAmount')?.value | number:'1.2-2'}}</span>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <span>Packing Charges:</span>
-                                <span>₹{{purchaseForm.get('packingCharge')?.value | number:'1.2-2'}}</span>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <span>Transport Charges:</span>
-                                <span>₹{{purchaseForm.get('transport.amount')?.value | number:'1.2-2'}}</span>
-                            </div>
-                            <hr>
-                            <div class="d-flex justify-content-between">
-                                <strong>Grand Total:</strong>
-                                <strong class="text-success">₹{{grandTotal | number:'1.2-2'}}</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </mat-card>
-
-        <!-- Overhead Costs -->
-        <mat-card class="mt-3">
-            <mat-card-title>Overhead Costs</mat-card-title>
-            <mat-divider></mat-divider>
-            
-            <div class="row mt-4">
-                <div class="col-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Packing Charges</mat-label>
-                        <span matPrefix>₹</span>
-                        <input matInput placeholder="0.00" type="number" min="0" step="0.01" formControlName="packingCharge">
-                    </mat-form-field>
-                </div>
-                <div class="col-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Tax Amount</mat-label>
-                        <span matPrefix>₹</span>
-                        <input matInput placeholder="0.00" type="number" min="0" step="0.01" formControlName="taxAmount">
-                    </mat-form-field>
-                </div>
-                <div class="col-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Tax Percent</mat-label>
-                        <input disabled matInput placeholder="0.00" type="number" formControlName="taxPercent">
-                        <span matSuffix>%</span>
-                    </mat-form-field>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Discount Amount</mat-label>
-                        <span matPrefix>₹</span>
-                        <input matInput placeholder="0.00" type="number" min="0" step="0.01" formControlName="discountAmount">
-                    </mat-form-field>
-                </div>
-                <div class="col-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Discount Percent</mat-label>
-                        <input disabled matInput placeholder="0.00" type="number" formControlName="discountPercent">
-                        <span matSuffix>%</span>
-                    </mat-form-field>
-                </div>
-                <div class="col-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Extra Discount Amount</mat-label>
-                        <span matPrefix>₹</span>
-                        <input matInput placeholder="0.00" type="number" min="0" step="0.01" formControlName="extraDiscountAmount">
-                    </mat-form-field>
-                </div>
-            </div>
-        </mat-card>
-
-        <!-- Transport Details -->
-        <mat-card class="mt-3" formGroupName="transport">
-            <mat-card-title>Transport Details</mat-card-title>
-            <mat-divider></mat-divider>
-            
-            <div class="row mt-4">
-                <div class="col-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Transport Name</mat-label>
-                        <input matInput placeholder="Transport Name" type="text" formControlName="transportName">
-                    </mat-form-field>
-                </div>
-                <div class="col-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Transport Amount</mat-label>
-                        <span matPrefix>₹</span>
-                        <input matInput placeholder="0.00" type="number" min="0" step="0.01" formControlName="amount">
-                    </mat-form-field>
-                </div>
-                <div class="col-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Consignment No</mat-label>
-                        <input matInput placeholder="Consignment No" type="text" formControlName="consignmentNumber">
-                    </mat-form-field>
-                </div>
-            </div>
-        </mat-card>
-
-        <!-- Payment Details -->
-        <mat-card class="mt-3" formArrayName="payments">
-            <mat-card-title>Payment Details</mat-card-title>
-            <mat-divider></mat-divider>
-            
-            <div *ngFor="let payment of payments.controls; let i=index" [formGroupName]="i" class="payment-row">
-                <div class="row mt-4">
-                    <div class="col-3">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Payment Date</mat-label>
-                            <input [max]="maxDate" matInput [matDatepicker]="picker1" formControlName="paymentDate">
-                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker #picker1></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-3">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Amount</mat-label>
-                            <span matPrefix>₹</span>
-                            <input matInput placeholder="0.00" min="0" step="0.01" type="number" formControlName="amount">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-3">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Payment Mode</mat-label>
-                            <mat-select formControlName="mode" (selectionChange)="onPaymentModeChange($event.value, i)">
-                                <mat-option *ngFor="let paymentMode of paymentModes" [value]="paymentMode.value">
-                                    {{ paymentMode.viewValue }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-3">
-                        <button type="button" class="btn btn-outline-danger mt-2" (click)="removePayment(i)">
-                            <i class="fa fa-trash"></i> Remove
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-4">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Cheque No</mat-label>
-                            <input matInput placeholder="0000000" min="0" type="number" formControlName="chequeNo">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-8">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Remarks</mat-label>
-                            <textarea matInput rows="2" formControlName="remark"></textarea>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Add Payment Button -->
-            <div class="text-right mt-2 mb-3">
-                <button type="button" class="btn btn-outline-primary" (click)="addPayment()">
-                    <i class="fa fa-plus"></i> Add Payment
-                </button>
-            </div>
-        </mat-card>
-
-        <!-- Action Buttons -->
-        <div class="text-center mt-4 mb-4">
-            <button type="button" 
-                    class="btn btn-success btn-lg mr-3" 
-                    [disabled]="purchaseForm.invalid" 
-                    (click)="onSave()">
-                <i class="fa fa-save"></i> Save Purchase
-            </button>
-            <button type="button" 
-                    class="btn btn-secondary btn-lg" 
-                    (click)="onCancel()">
-                <i class="fa fa-times"></i> Cancel
-            </button>
+          </div>
         </div>
-    </form>
+      </div>
+    </div>
+
+    <!-- Product Breakdown Card -->
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Product Breakdown</h5>
+        <span class="badge badge-primary badge-lg">Total: ₹{{totalPurchaseAmount | number:'1.0-0'}}</span>
+      </div>
+      <div class="card-body">
+        <!-- Mobile Product Cards -->
+        <div class="d-md-none mobile-products" formArrayName="items">
+          <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="mobile-product-card mb-3">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="mb-0">Product {{i + 1}}</h6>
+                <div class="mobile-actions">
+                  <span *ngIf="isNewProduct(i)" class="badge badge-success badge-sm new-badge mr-2">NEW</span>
+                  <button type="button" 
+                          class="btn btn-outline-danger btn-sm"
+                          (click)="removeRow(i)"
+                          [disabled]="items.length <= 1">
+                    <i class="fa fa-trash fa-sm"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <!-- Product Name -->
+                <div class="form-group">
+                  <label>Product Name <span class="text-danger">*</span></label>
+                  <div class="mobile-product-input">
+                    <input type="text" 
+                           #inputToFocus
+                           class="form-control" 
+                           placeholder="Type product name..." 
+                           formControlName="productName"
+                           (focus)="onItemFieldFocus($event, i, 'productName')"
+                           (selectItem)="selectedItem($event, i)"
+                           [ngbTypeahead]="search"
+                           [class.is-invalid]="item.get('productName')?.invalid && isItemFieldTouched(i, 'productName')">
+                    <button type="button" 
+                            class="btn btn-outline-primary btn-sm mt-2"
+                            (click)="openAddProductDialog(i)">
+                      <i class="fa fa-plus fa-sm"></i> Add New Product
+                    </button>
+                  </div>
+                  <div *ngIf="item.get('productName')?.invalid && isItemFieldTouched(i, 'productName')" 
+                       class="invalid-feedback">
+                    Product name is required
+                  </div>
+                </div>
+
+                <!-- Rate and Quantity Row -->
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>Rate/Unit <span class="text-danger">*</span></label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">₹</span>
+                        </div>
+                        <input type="number" 
+                               class="form-control text-right" 
+                               placeholder="0.00"
+                               formControlName="ratePerUnit"
+                               (focus)="onItemFieldFocus($event, i, 'ratePerUnit')"
+                               (input)="onRateChange(i)"
+                               min="0"
+                               step="0.01"
+                               [class.is-invalid]="item.get('ratePerUnit')?.invalid && isItemFieldTouched(i, 'ratePerUnit')">
+                      </div>
+                      <div *ngIf="item.get('ratePerUnit')?.invalid && isItemFieldTouched(i, 'ratePerUnit')" 
+                           class="invalid-feedback">
+                        Valid rate required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>Quantity <span class="text-danger">*</span></label>
+                      <input type="number" 
+                             class="form-control text-center" 
+                             placeholder="0"
+                             formControlName="quantity"
+                             (focus)="onItemFieldFocus($event, i, 'quantity')"
+                             (input)="onQuantityChange(i)"
+                             min="1"
+                             [class.is-invalid]="item.get('quantity')?.invalid && isItemFieldTouched(i, 'quantity')">
+                      <div *ngIf="item.get('quantity')?.invalid && isItemFieldTouched(i, 'quantity')" 
+                           class="invalid-feedback">
+                        Valid quantity required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Calculated Values -->
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label>Total</label>
+                      <div class="calculated-field">
+                        ₹{{item.get('total')?.value | number:'1.0-0'}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label>% Share</label>
+                      <div class="calculated-field percentage-field">
+                        {{item.get('percentageOfPurchase')?.value | number:'1.0-0'}}%
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="form-group">
+                      <label>Final Cost/Unit</label>
+                      <div class="calculated-field final-cost-field">
+                        ₹{{item.get('finalCostPerUnit')?.value | number:'1.0-0'}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop Products Table -->
+        <div class="table-responsive d-none d-md-block" formArrayName="items">
+          <table class="table table-bordered table-sm">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 50px;" class="text-center">Sl No</th>
+                <th style="width: 250px;">Product <span class="text-danger">*</span></th>
+                <th style="width: 120px;" class="text-center">Rate/Unit <span class="text-danger">*</span></th>
+                <th style="width: 100px;" class="text-center">Quantity <span class="text-danger">*</span></th>
+                <th style="width: 120px;" class="text-center">Total Amount</th>
+                <th style="width: 100px;" class="text-center">% of Purchase</th>
+                <th style="width: 120px;" class="text-center">Final Cost/Unit</th>
+                <th style="width: 80px;" class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="product-row">
+                
+                <!-- Serial Number -->
+                <td class="text-center align-middle">
+                  <input type="text" 
+                         class="form-control text-center form-control-sm" 
+                         formControlName="slNo" 
+                         readonly>
+                </td>
+
+                <!-- Product Name with Typeahead -->
+                <td class="align-middle">
+                  <div class="product-input-wrapper">
+                    <input type="text" 
+                           #inputToFocus
+                           class="form-control form-control-sm" 
+                           placeholder="Type product name..." 
+                           formControlName="productName"
+                           (focus)="onItemFieldFocus($event, i, 'productName')"
+                           (selectItem)="selectedItem($event, i)"
+                           [ngbTypeahead]="search"
+                           [class.is-invalid]="item.get('productName')?.invalid && isItemFieldTouched(i, 'productName')">
+                    
+                    <!-- New Product Indicator -->
+                    <span *ngIf="isNewProduct(i)" 
+                          class="badge badge-success badge-sm new-badge">
+                      NEW
+                    </span>
+                    
+                    <!-- Add Product Button -->
+                    <button type="button" 
+                            class="btn btn-outline-primary btn-sm add-product-btn"
+                            (click)="openAddProductDialog(i)"
+                            title="Add New Product">
+                      <i class="fa fa-plus fa-sm"></i>
+                    </button>
+                    
+                    <div *ngIf="item.get('productName')?.invalid && isItemFieldTouched(i, 'productName')" 
+                         class="invalid-feedback">
+                      Product name is required
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Rate Per Unit -->
+                <td class="align-middle">
+                  <div class="input-group input-group-sm">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">₹</span>
+                    </div>
+                    <input type="number" 
+                           class="form-control text-right" 
+                           placeholder="0.00"
+                           formControlName="ratePerUnit"
+                           (focus)="onItemFieldFocus($event, i, 'ratePerUnit')"
+                           (input)="onRateChange(i)"
+                           min="0"
+                           step="0.01"
+                           [class.is-invalid]="item.get('ratePerUnit')?.invalid && isItemFieldTouched(i, 'ratePerUnit')">
+                  </div>
+                  <div *ngIf="item.get('ratePerUnit')?.invalid && isItemFieldTouched(i, 'ratePerUnit')" 
+                       class="invalid-feedback">
+                    Valid rate required
+                  </div>
+                </td>
+
+                <!-- Quantity -->
+                <td class="align-middle">
+                  <input type="number" 
+                         class="form-control form-control-sm text-center" 
+                         placeholder="0"
+                         formControlName="quantity"
+                         (focus)="onItemFieldFocus($event, i, 'quantity')"
+                         (input)="onQuantityChange(i)"
+                         min="1"
+                         [class.is-invalid]="item.get('quantity')?.invalid && isItemFieldTouched(i, 'quantity')">
+                  <div *ngIf="item.get('quantity')?.invalid && isItemFieldTouched(i, 'quantity')" 
+                       class="invalid-feedback">
+                    Valid quantity required
+                  </div>
+                </td>
+
+                <!-- Total Amount -->
+                <td class="align-middle">
+                  <div class="calculated-field">
+                    ₹{{item.get('total')?.value | number:'1.0-0'}}
+                  </div>
+                </td>
+
+                <!-- Percentage Share -->
+                <td class="align-middle">
+                  <div class="calculated-field percentage-field">
+                    {{item.get('percentageOfPurchase')?.value | number:'1.0-0'}}%
+                  </div>
+                </td>
+
+                <!-- Final Cost Per Unit -->
+                <td class="align-middle">
+                  <div class="calculated-field final-cost-field">
+                    ₹{{item.get('finalCostPerUnit')?.value | number:'1.0-0'}}
+                  </div>
+                </td>
+
+                <!-- Actions -->
+                <td class="text-center align-middle">
+                  <button type="button" 
+                          class="btn btn-outline-danger btn-sm"
+                          (click)="removeRow(i)"
+                          [disabled]="items.length <= 1"
+                          title="Remove Product">
+                    <i class="fa fa-trash fa-sm"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Add Product Button -->
+        <div class="text-right mt-3">
+          <button type="button" class="btn btn-primary" (click)="addRow()">
+            <i class="fa fa-plus"></i> Add Product
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cost Allocation Preview Card -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">Cost Allocation Preview</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="allocation-summary">
+              <div class="allocation-row">
+                <span class="allocation-label">Total Product Cost:</span>
+                <span class="allocation-value">₹{{totalPurchaseAmount | number:'1.0-0'}}</span>
+              </div>
+              <div class="allocation-row">
+                <span class="allocation-label">Tax Amount:</span>
+                <span class="allocation-value">₹{{purchaseForm.get('taxAmount')?.value | number:'1.0-0'}}</span>
+              </div>
+              <div class="allocation-row">
+                <span class="allocation-label">Packing Charges:</span>
+                <span class="allocation-value">₹{{purchaseForm.get('packingCharge')?.value | number:'1.0-0'}}</span>
+              </div>
+              <div class="allocation-row">
+                <span class="allocation-label">Transport Charges:</span>
+                <span class="allocation-value">₹{{purchaseForm.get('transport.amount')?.value | number:'1.0-0'}}</span>
+              </div>
+              <div class="allocation-row">
+                <span class="allocation-label">Discount Amount:</span>
+                <span class="allocation-value">₹{{purchaseForm.get('discountAmount')?.value | number:'1.0-0'}}</span>
+              </div>
+              <div class="allocation-row">
+                <span class="allocation-label">Extra Discount Amount:</span>
+                <span class="allocation-value">₹{{purchaseForm.get('extraDiscountAmount')?.value | number:'1.0-0'}}</span>
+              </div>
+              <div class="allocation-row total-overhead">
+                <span class="allocation-label">Total Overhead:</span>
+                <span class="allocation-value">₹{{totalOverhead | number:'1.0-0'}}</span>
+              </div>
+              <div class="allocation-row grand-total">
+                <span class="allocation-label">Grand Total:</span>
+                <span class="allocation-value">₹{{grandTotal | number:'1.0-0'}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overhead Costs -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="packingCharge">Packing Charges</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">₹</span>
+            </div>
+            <input type="number" 
+                   class="form-control" 
+                   id="packingCharge"
+                   placeholder="0.00" 
+                   min="0" 
+                   step="0.01" 
+                   (focus)="onFieldFocus($event, 'packingCharge')"
+                   formControlName="packingCharge">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="taxAmount">Tax Amount</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">₹</span>
+            </div>
+            <input type="number" 
+                   class="form-control" 
+                   id="taxAmount"
+                   placeholder="0.00" 
+                   min="0" 
+                   step="0.01" 
+                   (focus)="onFieldFocus($event, 'taxAmount')"
+                   formControlName="taxAmount">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="taxPercent">Tax Percent</label>
+          <div class="input-group">
+            <input type="number" 
+                   class="form-control" 
+                   id="taxPercent"
+                   placeholder="0.00" 
+                   readonly
+                   formControlName="taxPercent">
+            <div class="input-group-append">
+              <span class="input-group-text">%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="discountAmount">Discount Amount</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">₹</span>
+            </div>
+            <input type="number" 
+                   class="form-control" 
+                   id="discountAmount"
+                   placeholder="0.00" 
+                   min="0" 
+                   step="0.01" 
+                   (focus)="onFieldFocus($event, 'discountAmount')"
+                   formControlName="discountAmount">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="discountPercent">Discount Percent <small class="text-muted">(Double-click to edit)</small></label>
+          <div class="input-group">
+            <input type="number" 
+                   class="form-control" 
+                   id="discountPercent"
+                   placeholder="0.00" 
+                   (focus)="onDiscountPercentFocus($event)"
+                   (dblclick)="onDiscountPercentDoubleClick()"
+                   (blur)="onDiscountPercentBlur()"
+                   formControlName="discountPercent">
+            <div class="input-group-append">
+              <span class="input-group-text">%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="extraDiscountAmount">Extra Discount Amount</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">₹</span>
+            </div>
+            <input type="number" 
+                   class="form-control" 
+                   id="extraDiscountAmount"
+                   placeholder="0.00" 
+                   min="0" 
+                   step="0.01" 
+                   (focus)="onFieldFocus($event, 'extraDiscountAmount')"
+                   formControlName="extraDiscountAmount">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transport Details Card -->
+    <div class="card mb-4" formGroupName="transport">
+      <div class="card-header">
+        <h5 class="mb-0">Transport Details</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="transportName">Transport Name</label>
+              <input type="text" 
+                     class="form-control" 
+                     id="transportName"
+                     placeholder="Transport Name" 
+                     formControlName="transportName">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="transportAmount">Transport Amount</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">₹</span>
+                </div>
+                <input type="number" 
+                       class="form-control" 
+                       id="transportAmount"
+                       placeholder="0.00" 
+                       min="0" 
+                       step="0.01" 
+                       (focus)="onFieldFocus($event, 'transportAmount')"
+                       formControlName="amount">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="consignmentNumber">Consignment No</label>
+              <input type="text" 
+                     class="form-control" 
+                     id="consignmentNumber"
+                     placeholder="Consignment No" 
+                     formControlName="consignmentNumber">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Details Card -->
+    <div class="card mb-4" formArrayName="payments">
+      <div class="card-header">
+        <h5 class="mb-0">Payment Details</h5>
+      </div>
+      <div class="card-body">
+        
+        <div *ngFor="let payment of payments.controls; let i=index" [formGroupName]="i" class="payment-row mb-3">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Payment Date</label>
+                <input type="date" 
+                       class="form-control" 
+                       formControlName="paymentDate"
+                       [max]="maxDate | date:'yyyy-MM-dd'">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Amount</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">₹</span>
+                  </div>
+                  <input type="number" 
+                         class="form-control" 
+                         placeholder="0.00" 
+                         min="0" 
+                         step="0.01" 
+                         (focus)="onFieldFocus($event, 'paymentAmount_' + i)"
+                         formControlName="amount">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Payment Mode</label>
+                <select class="form-control" 
+                        formControlName="mode" 
+                        (change)="onPaymentModeChange($event.target.value, i)">
+                  <option *ngFor="let paymentMode of paymentModes" [value]="paymentMode.value">
+                    {{ paymentMode.viewValue }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <div>
+                  <button type="button" 
+                          class="btn btn-outline-danger btn-block" 
+                          (click)="removePayment(i)">
+                    <i class="fa fa-trash"></i> Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Cheque No</label>
+                <input type="number" 
+                       class="form-control" 
+                       placeholder="0000000" 
+                       min="0" 
+                       formControlName="chequeNo">
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="form-group">
+                <label>Remarks</label>
+                <textarea class="form-control" 
+                          rows="2" 
+                          formControlName="remark"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Add Payment Button -->
+        <div class="text-right">
+          <button type="button" class="btn btn-outline-primary" (click)="addPayment()">
+            <i class="fa fa-plus"></i> Add Payment
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="text-center mb-4">
+      <button type="button" 
+              class="btn btn-success btn-lg mr-3" 
+              [disabled]="purchaseForm.invalid" 
+              (click)="onSave()">
+        <i class="fa fa-save"></i> SAVE ENHANCED PURCHASE
+      </button>
+      <button type="button" 
+              class="btn btn-secondary btn-lg" 
+              (click)="onCancel()">
+        <i class="fa fa-times"></i> CANCEL
+      </button>
+    </div>
+
+  </form>
 </div>
