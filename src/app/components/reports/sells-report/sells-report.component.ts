@@ -77,7 +77,7 @@ export class SellsReportComponent implements OnInit {
   clientData;
   viewInvoice(element) {
     this.billingService.getInvoiceByClientId(element.clientId).subscribe(data => {
-      this.invoice = data;
+      this.invoice = data.data;
       this.clientsService.getClientById(element.clientId).subscribe(data => {
         this.clientData = data;
         this.router.navigate(["clients/" + element.clientId + "/invoice/" + element.invoiceId]

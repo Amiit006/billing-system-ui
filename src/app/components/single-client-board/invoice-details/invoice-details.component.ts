@@ -38,8 +38,8 @@ export class InvoiceDetailsComponent implements OnInit {
 
   loadClientBill() {
     this.billingService.getInvoiceByClientId(this.clientId).subscribe(data => {
-      this.invoice = data;
-      this.dataSource = new MatTableDataSource(data);
+      this.invoice = data.data;
+      this.dataSource = new MatTableDataSource(this.invoice);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.showSpinner = false;
