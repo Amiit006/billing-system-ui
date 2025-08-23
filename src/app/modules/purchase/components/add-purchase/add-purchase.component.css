@@ -1,8 +1,807 @@
-.starter-template {
-    padding: 15px 15px 15px 15px;
-    text-align: center;
+/* ============================================ */
+/* NGBOOTSTRAP TYPEAHEAD DROPDOWN STYLING */
+/* ============================================ */
+
+/* Ensure typeahead container doesn't restrict dropdown */
+ngb-typeahead-window {
+  position: fixed !important;
+  z-index: 9999 !important;
 }
 
-.mat-form-field {
-    width: 100%;
+/* Main dropdown container */
+.dropdown-menu {
+  background-color: #ffffff !important;
+  border: 2px solid #4e73df !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25) !important;
+  padding: 0 !important;
+  margin-top: 2px !important;
+  min-width: 250px !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  z-index: 9999 !important;
+  font-size: 0.875rem !important;
+  position: absolute !important;
+}
+
+/* Individual dropdown items */
+.dropdown-item {
+  padding: 12px 16px !important;
+  color: #333333 !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #f1f1f1 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  display: block !important;
+  width: 100% !important;
+  text-align: left !important;
+}
+
+/* Hover state for dropdown items */
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #4e73df !important;
+  color: #ffffff !important;
+  border-bottom-color: #4e73df !important;
+  transform: translateX(2px) !important;
+  text-decoration: none !important;
+}
+
+/* Active/highlighted item */
+.dropdown-item.active {
+  background-color: #1cc88a !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+/* Remove border from last item */
+.dropdown-item:last-child {
+  border-bottom: none !important;
+}
+
+/* Custom scrollbar for dropdown */
+.dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: #4e73df;
+  border-radius: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: #224abe;
+}
+
+/* Style for "no results" message */
+.dropdown-item.disabled {
+  color: #6c757d !important;
+  background-color: #f8f9fa !important;
+  font-style: italic !important;
+}
+
+/* Override any Bootstrap conflicting styles */
+.dropdown-menu.show {
+  display: block !important;
+  position: absolute !important;
+  transform: none !important;
+}
+
+/* ============================================ */
+/* CALCULATED FIELDS */
+/* ============================================ */
+
+.calculated-field {
+  background: linear-gradient(135deg, #f8f9fc 0%, #eaecf4 100%);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 500;
+  color: #5a5c69;
+  border: 1px solid #e3e6f0;
+  font-size: 0.875rem;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.percentage-field {
+  background: linear-gradient(135deg, #e2e7ff 0%, #d1d9ff 100%);
+  color: #4e73df;
+  border-color: #d1d9ff;
+}
+
+.final-cost-field {
+  background: linear-gradient(135deg, #d4f7dc 0%, #c3f0ca 100%);
+  color: #1cc88a;
+  border-color: #c3f0ca;
+  font-weight: 600;
+}
+
+.calculated-field:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+/* ============================================ */
+/* COST ALLOCATION SUMMARY */
+/* ============================================ */
+
+.allocation-summary {
+  background: #f8f9fc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e3e6f0;
+}
+
+.allocation-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e3e6f0;
+}
+
+.allocation-row:last-child {
+  border-bottom: none;
+}
+
+.allocation-label {
+  font-weight: 500;
+  color: #5a5c69;
+}
+
+.allocation-value {
+  font-weight: 600;
+  color: #3d3d3d;
+}
+
+.allocation-row.total-overhead {
+  background: #fff3cd;
+  margin: 0 -1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  border: 1px solid #ffeaa7;
+}
+
+.allocation-row.total-overhead .allocation-value {
+  color: #856404;
+}
+
+.allocation-row.grand-total {
+  background: #d1ecf1;
+  margin: 0.5rem -1rem 0;
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid #bee5eb;
+  font-size: 1.1rem;
+}
+
+.allocation-row.grand-total .allocation-value {
+  color: #0c5460;
+  font-weight: 700;
+}
+
+/* ============================================ */
+/* BUTTON STYLING */
+/* ============================================ */
+
+.btn {
+  border-radius: 6px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  border-width: 1px;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+  border-color: #4e73df;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #1cc88a 0%, #17a673 100%);
+  border-color: #1cc88a;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #858796 0%, #6c757d 100%);
+  border-color: #858796;
+}
+
+.btn-outline-primary {
+  color: #4e73df;
+  border-color: #4e73df;
+}
+
+.btn-outline-primary:hover {
+  background-color: #4e73df;
+  border-color: #4e73df;
+}
+
+.btn-outline-danger {
+  color: #e74a3b;
+  border-color: #e74a3b;
+}
+
+.btn-outline-danger:hover {
+  background-color: #e74a3b;
+  border-color: #e74a3b;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+/* ============================================ */
+/* PAYMENT ROW STYLING */
+/* ============================================ */
+
+.payment-row {
+  background: #f8f9fc;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e3e6f0;
+}
+
+/* ============================================ */
+/* VALIDATION STYLING */
+/* ============================================ */
+
+.is-invalid {
+  border-color: #e74a3b;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #e74a3b;
+}
+
+.alert {
+  border-radius: 6px;
+  border: none;
+  font-size: 0.875rem;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* ============================================ */
+/* RESPONSIVE DESIGN - MOBILE FIRST */
+/* ============================================ */
+
+/* Mobile Styles (Default) */
+@media (max-width: 767.98px) {
+  .container-fluid {
+    padding: 0 10px;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .btn-lg {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .allocation-summary {
+    padding: 1rem;
+  }
+  
+  .badge-lg {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Mobile product cards specific styles */
+  .mobile-product-card .card-body {
+    padding: 0.75rem;
+  }
+  
+  .mobile-product-card .form-group {
+    margin-bottom: 0.75rem;
+  }
+  
+  .mobile-product-card .calculated-field {
+    font-size: 0.8rem;
+    padding: 0.375rem 0.5rem;
+    min-height: 32px;
+  }
+  
+  /* Adjust dropdown for mobile */
+  .dropdown-menu {
+    min-width: 200px !important;
+    font-size: 0.8rem !important;
+    max-height: 250px !important;
+  }
+  
+  .dropdown-item {
+    padding: 10px 12px !important;
+  }
+  
+  /* Better touch targets for mobile */
+  .btn {
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+  }
+  
+  .btn-sm {
+    min-height: 36px;
+    padding: 0.375rem 0.75rem;
+  }
+  
+  .form-control {
+    min-height: 44px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .form-control-sm {
+    min-height: 36px;
+    font-size: 14px;
+  }
+  
+  /* Mobile form adjustments */
+  .input-group .form-control {
+    font-size: 16px; /* Prevents zoom */
+  }
+  
+  select.form-control {
+    font-size: 16px; /* Prevents zoom */
+  }
+}
+
+/* Small mobile screens */
+@media (max-width: 575.98px) {
+  .calculated-field {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.5rem;
+    min-height: 30px;
+  }
+  
+  .btn {
+    font-size: 0.75rem;
+  }
+  
+  .mobile-product-card .card-header {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .mobile-product-card .card-body {
+    padding: 0.5rem;
+  }
+  
+  /* Further adjust dropdown for small screens */
+  .dropdown-menu {
+    min-width: 180px !important;
+    font-size: 0.75rem !important;
+  }
+  
+  /* Stack elements better on small screens */
+  .mobile-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 768px) {
+  /* Hide mobile cards on desktop */
+  .mobile-products {
+    display: none !important;
+  }
+  
+  /* Show desktop table */
+  .table-responsive {
+    display: block !important;
+  }
+}
+
+/* ============================================ */
+/* ANIMATIONS */
+/* ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Focus Management */
+.form-control:focus {
+  z-index: 2;
+}
+
+/* ============================================ */
+/* UTILITY CLASSES */
+/* ============================================ */
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.mr-2 {
+  margin-right: 0.5rem !important;
+}
+
+.mr-3 {
+  margin-right: 1rem !important;
+}
+
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+.mt-2 {
+  margin-top: 0.5rem !important;
+}
+
+.mt-3 {
+  margin-top: 1rem !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.align-middle {
+  vertical-align: middle !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.d-md-none {
+  display: none !important;
+}
+
+.d-md-block {
+  display: block !important;
+}
+
+@media (max-width: 767.98px) {
+  .d-md-none {
+    display: block !important;
+  }
+  
+  .d-none.d-md-block {
+    display: none !important;
+  }
+}
+
+/* Font Awesome Icons */
+.fa {
+  margin-right: 0.25rem;
+}
+
+.fa-sm {
+  font-size: 0.875rem;
+}
+
+/* ============================================ */
+/* ENHANCED FOCUS STATES FOR ACCESSIBILITY */
+/* ============================================ */
+
+.form-control:focus,
+.btn:focus,
+select:focus {
+  outline: 2px solid #4e73df;
+  outline-offset: 2px;
+}
+
+/* ============================================ */
+/* PRINT STYLES */
+/* ============================================ */
+
+@media print {
+  .btn,
+  .card-header,
+  .mobile-actions {
+    display: none !important;
+  }
+  
+  .table {
+    font-size: 0.75rem;
+  }
+  
+  .card {
+    box-shadow: none;
+    border: 1px solid #000;
+    page-break-inside: avoid;
+  }
+  
+  .mobile-product-card {
+    page-break-inside: avoid;
+  }
+}
+
+/* ============================================ */
+/* DISCOUNT PERCENT FIELD SPECIFIC STYLING */
+/* ============================================ */
+
+#discountPercent {
+  cursor: help;
+  position: relative;
+}
+
+#discountPercent:disabled {
+  background-color: #e9ecef;
+  opacity: 0.8;
+}
+
+#discountPercent:enabled {
+  background-color: #fff3cd;
+  border-color: #ffeaa7;
+}
+
+/* Tooltip-like styling for the hint */
+label[for="discountPercent"] small {
+  font-style: italic;
+  font-size: 0.7rem;
+}component.css */
+/* Updated version with mobile support and better UX */
+
+/* Season Header */
+.season-title {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.season-dates {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+/* Card Styling */
+.card {
+  border: 1px solid #e3e6f0;
+  border-radius: 8px;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 0.25rem 2rem 0 rgba(58, 59, 69, 0.2);
+}
+
+.card-header {
+  color: black;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0 !important;
+  padding: 1rem 1.25rem;
+}
+
+.card-header h5, .card-header h6 {
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 1.5rem 1.25rem;
+}
+
+/* Form Controls */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  border: 1px solid #d1d3e2;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #5a5c69;
+  box-shadow: 0 0 0 0.2rem rgba(90, 92, 105, 0.25);
+}
+
+.form-control-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Input Groups */
+.input-group-text {
+  background-color: #f8f9fc;
+  border: 1px solid #d1d3e2;
+  color: #5a5c69;
+  font-weight: 500;
+}
+
+/* Labels */
+label {
+  font-weight: 600;
+  color: #5a5c69;
+  margin-bottom: 0.5rem;
+}
+
+.text-muted {
+  color: #6c757d !important;
+  font-weight: 400;
+}
+
+/* Required Field Indicator */
+.text-danger {
+  color: #e74a3b !important;
+}
+
+/* Badge Styling */
+.badge {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.badge-primary {
+  background-color: #4e73df;
+}
+
+.badge-success {
+  background-color: #1cc88a;
+}
+
+.badge-lg {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.badge-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* ============================================ */
+/* MOBILE PRODUCT CARDS */
+/* ============================================ */
+
+.mobile-products {
+  display: block;
+}
+
+.mobile-product-card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.mobile-product-card .card {
+  border: 2px solid #e3e6f0;
+  margin-bottom: 1rem;
+}
+
+.mobile-product-card .card-header {
+  background-color: #f8f9fc;
+  padding: 0.75rem 1rem;
+}
+
+.mobile-product-card .card-body {
+  padding: 1rem;
+}
+
+.mobile-actions {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-product-input {
+  position: relative;
+}
+
+.mobile-product-input .form-control {
+  margin-bottom: 0.5rem;
+}
+
+/* ============================================ */
+/* DESKTOP TABLE STYLING */
+/* ============================================ */
+
+.table {
+  margin-bottom: 0;
+  font-size: 0.875rem;
+}
+
+.table thead th {
+  background-color: #f8f9fc;
+  border-color: #e3e6f0;
+  color: #5a5c69;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.75rem 0.5rem;
+  vertical-align: middle;
+}
+
+.table tbody td {
+  border-color: #e3e6f0;
+  padding: 0.5rem;
+  vertical-align: middle;
+}
+
+.table-bordered {
+  border: 1px solid #e3e6f0;
+}
+
+.table-responsive {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Product Row Styling */
+.product-row {
+  transition: background-color 0.3s ease;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.product-row:hover {
+  background-color: #f8f9fc;
+}
+
+/* Product Input Wrapper - Desktop */
+.product-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.product-input-wrapper .form-control {
+  flex: 1;
+  min-width: 180px;
 }

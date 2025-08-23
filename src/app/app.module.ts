@@ -62,6 +62,7 @@ import { ClientOutstandingComponent } from './components/single-client-board/cli
 import { ClientOutstandingReportComponent } from './components/reports/client-outstanding-report/client-outstanding-report.component';
 import { CalenderHeatMapComponent } from './components/calender-heat-map/calender-heat-map.component';
 import { PurchaseModule } from './modules/purchase/purchase.module';
+import { ProfitInsightsComponent } from './components/single-client-board/view-invoice/profit-insights/profit-insights.component';
 
 // Authentication Components and Services
 import { LoginComponent } from './components/auth/login/login.component';
@@ -118,7 +119,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ClientOutstandingReportComponent, 
     CalenderHeatMapComponent,
     // Authentication Components
-    LoginComponent
+    LoginComponent,
+    ProfitInsightsComponent
   ],
   imports: [
     BrowserModule,
