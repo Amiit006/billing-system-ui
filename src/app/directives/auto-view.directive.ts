@@ -18,7 +18,6 @@ export class AutoViewDirective implements OnInit, OnDestroy {
       const h = Math.max(this.minHeight, Math.round(w * this.aspect));
       this.viewChange.emit([w, h]);
     });
-    console.log("AMIT")
     this.ro.observe(this.host.nativeElement);
   }
 
