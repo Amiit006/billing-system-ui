@@ -1,20 +1,73 @@
 <div class="starter-template">
-    <h2>Add Particulars</h2>
-    <div class="card card-body bg-light col-9 mx-auto">
-        <form [formGroup]="particularForm">
-            <div class="row">
-                <label for="particularName" class="col-3 col-md-3 col-sm-3 control-label">Particular Name: </label>
-                <input type="text" class="form-control col-7 col-md-7 col-sm-7" id="particularName" formControlName="particular">
-            </div>
-            <div class="row mt-2">
-                <label for="discountPercentage" class="col-3 col-md-3 col-sm-3 control-label">Discount Percentage: </label>
-                <input type="number" class="form-control col-1 col-md-1 col-sm-1" id="discountPercentage" formControlName="discountPercentage">
-            </div>
-        </form>
-        <div class="col text-center">
-            <button class="btn-class mt-2" [disabled]="!particularForm.valid && !saveInProgress" mat-flat-button color="primary" (click)="createParticular()">Create</button>
+  <h2 class="mb-3">Add Particulars</h2>
+
+  <div class="card card-body bg-light mx-auto responsive-card">
+    <form [formGroup]="particularForm" (ngSubmit)="createParticular()">
+      <!-- Particular name -->
+      <div class="row g-2 align-items-center mb-2">
+        <label
+          for="particularName"
+          class="col-12 col-md-3 col-form-label"
+        >
+          Particular Name
+        </label>
+        <div class="col-12 col-md-9">
+          <input
+            id="particularName"
+            type="text"
+            class="form-control"
+            formControlName="particular"
+            placeholder="Jeans or Tshirt..."
+            [class.is-invalid]="submitted && particularForm.get('particular')?.invalid"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && particularForm.get('particular')?.hasError('required')">
+            Name is required.
+          </div>
         </div>
-    </div>
+      </div>
+
+      <!-- Discount percentage -->
+      <div class="row g-2 align-items-center mb-2">
+        <label
+          for="discountPercentage"
+          class="col-12 col-md-3 col-form-label"
+        >
+          Discount %
+        </label>
+        <div class="col-12 col-md-9">
+          <input
+            id="discountPercentage"
+            type="number"
+            class="form-control"
+            formControlName="discountPercentage"
+            min="0" max="100" step="0.01"
+            [class.is-invalid]="submitted && particularForm.get('discountPercentage')?.invalid"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && particularForm.get('discountPercentage')?.hasError('required')">
+            Discount is required (0–100).
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button
+          type="submit"
+          class="btn-class mt-2"
+          mat-flat-button
+          color="primary"
+          [disabled]="particularForm.invalid || saveInProgress"
+        >
+          Create
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
-<app-progress-spinner class="example-margin" [mode]="mode" [backdropEnabled]="true" [positionGloballyCenter]="true" [displayProgressSpinner]="displayProgressSpinner">
+
+<app-progress-spinner
+  class="example-margin"
+  [mode]="mode"
+  [backdropEnabled]="true"
+  [positionGloballyCenter]="true"
+  [displayProgressSpinner]="displayProgressSpinner">
 </app-progress-spinner>

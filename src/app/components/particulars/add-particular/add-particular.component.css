@@ -1,4 +1,25 @@
 .starter-template {
-    padding: 55px 15px;
-    text-align: center;
+  padding: 55px 15px;
+  text-align: center;
+}
+/* Limit card width nicely on large screens, full width on phones */
+.responsive-card {
+  max-width: 720px; /* ~col-9 on lg screens */
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .starter-template h2 {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Optional: ensure inputs don’t shrink awkwardly in tight rows */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
