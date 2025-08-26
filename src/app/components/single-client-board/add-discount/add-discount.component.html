@@ -1,39 +1,71 @@
-<mat-horizontal-stepper linear #stepper>
-    <mat-step [stepControl]="billSettingForm">
-        <ng-template matStepLabel>Bill Settings</ng-template>
-        <form [formGroup]="billSettingForm">
-            <div class="row">
-                <div class="col-3 center">
-                    <mat-checkbox formControlName="isGstBill" (change)="gstSelectedEvent($event)">GST Bill?
-                    </mat-checkbox>
-                </div>
-                <div class="col-3">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Tax Percentage</mat-label>
-                        <input matInput placeholder="Tax Percentage" min="0" type="number" formControlName="taxPercentage">
-                    </mat-form-field>
-                </div>
-                <div class="col-3">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Discount Percentage</mat-label>
-                        <input matInput placeholder="Discount Percentage" min="0" type="number" formControlName="overallDiscountPercentage">
-                    </mat-form-field>
-                </div>
-            </div>
-        </form>
-        <div>
-            <button mat-button matStepperNext color="primary" [disabled]="!billSettingFormValueChanged || !billSettingForm.valid" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Next</button>
-        </div>
-    </mat-step>
-    <mat-step>
-        <ng-template matStepLabel>Bill Summery</ng-template>
-        <ng-template matStepContent>
-            <app-billing-summary [remarkFormControl]="remarkFormControl" [billSetting]="billSettingForm.getRawValue()" [subTotalBill]=data.invoiceDetails.subTotalAmount>
-            </app-billing-summary>
-            <div>
-                <button mat-button matStepperPrevious color="warn" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Back</button>
-                <button mat-button matStepperNext color="primary" [disabled]="!billSettingFormValueChanged || !remarkFormControl.valid" (click)="onSave()" class="mat-focus-indicator btn-class mt-2 mr-2 mat-flat-button mat-button-base mat-primary">Save</button>
-            </div>
-        </ng-template>
-    </mat-step>
-</mat-horizontal-stepper>
+<!-- Switch to <mat-stepper> so we can control orientation -->
+<mat-stepper [linear]="true" [orientation]="stepperOrientation$ | async" #stepper>
+
+  <mat-step [stepControl]="billSettingForm">
+    <ng-template matStepLabel>Bill Settings</ng-template>
+
+    <form [formGroup]="billSettingForm" class="grid">
+      <mat-checkbox
+        class="grid-item"
+        formControlName="isGstBill"
+        (change)="gstSelectedEvent($event)">
+        GST Bill?
+      </mat-checkbox>
+
+      <mat-form-field class="grid-item" appearance="outline">
+        <mat-label>Tax Percentage</mat-label>
+        <input
+          matInput
+          inputmode="decimal"
+          placeholder="Tax Percentage"
+          min="0"
+          type="number"
+          formControlName="taxPercentage">
+      </mat-form-field>
+
+      <mat-form-field class="grid-item" appearance="outline">
+        <mat-label>Discount Percentage</mat-label>
+        <input
+          matInput
+          inputmode="decimal"
+          placeholder="Discount Percentage"
+          min="0"
+          type="number"
+          formControlName="overallDiscountPercentage">
+      </mat-form-field>
+    </form>
+
+    <div class="actions">
+      <button
+        mat-flat-button
+        color="primary"
+        matStepperNext
+        [disabled]="!billSettingFormValueChanged || !billSettingForm.valid">
+        Next
+      </button>
+    </div>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Bill Summary</ng-template>
+    <ng-template matStepContent>
+      <app-billing-summary
+        [remarkFormControl]="remarkFormControl"
+        [billSetting]="billSettingForm.getRawValue()"
+        [subTotalBill]="data.invoiceDetails.subTotalAmount">
+      </app-billing-summary>
+
+      <div class="actions two">
+        <button mat-flat-button color="warn" matStepperPrevious>Back</button>
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="onSave()"
+          [disabled]="!billSettingFormValueChanged || !remarkFormControl.valid">
+          Save
+        </button>
+      </div>
+    </ng-template>
+  </mat-step>
+
+</mat-stepper>
