@@ -5,17 +5,16 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
-
   year = new Date().getFullYear();
-  
-  constructor() { }
+  sellView: [number, number] = [500, 400];
+  monthlyView: [number, number] = [500, 400];
+  topBuyerView: [number, number] = [500, 400];
+  topProductView: [number, number] = [500, 400];
 
-  ngOnInit(): void {
-    
-    
-  }
+  constructor() {}
 
+  ngOnInit(): void {}
 }

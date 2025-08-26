@@ -24,3 +24,87 @@ h2 {
     border-right: 1px solid #eee;
     padding-bottom: 50px;
 }
+:root {
+  --panel-pad: 16px;
+  --panel-gap: 16px;
+  --panel-radius: 12px;
+  --text-color: #444;
+  --border-color: #eee;
+}
+
+.container.dashboard {
+  padding: 12px;
+  color: var(--text-color);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* Grid: 1 column on phones, 2 columns from 768px */
+.grid {
+  display: grid;
+  gap: var(--panel-gap);
+}
+
+.grid.two-up {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .grid.two-up {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.panel {
+  background: #fff;
+  border: 1px solid #f4f4f4;
+  border-radius: var(--panel-radius);
+  padding: var(--panel-pad);
+}
+
+.panel-head h2 {
+  font-size: 1.125rem;
+  line-height: 1.3;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-head img {
+  width: 18px;
+  height: 18px;
+}
+
+.hoz-border {
+  border: 0;
+  border-top: 1px solid #f1f1f1;
+  margin: 8px 0 12px;
+}
+
+.section-split {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 20px 0;
+}
+
+/* Let child charts/components fill width; set sensible min-heights */
+.chart-wrap {
+  width: 100%;
+  min-height: 260px;
+}
+
+@media (min-width: 768px) {
+  .chart-wrap {
+    min-height: 320px;
+  }
+}
+@media (min-width: 1200px) {
+  .container.dashboard {
+    padding: 20px;
+  }
+  .grid {
+    gap: 20px;
+  }
+  .chart-wrap {
+    min-height: 380px;
+  }
+}
