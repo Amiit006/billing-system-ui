@@ -12,7 +12,7 @@
     <div [hidden]="!(this.dataSource.data.length > 0)">
         <!-- Mobile Card View -->
         <div class="mobile-view d-block d-md-none">
-            <div class="invoice-card" *ngFor="let element of dataSource.data">
+            <div class="invoice-card" *ngFor="let element of (dataSource.connect() | async) ?? []">
                 <div class="card shadow-sm mb-3">
                     <div class="card-header bg-primary text-white">
                         <div class="d-flex justify-content-between align-items-center">
