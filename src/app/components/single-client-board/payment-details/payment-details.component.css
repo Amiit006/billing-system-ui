@@ -62,10 +62,6 @@ table {
     color: #28a745 !important;
 }
 
-.mobile-view .text-primary {
-    color: #007bff !important;
-}
-
 .mobile-view .payment-mode-badge {
     display: inline-block;
     padding: 0.25rem 0.75rem;
@@ -135,6 +131,7 @@ table {
     
     .mobile-view .card-header {
         padding: 0.75rem;
+        background-color: #3f51b5;
     }
     
     .mobile-view .card-body {
@@ -186,10 +183,6 @@ table {
 /* Color utilities */
 .text-muted {
     color: #6c757d !important;
-}
-
-.text-primary {
-    color: #007bff !important;
 }
 
 .text-success {

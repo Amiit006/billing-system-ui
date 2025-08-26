@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -8,7 +9,7 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
@@ -16,7 +17,7 @@ import { PaymentService } from 'src/app/services/payment.service';
   templateUrl: './payment-details.component.html',
   styleUrls: ['./payment-details.component.css'],
 })
-export class PaymentDetailsComponent implements OnInit {
+export class PaymentDetailsComponent implements OnInit, OnDestroy {
   clientId;
   displayedColumns: string[] = ['paymentDate', 'amount', 'paymentMode'];
   dataSource = new MatTableDataSource<any>();
@@ -46,6 +47,10 @@ export class PaymentDetailsComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.showSpinner = false;
       });
+  }
+
+  ngOnDestroy(): void {
+    this.dataSource.disconnect();
   }
 
   onNewPaymentClick() {

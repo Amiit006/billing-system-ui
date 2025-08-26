@@ -12,9 +12,9 @@
     <div [hidden]="!(this.dataSource.data.length > 0)">
         <!-- Mobile Card View -->
         <div class="mobile-view d-block d-md-none">
-            <div class="payment-card" *ngFor="let element of dataSource.data">
+            <div class="payment-card" *ngFor="let element of (dataSource.connect() | async) ?? []">
                 <div class="card shadow-sm mb-3">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header text-white">
                         <div class="d-flex justify-content-between align-items-center">
                             <h6 class="mb-0">Payment Date</h6>
                             <span class="payment-date">
@@ -24,14 +24,20 @@
                     </div>
                     <div class="card-body p-3">
                         <div class="row mb-3">
-                            <div class="col-12 text-center">
+                            <div class="col-6 text-center">
                                 <small class="text-muted">Amount</small>
                                 <div class="h4 fw-bold text-success mb-0">
                                     {{element.amount | indianCurrency}}
                                 </div>
                             </div>
+                            <div class="col-6 text-center">
+                                <small class="text-muted">Payment Mode</small>
+                                <div class="mt-1">
+                                    <span class="payment-mode-badge">{{element.paymentMode}}</span>
+                                </div>
+                            </div>
                         </div>
-                        <hr>
+                        <!-- <hr>
                         <div class="row">
                             <div class="col-12 text-center">
                                 <small class="text-muted">Payment Mode</small>
@@ -39,7 +45,7 @@
                                     <span class="payment-mode-badge">{{element.paymentMode}}</span>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
