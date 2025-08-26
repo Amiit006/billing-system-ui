@@ -19,7 +19,7 @@ export class PaymentService {
   getPaymentByClientId(clientId) {
     let params = new HttpParams();
     params = params.append('clientId', clientId.toString());
-    return this.http.get<InvoiceOverview[]>(environment.baseUrl + "payment", {params: params});
+    return this.http.get<any>(environment.baseUrl + "payment", {params: params});
   }
 
   createPayment(payload) {
