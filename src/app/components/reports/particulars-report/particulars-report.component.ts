@@ -15,9 +15,9 @@ import * as moment from 'moment';
 })
 export class ParticularsReportComponent implements OnInit {
 
-  displayedColumns: string[] = ['particulars', 'totalSell'];
-  displayedColumnsValue: string[] = ['Particulars', 'Total Sell'];
-
+  displayedColumns: string[] = ['particulars', 'quantity', 'inDZ', 'discountTotal'];
+  displayedColumnsValue: string[] = ['Particulars', 'Quantity',' Qnty in Dz', 'Total Sell'];
+  particularName = '';
   dataSource = new MatTableDataSource();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -56,9 +56,9 @@ export class ParticularsReportComponent implements OnInit {
     //     this.single = data;
     //     this.reportStatus = "loaded";
     //   }, error => console.log(error.error.error));
-    this.reportService.getParticularsReport(from_date, to_date).subscribe(data => {
+    this.reportService.getParticularsReport(from_date, to_date, this.particularName).subscribe(data => {
       console.log(data);
-      this.single = data.map(datum => ({name: datum.particulars, value: datum.totalSell}))
+      this.single = data.map(datum => ({name: datum.particulars, value: datum.discountTotal}))
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
@@ -68,7 +68,7 @@ export class ParticularsReportComponent implements OnInit {
 
   downloadFile(data: any) {
     // this.downloadService.downloadFile(data, "sells_report_" + moment(new Date()).format('yyyy-MM-DD-hh-mm-ss')+".csv");
-    const totalGrandTotalAmount = data.reduce((n, { totalSell }) => n + totalSell, 0);
+    const totalGrandTotalAmount = data.reduce((n, { discountTotal }) => n + discountTotal, 0);
     const replacer = (key, value) => value === null ? '' : value; // specify how you want to handle null values here
     const header = Object.keys(data[0]);
     let csv = data.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));

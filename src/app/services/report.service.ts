@@ -48,10 +48,11 @@ export class ReportService {
   }
 
   
-  getParticularsReport(from_date: string, to_date: string) {
+  getParticularsReport(from_date: string, to_date: string, particularName) {
     let params = new HttpParams();
     params = params.append('from_date', from_date);
     params = params.append('to_date', to_date);
+    params = params.append('q', particularName);
     return this.http.get<any[]>(environment.baseUrl + "report/particulars", { params: params }); 
   }
 
