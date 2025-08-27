@@ -1,8 +1,14 @@
+/* ============================================ */
+/* NGBOOTSTRAP TYPEAHEAD DROPDOWN STYLING */
+/* ============================================ */
+
+/* Ensure typeahead container doesn't restrict dropdown */
 ngb-typeahead-window {
   position: fixed !important;
   z-index: 9999 !important;
 }
 
+/* Main dropdown container */
 .dropdown-menu {
   background-color: #ffffff !important;
   border: 2px solid #4e73df !important;
@@ -18,6 +24,7 @@ ngb-typeahead-window {
   position: absolute !important;
 }
 
+/* Individual dropdown items */
 .dropdown-item {
   padding: 12px 16px !important;
   color: #333333 !important;
@@ -33,6 +40,7 @@ ngb-typeahead-window {
   text-align: left !important;
 }
 
+/* Hover state for dropdown items */
 .dropdown-item:hover,
 .dropdown-item:focus {
   background-color: #4e73df !important;
@@ -42,16 +50,19 @@ ngb-typeahead-window {
   text-decoration: none !important;
 }
 
+/* Active/highlighted item */
 .dropdown-item.active {
   background-color: #1cc88a !important;
   color: #ffffff !important;
   font-weight: 600 !important;
 }
 
+/* Remove border from last item */
 .dropdown-item:last-child {
   border-bottom: none !important;
 }
 
+/* Custom scrollbar for dropdown */
 .dropdown-menu::-webkit-scrollbar {
   width: 6px;
 }
@@ -70,18 +81,23 @@ ngb-typeahead-window {
   background: #224abe;
 }
 
+/* Style for "no results" message */
 .dropdown-item.disabled {
   color: #6c757d !important;
   background-color: #f8f9fa !important;
   font-style: italic !important;
 }
 
+/* Override any Bootstrap conflicting styles */
 .dropdown-menu.show {
   display: block !important;
   position: absolute !important;
   transform: none !important;
 }
 
+/* ============================================ */
+/* CALCULATED FIELDS */
+/* ============================================ */
 
 .calculated-field {
   background: linear-gradient(135deg, #f8f9fc 0%, #eaecf4 100%);
@@ -117,6 +133,9 @@ ngb-typeahead-window {
   transition: all 0.3s ease;
 }
 
+/* ============================================ */
+/* COST ALLOCATION SUMMARY */
+/* ============================================ */
 
 .allocation-summary {
   background: #f8f9fc;
@@ -173,6 +192,9 @@ ngb-typeahead-window {
   font-weight: 700;
 }
 
+/* ============================================ */
+/* BUTTON STYLING */
+/* ============================================ */
 
 .btn {
   border-radius: 6px;
@@ -238,6 +260,9 @@ ngb-typeahead-window {
   width: 100%;
 }
 
+/* ============================================ */
+/* PAYMENT ROW STYLING */
+/* ============================================ */
 
 .payment-row {
   background: #f8f9fc;
@@ -246,6 +271,9 @@ ngb-typeahead-window {
   border: 1px solid #e3e6f0;
 }
 
+/* ============================================ */
+/* VALIDATION STYLING */
+/* ============================================ */
 
 .is-invalid {
   border-color: #e74a3b;
@@ -270,7 +298,11 @@ ngb-typeahead-window {
   color: #721c24;
 }
 
+/* ============================================ */
+/* RESPONSIVE DESIGN - MOBILE FIRST */
+/* ============================================ */
 
+/* Mobile Styles (Default) */
 @media (max-width: 767.98px) {
   .container-fluid {
     padding: 0 10px;
@@ -294,7 +326,8 @@ ngb-typeahead-window {
     font-size: 0.8rem;
   }
   
-    .mobile-product-card .card-body {
+  /* Mobile product cards specific styles */
+  .mobile-product-card .card-body {
     padding: 0.75rem;
   }
   
@@ -308,7 +341,8 @@ ngb-typeahead-window {
     min-height: 32px;
   }
   
-    .dropdown-menu {
+  /* Adjust dropdown for mobile */
+  .dropdown-menu {
     min-width: 200px !important;
     font-size: 0.8rem !important;
     max-height: 250px !important;
@@ -318,7 +352,8 @@ ngb-typeahead-window {
     padding: 10px 12px !important;
   }
   
-    .btn {
+  /* Better touch targets for mobile */
+  .btn {
     min-height: 44px;
     padding: 0.5rem 1rem;
   }
@@ -330,20 +365,25 @@ ngb-typeahead-window {
   
   .form-control {
     min-height: 44px;
-    font-size: 16px;   }
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
   
   .form-control-sm {
     min-height: 36px;
     font-size: 14px;
   }
   
-    .input-group .form-control {
-    font-size: 16px;   }
+  /* Mobile form adjustments */
+  .input-group .form-control {
+    font-size: 16px; /* Prevents zoom */
+  }
   
   select.form-control {
-    font-size: 16px;   }
+    font-size: 16px; /* Prevents zoom */
+  }
 }
 
+/* Small mobile screens */
 @media (max-width: 575.98px) {
   .calculated-field {
     font-size: 0.75rem;
@@ -363,28 +403,36 @@ ngb-typeahead-window {
     padding: 0.5rem;
   }
   
-    .dropdown-menu {
+  /* Further adjust dropdown for small screens */
+  .dropdown-menu {
     min-width: 180px !important;
     font-size: 0.75rem !important;
   }
   
-    .mobile-actions {
+  /* Stack elements better on small screens */
+  .mobile-actions {
     flex-direction: column;
     gap: 0.5rem;
     align-items: flex-end;
   }
 }
 
+/* Desktop Styles */
 @media (min-width: 768px) {
-    .mobile-products {
+  /* Hide mobile cards on desktop */
+  .mobile-products {
     display: none !important;
   }
   
-    .table-responsive {
+  /* Show desktop table */
+  .table-responsive {
     display: block !important;
   }
 }
 
+/* ============================================ */
+/* ANIMATIONS */
+/* ============================================ */
 
 @keyframes fadeIn {
   from {
@@ -397,10 +445,14 @@ ngb-typeahead-window {
   }
 }
 
+/* Focus Management */
 .form-control:focus {
   z-index: 2;
 }
 
+/* ============================================ */
+/* UTILITY CLASSES */
+/* ============================================ */
 
 .text-center {
   text-align: center !important;
@@ -472,6 +524,7 @@ ngb-typeahead-window {
   }
 }
 
+/* Font Awesome Icons */
 .fa {
   margin-right: 0.25rem;
 }
@@ -480,6 +533,9 @@ ngb-typeahead-window {
   font-size: 0.875rem;
 }
 
+/* ============================================ */
+/* ENHANCED FOCUS STATES FOR ACCESSIBILITY */
+/* ============================================ */
 
 .form-control:focus,
 .btn:focus,
@@ -488,6 +544,9 @@ select:focus {
   outline-offset: 2px;
 }
 
+/* ============================================ */
+/* PRINT STYLES */
+/* ============================================ */
 
 @media print {
   .btn,
@@ -511,6 +570,9 @@ select:focus {
   }
 }
 
+/* ============================================ */
+/* DISCOUNT PERCENT FIELD SPECIFIC STYLING */
+/* ============================================ */
 
 #discountPercent {
   cursor: help;
@@ -527,11 +589,14 @@ select:focus {
   border-color: #ffeaa7;
 }
 
+/* Tooltip-like styling for the hint */
 label[for="discountPercent"] small {
   font-style: italic;
   font-size: 0.7rem;
 }component.css */
+/* Updated version with mobile support and better UX */
 
+/* Season Header */
 .season-title {
   color: #2c3e50;
   font-weight: 600;
@@ -544,6 +609,7 @@ label[for="discountPercent"] small {
   margin-bottom: 0;
 }
 
+/* Card Styling */
 .card {
   border: 1px solid #e3e6f0;
   border-radius: 8px;
@@ -571,6 +637,7 @@ label[for="discountPercent"] small {
   padding: 1.5rem 1.25rem;
 }
 
+/* Form Controls */
 .form-group {
   margin-bottom: 1rem;
 }
@@ -592,6 +659,7 @@ label[for="discountPercent"] small {
   font-size: 0.875rem;
 }
 
+/* Input Groups */
 .input-group-text {
   background-color: #f8f9fc;
   border: 1px solid #d1d3e2;
@@ -611,10 +679,12 @@ label {
   font-weight: 400;
 }
 
+/* Required Field Indicator */
 .text-danger {
   color: #e74a3b !important;
 }
 
+/* Badge Styling */
 .badge {
   border-radius: 6px;
   font-weight: 500;
@@ -638,6 +708,9 @@ label {
   font-size: 0.75rem;
 }
 
+/* ============================================ */
+/* MOBILE PRODUCT CARDS */
+/* ============================================ */
 
 .mobile-products {
   display: block;
@@ -674,6 +747,9 @@ label {
   margin-bottom: 0.5rem;
 }
 
+/* ============================================ */
+/* DESKTOP TABLE STYLING */
+/* ============================================ */
 
 .table {
   margin-bottom: 0;
@@ -707,6 +783,7 @@ label {
   overflow: hidden;
 }
 
+/* Product Row Styling */
 .product-row {
   transition: background-color 0.3s ease;
   animation: fadeIn 0.3s ease-out;
@@ -716,6 +793,7 @@ label {
   background-color: #f8f9fc;
 }
 
+/* Product Input Wrapper - Desktop */
 .product-input-wrapper {
   display: flex;
   align-items: center;
