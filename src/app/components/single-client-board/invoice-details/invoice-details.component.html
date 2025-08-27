@@ -1,51 +1,124 @@
 <app-round-spinner *ngIf="showSpinner"></app-round-spinner>
 <div [hidden]="showSpinner">
-    <div class="col text-center">
-        <button class="mt-2 mb-2" mat-flat-button color="primary" (click)="onNewBillClick()">Create a bill</button>
+    <div class="text-center mb-3">
+        <button class="btn-create-bill" mat-flat-button color="primary" (click)="onNewBillClick()">Create a bill</button>
     </div>
+    
     <div *ngIf="this.dataSource.data.length === 0">
         <app-no-result [h3TextInput]="'Result empty'" [pTextInput]="'There is no invoice for this client'">
         </app-no-result>
     </div>
+    
     <div [hidden]="!(this.dataSource.data.length > 0)">
-        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-            <ng-container matColumnDef="invoiceDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice Date</th>
-                <td mat-cell *matCellDef="let element"> 
-                    {{ element.invoiceDate ? (element.invoiceDate | date: 'dd-MMM-yyyy') : 'DD-MMM-YYYY' }}
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="subTotalAmount">
-                <th mat-header-cell *matHeaderCellDef>Subtotal</th>
-                <td mat-cell *matCellDef="let element"> {{element.subTotalAmount | indianCurrency}} </td>
-            </ng-container>
-            <ng-container matColumnDef="taxAmount">
-                <th mat-header-cell *matHeaderCellDef>Tax</th>
-                <td mat-cell *matCellDef="let element"> + {{element.taxAmount | indianCurrency}} </td>
-            </ng-container>
-            <ng-container matColumnDef="discountAmount">
-                <th mat-header-cell *matHeaderCellDef>Discount</th>
-                <td mat-cell *matCellDef="let element"> - {{element.discountAmount | indianCurrency}} </td>
-            </ng-container>
-            <ng-container matColumnDef="payment">
-                <th mat-header-cell *matHeaderCellDef>Payment</th>
-                <td mat-cell *matCellDef="let element"> - {{element.payment.amount | indianCurrency}} </td>
-            </ng-container>
-            <ng-container matColumnDef="grandTotalAmount">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Grand Total</th>
-                <td mat-cell *matCellDef="let element"> {{ getGrandTotalAmount(element) | indianCurrency}} </td>
-            </ng-container>
-            <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef> Action </th>
-                <td mat-cell *matCellDef="let element">
-                    <!-- <a routerLink="/clients/{{element.clientId}}" mat-flat-button color="primary" class="mr-5">View</a> -->
-                    <button class="mt-2 mb-2" mat-flat-button color="primary" (click)="onViewClick(element.invoiceId)">View</button>
-                    <button class="mt-2 mb-2 ml-2" matTooltip="{{element.remarks}}" matTooltipPosition="right" mat-flat-button color="primary" (click)="onAddDiscountClick(element.invoiceId)">Add Discount</button>
-                </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-        <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+        <!-- Mobile Card View -->
+        <div class="mobile-view d-block d-md-none">
+            <div class="invoice-card" *ngFor="let element of (dataSource.connect() | async) ?? []">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">Invoice Date</h6>
+                            <span class="invoice-date">
+                                {{ element.invoiceDate ? (element.invoiceDate | date: 'dd-MMM-yyyy') : 'DD-MMM-YYYY' }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <small class="text-muted">Subtotal</small>
+                                <div class="fw-bold">{{element.subTotalAmount | indianCurrency}}</div>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Tax</small>
+                                <div class="fw-bold text-success">+ {{element.taxAmount | indianCurrency}}</div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <small class="text-muted">Discount</small>
+                                <div class="fw-bold text-warning">- {{element.discountAmount | indianCurrency}}</div>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Payment</small>
+                                <div class="fw-bold text-info">- {{element.payment.amount | indianCurrency}}</div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <small class="text-muted">Grand Total</small>
+                                <div class="h5 fw-bold text-primary mb-0">
+                                    {{ getGrandTotalAmount(element) | indianCurrency}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-sm" (click)="onViewClick(element.invoiceId)">
+                                View Invoice
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm" 
+                                    [matTooltip]="element.remarks" 
+                                    matTooltipPosition="above"
+                                    (click)="onAddDiscountClick(element.invoiceId)">
+                                Add Discount
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="desktop-view d-none d-md-block">
+            <div class="table-container">
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                    <ng-container matColumnDef="invoiceDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Invoice Date</th>
+                        <td mat-cell *matCellDef="let element"> 
+                            {{ element.invoiceDate ? (element.invoiceDate | date: 'dd-MMM-yyyy') : 'DD-MMM-YYYY' }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="subTotalAmount">
+                        <th mat-header-cell *matHeaderCellDef>Subtotal</th>
+                        <td mat-cell *matCellDef="let element"> {{element.subTotalAmount | indianCurrency}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="taxAmount">
+                        <th mat-header-cell *matHeaderCellDef>Tax</th>
+                        <td mat-cell *matCellDef="let element"> + {{element.taxAmount | indianCurrency}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="discountAmount">
+                        <th mat-header-cell *matHeaderCellDef>Discount</th>
+                        <td mat-cell *matCellDef="let element"> - {{element.discountAmount | indianCurrency}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="payment">
+                        <th mat-header-cell *matHeaderCellDef>Payment</th>
+                        <td mat-cell *matCellDef="let element"> - {{element.payment.amount | indianCurrency}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="grandTotalAmount">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Grand Total</th>
+                        <td mat-cell *matCellDef="let element"> {{ getGrandTotalAmount(element) | indianCurrency}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button class="me-2 mb-1" mat-flat-button color="primary" (click)="onViewClick(element.invoiceId)">
+                                View
+                            </button>
+                            <button class="mb-1 ml-2" matTooltip="{{element.remarks}}" matTooltipPosition="right" 
+                                    mat-flat-button color="primary" (click)="onAddDiscountClick(element.invoiceId)">
+                                Add Discount
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Pagination (visible on both views) -->
+        <div class="pagination-container mt-3">
+            <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
     </div>
 </div>

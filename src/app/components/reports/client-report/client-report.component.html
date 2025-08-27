@@ -9,7 +9,7 @@
         </form>
     </div>
     <div style="margin-top: 1rem;">
-        <app-date-range-selector (rangeEmitter)="setRangeEmitter($event)"></app-date-range-selector>
+        <app-date-range-selector [rangeFromParent]="rangeDefault" (rangeEmitter)="setRangeEmitter($event)"></app-date-range-selector>
     </div>
     <div *ngIf="reportStatus === 'notloaded'" class="section text-center">
         <app-no-result [imageUrl]="'/assets/init.svg'" [h3TextInput]="'Build a report'" [pTextInput]="'Use the above form to generate a report'">

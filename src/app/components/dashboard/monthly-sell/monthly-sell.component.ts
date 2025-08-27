@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
-import { single } from '../data';
-
+import { AutoViewDirective } from 'src/app/directives/auto-view.directive';
 @Component({
   selector: 'app-monthly-sell',
   templateUrl: './monthly-sell.component.html',
@@ -11,7 +10,7 @@ export class MonthlySellComponent implements OnInit {
   monthlySellList: any[] = [];
   multi: any[];
 
-  view: any[] = [500, 400];
+  @Input() view: any[] = [500, 400];
 
   // options
   showXAxis = true;
@@ -28,7 +27,8 @@ export class MonthlySellComponent implements OnInit {
   };
   
   showData = false;
-  
+  monthlyView: [number, number] = [400, 260];
+
   constructor(private dashboardService: DashboardService) { }
 
   ngOnInit(): void {

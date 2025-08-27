@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/services/dashboard.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class TopProductComponent implements OnInit {
   topProductList: any[] = [];
   topBuyerList: any[] = [];
   
-  view: any[] = [500, 400];
+  @Input() view: any[] = [500, 400];
 
   // options
   showXAxis: boolean = true;

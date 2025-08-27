@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ChartResponse } from 'src/app/model/chart-response.model';
 import { DashboardService } from 'src/app/services/dashboard.service';
@@ -11,7 +11,7 @@ import { DashboardService } from 'src/app/services/dashboard.service';
 export class SellCollectionComponent implements OnInit {
   
   single: ChartResponse[] = [];
-  view: any[] = [550, 200];
+  @Input() view: any[] = [550, 200];
   year = new Date().getFullYear();
 
   colorScheme = {

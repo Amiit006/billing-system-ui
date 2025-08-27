@@ -1,45 +1,49 @@
-<div class="container">
-    <div style="margin-bottom: 50px;"></div>
-    <div class="row">
-        <div class="col6 sell-stats">
-            <h2><span><img src="/assets/bar-chart.svg"></span>Sell/Collection Stats - {{year}}</h2>
-            <hr class="hoz-border">
-            <br>
-        </div>
-        <div class="col6 monthly-stats" style="padding-left: 4%;">
-            <h2><span><img src="/assets/bar-chart.svg"></span>Monthly Sell Stats</h2>
-            <hr class="hoz-border">
-            <br>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col6 sell-stats border-right">
-            <app-sell-collection></app-sell-collection>
-        </div>
-        <div class="col6 monthly-stats" style="padding-left: 4%;">
-            <app-monthly-sell></app-monthly-sell>
-        </div>
-    </div>
-    <br>
-    <hr><br>
-    <div class="row">
-        <div class="col6 sell-stats">
-            <h2><span><img src="/assets/bar-chart.svg"></span>Top Buyers</h2>
-            <hr class="hoz-border">
-            <br>
-        </div>
-        <div class="col6 monthly-stats" style="padding-left: 4%;">
-            <h2><span><img src="/assets/bar-chart.svg"></span>Top Products</h2>
-            <hr class="hoz-border">
-            <br>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col6 sell-stats border-right">
-            <app-top-buyer></app-top-buyer>
-        </div>
-        <div class="col6 monthly-stats" style="padding-left: 4%;">
-            <app-top-product></app-top-product>
-        </div>
-    </div>
+<div class="dashboard container">
+  <!-- Row 1 -->
+  <div class="grid two-up">
+    <section class="panel">
+      <header class="panel-head">
+        <h2><span><img src="/assets/bar-chart.svg" alt="" /></span> Sell/Collection Stats - {{ year }}</h2>
+      </header>
+      <hr class="hoz-border" />
+      <div class="chart-wrap" autoView (viewChange)="sellView = $event">
+        <app-sell-collection [view]="sellView"></app-sell-collection>
+      </div>
+    </section>
+
+    <section class="panel">
+      <header class="panel-head">
+        <h2><span><img src="/assets/bar-chart.svg" alt="" /></span> Monthly Sell Stats</h2>
+      </header>
+      <hr class="hoz-border" />
+      <div class="chart-wrap" autoView (viewChange)="monthlyView = $event">
+        <app-monthly-sell [view]="monthlyView"></app-monthly-sell>
+      </div>
+    </section>
+  </div>
+
+  <hr class="section-split" />
+
+  <!-- Row 2 -->
+  <div class="grid two-up">
+    <section class="panel">
+      <header class="panel-head">
+        <h2><span><img src="/assets/bar-chart.svg" alt="" /></span> Top Buyers</h2>
+      </header>
+      <hr class="hoz-border" />
+      <div class="chart-wrap" autoView (viewChange)="topBuyerView = $event">
+        <app-top-buyer [view]="topBuyerView"></app-top-buyer>
+      </div>
+    </section>
+
+    <section class="panel">
+      <header class="panel-head">
+        <h2><span><img src="/assets/bar-chart.svg" alt="" /></span> Top Products</h2>
+      </header>
+      <hr class="hoz-border" />
+      <div class="chart-wrap" autoView (viewChange)="topProductView = $event">
+        <app-top-product [view]="topProductView"></app-top-product>
+      </div>
+    </section>
+  </div>
 </div>

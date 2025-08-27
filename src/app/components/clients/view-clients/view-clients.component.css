@@ -1,24 +1,43 @@
-table {
-    width: 100%;
-}
+.fullwidth { width: 100%; }
 
 .starter-template {
-    padding: 55px 15px 15px 15px;
-    text-align: center;
+  padding: 55px 15px 15px 15px;
+  text-align: center;
 }
 
-.icon {
-    cursor: pointer;
+a:hover { text-decoration: none; }
+
+/* Mobile card list */
+.card-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 
-th.mat-sort-header-sorted {
-    color: black;
+.client-card .card-title {
+  font-size: 16px;
 }
 
-.mat-column-select {
-    overflow: initial;
+.client-card .kv {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  margin: 8px 0 12px;
+}
+.client-card .kv div span {
+  display: block;
+  font-size: 12px;
+  opacity: .7;
+}
+.client-card .actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
-a:hover {
-    text-decoration: none;
+/* make cards two-up on big phones/landscape if you like */
+@media (min-width: 600px) and (max-width: 959px) {
+  .card-list {
+    grid-template-columns: 1fr 1fr;
+  }
 }

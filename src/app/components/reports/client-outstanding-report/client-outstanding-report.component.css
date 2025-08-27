@@ -1,0 +1,128 @@
+/* Page container padding */
+.container { padding: 0 16px; }
+
+/* Charts + CSV action layout */
+.charts-and-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px 16px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Desktop table sizing */
+.table-wrapper { width: 100%; overflow-x: auto; }
+.full-width { width: 100%; }
+
+/* Mobile list styling */
+.mobile-list .mat-list-item {
+  height: auto;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.list-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.list-row .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 70%;
+}
+
+.list-row .amt {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Stack the CSV button below charts on small screens */
+@media (max-width: 768px) {
+  .charts-and-actions { grid-template-columns: 1fr; }
+  .actions { justify-content: flex-start; }
+}
+
+
+/* MOBILE ONLY */
+@media (max-width: 768px) {
+  .mobile-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .grid-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 8px 12px;
+    background: #fff;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .hdr.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    padding: 6px 0;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .hdr.btn.right { justify-self: end; }
+
+  .sort-icn { font-size: 18px; line-height: 1; }
+
+  .grid-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: baseline;
+    padding: 12px;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  .grid-row + .grid-row { margin-top: 8px; }
+
+  .cell.name {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 78vw;
+  }
+
+  .cell.amt {
+    font-variant-numeric: tabular-nums;
+    justify-self: end;
+  }
+
+  /* Hide the desktop paginator on mobile if you want */
+  mat-paginator { display: none !important; }
+}

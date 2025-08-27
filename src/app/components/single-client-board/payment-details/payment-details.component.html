@@ -1,33 +1,85 @@
 <app-round-spinner *ngIf="showSpinner"></app-round-spinner>
 <div [hidden]="showSpinner">
-    <div class="col text-center" *ngIf="this.dataSource.data.length > 0">
-        <button class="mt-2 mb-2" mat-flat-button color="primary" (click)="onNewPaymentClick()">Add Payment</button>
+    <div class="text-center mb-3">
+        <button class="btn-add-payment" mat-flat-button color="primary" (click)="onNewPaymentClick()">Add Payment</button>
     </div>
+    
     <div *ngIf="this.dataSource.data.length === 0">
         <app-no-result [h3TextInput]="'Result empty'" [pTextInput]="'There is no payment made for this client'">
         </app-no-result>
     </div>
+    
     <div [hidden]="!(this.dataSource.data.length > 0)">
-        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-            <ng-container matColumnDef="paymentDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Date</th>
-                <td mat-cell *matCellDef="let element"> 
-                    {{ element.paymentDate ? (element.paymentDate | date: 'dd-MMM-yyyy') : 'DD-MMM-YYYY' }}
-                </td>
-            </ng-container>
+        <!-- Mobile Card View -->
+        <div class="mobile-view d-block d-md-none">
+            <div class="payment-card" *ngFor="let element of (dataSource.connect() | async) ?? []">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">Payment Date</h6>
+                            <span class="payment-date">
+                                {{ element.paymentDate ? (element.paymentDate | date: 'dd-MMM-yyyy') : 'DD-MMM-YYYY' }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="row mb-3">
+                            <div class="col-6 text-center">
+                                <small class="text-muted">Amount</small>
+                                <div class="h4 fw-bold text-success mb-0">
+                                    {{element.amount | indianCurrency}}
+                                </div>
+                            </div>
+                            <div class="col-6 text-center">
+                                <small class="text-muted">Payment Mode</small>
+                                <div class="mt-1">
+                                    <span class="payment-mode-badge">{{element.paymentMode}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <hr>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <small class="text-muted">Payment Mode</small>
+                                <div class="mt-1">
+                                    <span class="payment-mode-badge">{{element.paymentMode}}</span>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <ng-container matColumnDef="amount">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
-                <td mat-cell *matCellDef="let element"> {{element.amount | indianCurrency}} </td>
-            </ng-container>
+        <!-- Desktop Table View -->
+        <div class="desktop-view d-none d-md-block">
+            <div class="table-container">
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                    <ng-container matColumnDef="paymentDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Date</th>
+                        <td mat-cell *matCellDef="let element"> 
+                            {{ element.paymentDate ? (element.paymentDate | date: 'dd-MMM-yyyy') : 'DD-MMM-YYYY' }}
+                        </td>
+                    </ng-container>
 
-            <ng-container matColumnDef="paymentMode">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Mode</th>
-                <td mat-cell *matCellDef="let element"> {{element.paymentMode}} </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+                        <td mat-cell *matCellDef="let element"> {{element.amount | indianCurrency}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="paymentMode">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Mode</th>
+                        <td mat-cell *matCellDef="let element"> {{element.paymentMode}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Pagination (visible on both views) -->
+        <div class="pagination-container mt-3">
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
     </div>
 </div>
