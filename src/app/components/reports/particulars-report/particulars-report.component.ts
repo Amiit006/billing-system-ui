@@ -15,8 +15,8 @@ import * as moment from 'moment';
 })
 export class ParticularsReportComponent implements OnInit {
 
-  displayedColumns: string[] = ['particulars', 'quantity', 'inDZ', 'discountTotal'];
-  displayedColumnsValue: string[] = ['Particulars', 'Quantity',' Qnty in Dz', 'Total Sell'];
+  displayedColumns: string[] = ['particulars', 'quantity', 'inDZ', 'discountTotal', 'pricePerUnit'];
+  displayedColumnsValue: string[] = ['Particulars', 'Quantity',' Qnty in Dz', 'Total Sell', 'Price Per Unit'];
   particularName = '';
   dataSource = new MatTableDataSource();
   @ViewChild(MatSort) sort: MatSort;
