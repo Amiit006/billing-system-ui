@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { PaymentService } from '../../services/payment.service';
 import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-payments',
@@ -27,7 +28,8 @@ export class PaymentsComponent implements OnInit {
   });
 
   constructor(private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any,
-    private paymentService: PaymentService, public dialogRef: MatDialogRef<PaymentsComponent>) { }
+    private paymentService: PaymentService, public dialogRef: MatDialogRef<PaymentsComponent>,
+    private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.paymentForm.get("chequeNo").disable();
@@ -64,6 +66,7 @@ export class PaymentsComponent implements OnInit {
       this.dialogRef.close(result);
     }, error => {
       console.log(error);
+      this.toastrService.error(error.error.error, 'Error');
     });
   }
 
