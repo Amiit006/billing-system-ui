@@ -17,6 +17,7 @@
                         element ? 'Show Less' : 'Show Payment'}}</button>
                     <button *ngIf="element.transport" class="mt-2 mb-2" mat-flat-button color="primary" (click)="expandedElement1 = expandedElement1 === element ? null : element">{{expandedElement1 ===
                         element ? 'Hide Transport' : 'Show Transport'}}</button>
+                    <button *ngIf="showPurchaseButtonVisible(element.purchaseId)" class="ml-2 mb-2" mat-stroked-button color="primary" (click)="openShowPurchase(element.purchaseId)">Show Purchase</button>
                 </td>
             </ng-template>
             <ng-template #payments>

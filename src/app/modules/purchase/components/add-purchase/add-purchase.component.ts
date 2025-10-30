@@ -31,6 +31,10 @@ export class AddPurchaseComponent implements OnInit {
   totalPurchaseAmount = 0;
   totalOverhead = 0;
   grandTotal = 0;
+  
+  mode: 'add' | 'edit' | 'view' = 'add';
+  purchaseId?: number;
+  loading = false;
 
   /**
    * Main purchase form following billing pattern
@@ -91,8 +95,20 @@ export class AddPurchaseComponent implements OnInit {
     private purchaseService: PurchaseService,
     private dialog: MatDialog
   ) {
-    // Get selected season from navigation state
-    this.selectedSeason = this.router.getCurrentNavigation()?.extras?.state?.selectedSeason;
+    // Retrieve selectedSeason from navigation state or localStorage fallback
+    const navState = this.router.getCurrentNavigation()?.extras?.state;
+    if (navState && navState.selectedSeason) {
+      this.selectedSeason = navState.selectedSeason;
+      localStorage.setItem('selectedSeason', JSON.stringify(this.selectedSeason)); // cache it
+    } else {
+      // fallback: retrieve from localStorage
+      const cached = localStorage.getItem('selectedSeason');
+      if (cached) {
+        this.selectedSeason = JSON.parse(cached);
+      }
+    }
+
+    // now set date bounds safely
     if (this.selectedSeason) {
       this.minDate = new Date(this.selectedSeason.startDate);
       this.maxDate = new Date(this.selectedSeason.endDate);
@@ -101,10 +117,119 @@ export class AddPurchaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
-    this.purchaseForm.valueChanges.subscribe(() => {
-      this.calculateTotals();
-    });
+    this.purchaseForm.valueChanges.pipe(debounceTime(50)).subscribe(() => this.calculateTotals());
+
     this.setupFormSubscriptions();
+    // Read query params (mode, purchaseId) — we support route-based opening
+    this.activeRoute.queryParams.subscribe(params => {
+      if (params.mode) {
+        this.mode = params.mode;
+      }
+      if (params.purchaseId) {
+        this.purchaseId = +params.purchaseId;
+      }
+
+      if (this.mode === 'view' && this.purchaseId) {
+        this.loadAndLock(this.purchaseId);
+      } 
+      // else leave as add
+    });
+  }
+
+  loadAndLock(purchaseId: number): void {
+    this.loading = true;
+    this.purchaseService.getPurchaseWithProducts(purchaseId).subscribe(
+      (resp: any) => {
+        this.loading = false;
+        const dto = (resp && resp.data) ? resp.data : resp;
+
+        // Reset items and slNoCount so createProductFormGroup assigns correct slNo
+        this.slNoCount = 0;
+        const itemsArray = this.items;
+        itemsArray.clear();
+
+        // Top-level fields - adapt keys if your DTO uses different names
+        this.purchaseForm.patchValue({
+          partyName: dto.partyName || dto.party || '',
+          purchaseDate: dto.purchaseDate ? new Date(dto.purchaseDate) : (dto.purchaseDateString ? new Date(dto.purchaseDateString) : this.purchaseForm.get('purchaseDate')?.value),
+          packingCharge: dto.packingCharges ?? dto.packingCharge ?? this.purchaseForm.get('packingCharge')?.value,
+          taxAmount: dto.taxAmount ?? dto.tax ?? this.purchaseForm.get('taxAmount')?.value,
+          discountAmount: dto.discountAmount ?? dto.discount ?? this.purchaseForm.get('discountAmount')?.value,
+          extraDiscountAmount: dto.extraDiscountAmount ?? dto.extraDisc ?? this.purchaseForm.get('extraDiscountAmount')?.value,
+          // final amount not stored directly, will be computed
+        });
+
+        // Transport - adapt keys if needed
+        if (dto.transport) {
+          this.purchaseForm.get('transport')?.patchValue({
+            transportName: dto.transport.transportName || dto.transportName || '',
+            amount: dto.transport.transportAmount ?? dto.transport.amount ?? 0,
+            consignmentNumber: dto.transport.consignmentNo ?? dto.transport.consignmentNumber ?? ''
+          });
+        }
+
+        // Items/products: DTO may provide items under different keys - try common ones
+        const productsArray = dto.items || dto.products || dto.purchaseProducts || dto.purchase_items || [];
+        (productsArray as any[]).forEach(p => {
+          const fg = this.createProductFormGroup();
+          // patch values - adapt field names used by your backend
+          fg.patchValue({
+            productId: p.productId ?? p.id ?? p.product_id ?? null,
+            productName: p.productName ?? p.name ?? p.product_name ?? '',
+            quantity: p.quantity ?? p.qty ?? 0,
+            ratePerUnit: p.ratePerUnit ?? p.rate ?? p.unitPrice ?? 0,
+            total: p.totalAmount ?? p.total ?? ( (p.quantity ?? 0) * (p.ratePerUnit ?? p.rate ?? p.unitPrice ?? 0) ),
+            category: p.category ?? '',
+            subCategory: p.subCategory ?? p.sub_category ?? '',
+            unit: p.unit ?? p.uom ?? 'pieces',
+            isNewProduct: false
+          });
+
+          // optional: if DTO includes precomputed allocation fields set them too
+          if (p.percentageOfPurchase !== undefined) {
+            fg.patchValue({
+              percentageOfPurchase: p.percentageOfPurchase,
+              allocatedTax: p.allocatedTax,
+              allocatedPackingCharge: p.allocatedPackingCharge,
+              allocatedTransport: p.allocatedTransport,
+              totalAllocatedOverhead: p.totalAllocatedOverhead,
+              finalCostPerUnit: p.finalCostPerUnit
+            });
+          }
+
+          itemsArray.push(fg);
+        });
+
+        // Payments (if any)
+        const paymentsArray = this.payments;
+        paymentsArray.clear();
+        const dtoPayments = dto.payments || dto.purchasePayments || dto.paymentsList || [];
+        (dtoPayments as any[]).forEach(pay => {
+          const pg = this.createPaymentFormGroup();
+          pg.patchValue({
+            mode: pay.mode ?? 'cash',
+            chequeNo: pay.chequeNo ?? pay.chequeNo ?? '',
+            paymentDate: pay.paymentDate ? new Date(pay.paymentDate) : new Date(),
+            remark: pay.remark ?? '',
+            amount: pay.amount ?? pay.paymentAmount ?? 0
+          });
+          // Disable individual payment fields because whole form will be disabled later
+          paymentsArray.push(pg);
+        });
+
+        // Recalculate totals to update UI values
+        this.calculateTotals();
+
+        // Finally make the form read-only
+        this.purchaseForm.disable();
+
+      },
+      (err) => {
+        this.loading = false;
+        console.error('Error loading purchase with products', err);
+        this.toastrService.error('Failed to load purchase details');
+      }
+    );
   }
 
   /**
@@ -271,6 +396,9 @@ export class AddPurchaseComponent implements OnInit {
    * Add new product row
    */
   addRow(): void {
+    if (this.mode === 'view') {
+      return; // do nothing in view mode
+    }
     this.items.push(this.createProductFormGroup());
   }
 
@@ -278,6 +406,9 @@ export class AddPurchaseComponent implements OnInit {
    * Remove product row with undo functionality
    */
   removeRow(index: number): void {
+    if (this.mode === 'view') {
+      return; // do nothing in view mode
+    }
     if (this.items.length === 1) {
       this.toastrService.warning('At least one product is required');
       return;
@@ -413,44 +544,58 @@ export class AddPurchaseComponent implements OnInit {
 
   /**
    * Calculate all totals and overhead allocation
+   * NOTE: use emitEvent:false when writing back to form to avoid infinite loops with valueChanges
    */
   calculateTotals(): void {
+    // Prevent running while we are loading data or when in view-only mode
+    if (this.loading) return;
+
     // Calculate total purchase amount
-    this.totalPurchaseAmount = 0;
+    let newTotalPurchaseAmount = 0;
     this.items.controls.forEach(control => {
-      this.totalPurchaseAmount += control.get('total')?.value || 0;
+      newTotalPurchaseAmount += control.get('total')?.value || 0;
     });
 
-    // Get overhead costs
+    this.totalPurchaseAmount = newTotalPurchaseAmount;
+
+    // Get overhead costs (reading only)
     const taxAmount = this.purchaseForm.get('taxAmount')?.value || 0;
     const packingCharge = this.purchaseForm.get('packingCharge')?.value || 0;
     const transportAmount = this.purchaseForm.get('transport.amount')?.value || 0;
     const discountAmount = this.purchaseForm.get('discountAmount')?.value || 0;
     const extraDiscountAmount = this.purchaseForm.get('extraDiscountAmount')?.value || 0;
-    
-    this.totalOverhead = taxAmount + packingCharge + transportAmount - discountAmount - extraDiscountAmount;
+
+    const newTotalOverhead = taxAmount + packingCharge + transportAmount - discountAmount - extraDiscountAmount;
+    this.totalOverhead = newTotalOverhead;
 
     // Calculate grand total (including discounts)
     this.grandTotal = this.totalPurchaseAmount + this.totalOverhead;
-    this.purchaseForm.get('purchaseAmount').setValue(this.totalPurchaseAmount);
+
+    // Update purchaseAmount control without emitting events
+    const purchaseAmountControl = this.purchaseForm.get('purchaseAmount');
+    if (purchaseAmountControl) {
+      purchaseAmountControl.setValue(this.totalPurchaseAmount, { emitEvent: false });
+    }
+
     // Calculate overhead allocation for each product
     this.items.controls.forEach(control => {
       const productTotal = control.get('total')?.value || 0;
       const quantity = control.get('quantity')?.value || 0;
-      
+
       if (this.totalPurchaseAmount > 0) {
         const percentage = (productTotal / this.totalPurchaseAmount) * 100;
         const allocatedTax = (taxAmount * productTotal) / this.totalPurchaseAmount;
         const allocatedPacking = (packingCharge * productTotal) / this.totalPurchaseAmount;
         const allocatedTransport = (transportAmount * productTotal) / this.totalPurchaseAmount;
         const totalAllocatedOverhead = allocatedTax + allocatedPacking + allocatedTransport;
-        
+
         // Calculate final cost per unit (after discounts)
         const productShare = productTotal / this.totalPurchaseAmount;
         const allocatedDiscount = (discountAmount + extraDiscountAmount) * productShare;
         const finalProductCost = productTotal + totalAllocatedOverhead - allocatedDiscount;
         const finalCostPerUnit = quantity > 0 ? finalProductCost / quantity : 0;
 
+        // Use patchValue with emitEvent:false to avoid triggering valueChanges
         control.patchValue({
           percentageOfPurchase: Math.round(percentage * 100) / 100,
           allocatedTax: Math.round(allocatedTax * 100) / 100,
@@ -458,7 +603,17 @@ export class AddPurchaseComponent implements OnInit {
           allocatedTransport: Math.round(allocatedTransport * 100) / 100,
           totalAllocatedOverhead: Math.round(totalAllocatedOverhead * 100) / 100,
           finalCostPerUnit: Math.round(finalCostPerUnit * 100) / 100
-        });
+        }, { emitEvent: false });
+      } else {
+        // if totalPurchaseAmount is zero, ensure numeric fields are zeroed (without emitting)
+        control.patchValue({
+          percentageOfPurchase: 0,
+          allocatedTax: 0,
+          allocatedPackingCharge: 0,
+          allocatedTransport: 0,
+          totalAllocatedOverhead: 0,
+          finalCostPerUnit: 0
+        }, { emitEvent: false });
       }
     });
 
@@ -472,14 +627,21 @@ export class AddPurchaseComponent implements OnInit {
    * Update tax and discount percentages
    */
   updatePercentages(): void {
+    if (this.loading) return;
     if (this.totalPurchaseAmount > 0) {
       const taxAmount = this.purchaseForm.get('taxAmount')?.value || 0;
       const taxPercent = (taxAmount / this.totalPurchaseAmount) * 100;
-      this.purchaseForm.get('taxPercent')?.setValue(Math.round(taxPercent * 100) / 100);
+      const taxPercentControl = this.purchaseForm.get('taxPercent');
+      taxPercentControl?.setValue(Math.round(taxPercent * 100) / 100, { emitEvent: false });
 
       const discountAmount = this.purchaseForm.get('discountAmount')?.value || 0;
-      const discountPercent = (discountAmount / (this.totalPurchaseAmount + taxAmount)) * 100;
-      this.purchaseForm.get('discountPercent')?.setValue(Math.round(discountPercent * 100) / 100);
+      const discountPercent = (discountAmount / (this.totalPurchaseAmount + taxAmount || 1)) * 100;
+      const discountPercentControl = this.purchaseForm.get('discountPercent');
+      discountPercentControl?.setValue(Math.round(discountPercent * 100) / 100, { emitEvent: false });
+    } else {
+      // zero-out percentages when no total
+      this.purchaseForm.get('taxPercent')?.setValue(0, { emitEvent: false });
+      this.purchaseForm.get('discountPercent')?.setValue(0, { emitEvent: false });
     }
   }
 
@@ -584,6 +746,9 @@ export class AddPurchaseComponent implements OnInit {
    * Save purchase
    */
   async onSave(): Promise<void> {
+    if (this.mode === 'view') {
+      return; // Do not save in view mode
+    }
     // Mark all fields as touched for validation
     this.markAllFieldsAsTouched();
     
