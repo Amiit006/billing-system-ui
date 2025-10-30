@@ -136,6 +136,15 @@ export class AddPurchaseComponent implements OnInit {
     });
   }
 
+  formatDateForInput(date: any): string {
+    if (!date) return '';
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   loadAndLock(purchaseId: number): void {
     this.loading = true;
     this.purchaseService.getPurchaseWithProducts(purchaseId).subscribe(
@@ -151,7 +160,7 @@ export class AddPurchaseComponent implements OnInit {
         // Top-level fields - adapt keys if your DTO uses different names
         this.purchaseForm.patchValue({
           partyName: dto.partyName || dto.party || '',
-          purchaseDate: dto.purchaseDate ? new Date(dto.purchaseDate) : (dto.purchaseDateString ? new Date(dto.purchaseDateString) : this.purchaseForm.get('purchaseDate')?.value),
+          purchaseDate: this.formatDateForInput(dto.purchaseDate || dto.purchaseDateString),
           packingCharge: dto.packingCharges ?? dto.packingCharge ?? this.purchaseForm.get('packingCharge')?.value,
           taxAmount: dto.taxAmount ?? dto.tax ?? this.purchaseForm.get('taxAmount')?.value,
           discountAmount: dto.discountAmount ?? dto.discount ?? this.purchaseForm.get('discountAmount')?.value,
