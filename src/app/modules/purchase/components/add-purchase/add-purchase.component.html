@@ -118,7 +118,7 @@
                                (focus)="onItemFieldFocus($event, i, 'ratePerUnit')"
                                (input)="onRateChange(i)"
                                min="0"
-                               step="0.01"
+                               step="0.10"
                                [class.is-invalid]="item.get('ratePerUnit')?.invalid && isItemFieldTouched(i, 'ratePerUnit')">
                       </div>
                       <div *ngIf="item.get('ratePerUnit')?.invalid && isItemFieldTouched(i, 'ratePerUnit')" 
@@ -251,7 +251,7 @@
                            (focus)="onItemFieldFocus($event, i, 'ratePerUnit')"
                            (input)="onRateChange(i)"
                            min="0"
-                           step="0.01"
+                           step="0.10"
                            [class.is-invalid]="item.get('ratePerUnit')?.invalid && isItemFieldTouched(i, 'ratePerUnit')">
                   </div>
                   <div *ngIf="item.get('ratePerUnit')?.invalid && isItemFieldTouched(i, 'ratePerUnit')" 
@@ -382,7 +382,7 @@
                    id="packingCharge"
                    placeholder="0.00" 
                    min="0" 
-                   step="0.01" 
+                   step="0.10" 
                    (focus)="onFieldFocus($event, 'packingCharge')"
                    formControlName="packingCharge">
           </div>
@@ -400,7 +400,7 @@
                    id="taxAmount"
                    placeholder="0.00" 
                    min="0" 
-                   step="0.01" 
+                   step="0.10" 
                    (focus)="onFieldFocus($event, 'taxAmount')"
                    formControlName="taxAmount">
           </div>
@@ -437,7 +437,7 @@
                    id="discountAmount"
                    placeholder="0.00" 
                    min="0" 
-                   step="0.01" 
+                   step="0.10" 
                    (focus)="onFieldFocus($event, 'discountAmount')"
                    formControlName="discountAmount">
           </div>
@@ -473,7 +473,7 @@
                    id="extraDiscountAmount"
                    placeholder="0.00" 
                    min="0" 
-                   step="0.01" 
+                   step="0.10" 
                    (focus)="onFieldFocus($event, 'extraDiscountAmount')"
                    formControlName="extraDiscountAmount">
           </div>
@@ -510,7 +510,7 @@
                        id="transportAmount"
                        placeholder="0.00" 
                        min="0" 
-                       step="0.01" 
+                       step="0.10" 
                        (focus)="onFieldFocus($event, 'transportAmount')"
                        formControlName="amount">
               </div>
@@ -559,7 +559,7 @@
                          class="form-control" 
                          placeholder="0.00" 
                          min="0" 
-                         step="0.01" 
+                         step="0.10" 
                          (focus)="onFieldFocus($event, 'paymentAmount_' + i)"
                          formControlName="amount">
                 </div>

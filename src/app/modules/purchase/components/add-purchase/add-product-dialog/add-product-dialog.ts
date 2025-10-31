@@ -35,6 +35,13 @@ interface DialogData {
 
         <div class="form-row">
           <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Discount %</mat-label>
+          <input type="number" matInput formControlName="discountPercentage" step="0.10">
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="half-width">
             <mat-label>Category *</mat-label>
             <mat-select formControlName="category" (selectionChange)="onCategoryChange($event.value)">
               <mat-option value="Bottoms">Bottoms</mat-option>
@@ -58,7 +65,6 @@ interface DialogData {
             </mat-error>
           </mat-form-field>
         </div>
-
         <div class="form-row">
           <mat-form-field appearance="outline" class="half-width">
             <mat-label>Unit</mat-label>
@@ -178,6 +184,7 @@ export class AddProductDialogComponent implements OnInit {
         Validators.required, 
         Validators.minLength(2)
       ]],
+      discountPercentage: [0, [Validators.min(0), Validators.max(100), ]],
       category: ['Tops', Validators.required],
       subCategory: ['Shirts', Validators.required],
       unit: ['pieces'],

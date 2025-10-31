@@ -5,6 +5,7 @@ import { Payment } from "./payment.model";
 export interface Product {
   productId: number;
   productName: string;
+  discountPercentage: number;
   category: string;
   subCategory: string;
   unit: string;
