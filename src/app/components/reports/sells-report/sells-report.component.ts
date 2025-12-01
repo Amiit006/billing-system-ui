@@ -28,6 +28,15 @@ export class SellsReportComponent implements OnInit {
 
   reportStatus = "notloaded";
 
+  
+  presetEnd = new Date();
+  get presetStart(): Date {
+    const y = this.presetEnd.getFullYear();
+    const april1 = new Date(y, 3, 1);
+    return this.presetEnd < april1 ? new Date(y - 1, 3, 1) : april1;
+  }
+  rangeDefault = { start: this.presetStart, end: this.presetEnd };
+
   single: ChartResponse[] = [];
   view: any[] = [1100, 200];
   colorScheme = {
