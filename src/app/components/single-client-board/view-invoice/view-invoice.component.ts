@@ -1,3 +1,4 @@
+// Updated view-invoice.component.ts
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +7,7 @@ import { Client } from 'src/app/model/client.model';
 import { BillingService } from 'src/app/services/billing.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { AddDiscountComponent } from '../add-discount/add-discount.component';
+import { ProfitInsightsComponent } from './profit-insights/profit-insights.component';
 
 @Component({
   selector: 'app-view-invoice',
@@ -45,6 +47,11 @@ export class ViewInvoiceComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // Check if profit summary is available for this invoice
+  hasProfitSummary(): boolean {
+    return this.invoice?.profitSummary && Object.keys(this.invoice.profitSummary).length > 0;
+  }
+
   onNextClick() {
     var index = this.invoices.findIndex(x => x.invoiceId == this.invoiceId);
     if (index != this.invoices.length - 1) {
@@ -74,6 +81,11 @@ export class ViewInvoiceComponent implements OnInit {
     this.openDialog(invoiceId, data[0]);
   }
 
+  // New method for opening profit insights dialog
+  onProfitInsightsClick() {
+    this.openProfitInsightsDialog();
+  }
+
   openDialog(invoiceId, data): void {
     const dialogRef = this.dialog.open(AddDiscountComponent, {
       width: '1150px',
@@ -88,13 +100,32 @@ export class ViewInvoiceComponent implements OnInit {
     });
   }
 
+  // New method for profit insights dialog
+  openProfitInsightsDialog(): void {
+    const dialogRef = this.dialog.open(ProfitInsightsComponent, {
+      width: '800px',
+      maxWidth: '90vw',
+      data: {
+        profitSummary: this.invoice.profitSummary,
+        profitRecords: this.invoice.profitRecords,
+        invoiceDetails: this.invoice.invoiceDetails,
+        invoiceId: this.invoice.invoiceId,
+        clientName: this.client?.clientName
+      }
+    });
+
+    // No need to handle result since it's read-only
+    dialogRef.afterClosed().subscribe(result => {
+      // Optional: Handle any actions if needed in future
+    });
+  }
+
   loadClientBill() {
     this.billingService.getInvoiceByClientId(this.clientId).subscribe(data => {
-      this.invoices = data;
+      this.invoices = data.data;
       this.router.navigateByUrl('/' , { skipLocationChange: true })
         .then(() => this.router.navigate(["clients/" + this.clientId + "/invoice/" + this.invoiceId]
         , { state: { invoice: this.invoices, client: this.client } }));
     });
   }
-
 }

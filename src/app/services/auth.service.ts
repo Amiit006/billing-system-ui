@@ -70,13 +70,11 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${environment.baseUrl}auth/login`, credentials)
       .pipe(
         tap(response => {
-          console.log('Login response:', response); // Debug log
           if (response.success && response.user && response.token) {
             // Store user details and token in local storage
             localStorage.setItem('currentUser', JSON.stringify(response.user));
             localStorage.setItem('token', response.token);
             this.currentUserSubject.next(response.user);
-            console.log('User stored successfully:', response.user); // Debug log
           } else {
             console.error('Invalid login response structure:', response);
           }
@@ -85,7 +83,6 @@ export class AuthService {
   }
 
   logout(): void {
-    console.log('Logging out user'); // Debug log
     // Remove user from local storage and set current user to null
     this.clearStoredAuth();
     this.currentUserSubject.next(null);
@@ -96,7 +93,6 @@ export class AuthService {
     const user = this.currentUserValue;
     const token = this.getToken();
     const isAuth = !!(user && token);
-    console.log('IsAuthenticated check:', { user: !!user, token: !!token, result: isAuth }); // Debug log
     return isAuth;
   }
 
@@ -114,11 +110,7 @@ export class AuthService {
       const expiry = payload.exp * 1000; // Convert to milliseconds
       const now = Date.now();
       const isExpired = now >= expiry;
-      
-      if (isExpired) {
-        console.log('Token is expired'); // Debug log
-      }
-      
+
       return isExpired;
     } catch (error) {
       console.error('Error checking token expiry:', error);
@@ -129,7 +121,6 @@ export class AuthService {
   // Auto-logout when token expires
   checkTokenExpiry(): void {
     if (this.isTokenExpired()) {
-      console.log('Token expired, logging out'); // Debug log
       this.logout();
     }
   }

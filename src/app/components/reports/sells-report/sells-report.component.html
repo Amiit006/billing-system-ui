@@ -4,7 +4,7 @@
     </h1>
     <hr class="header-hr">
     <app-calender-heat-map [serviceData]="sellData"></app-calender-heat-map>
-    <app-date-range-selector [pageInitiator]="'SellReport'" (rangeEmitter)="setRangeEmitter($event)"></app-date-range-selector>
+    <app-date-range-selector [rangeFromParent]="rangeDefault" [pageInitiator]="'SellReport'" (rangeEmitter)="setRangeEmitter($event)"></app-date-range-selector>
 
     <div *ngIf="reportStatus === 'notloaded'" class="section text-center">
         <app-no-result [imageUrl]="'/assets/init.svg'" [h3TextInput]="'Build a report'" [pTextInput]="'Use the above form to generate a report'">
