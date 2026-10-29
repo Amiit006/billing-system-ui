@@ -68,6 +68,7 @@ export class BillingComponent implements OnInit {
   selectedItem(item, index) {
     const discountPercentage = this.particulars.find(data => data.particularName === item.item).discountPercentage;
     (<FormArray>this.billForm.get("items")).controls[index].get("discount").setValue(discountPercentage);
+    this.calculateAndPopulateTotal(index);
   }
 
   billForm = this.fb.group({

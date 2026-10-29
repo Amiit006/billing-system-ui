@@ -1,0 +1,85 @@
+<!-- profit-insights.component.html -->
+ <div class="container">
+  <div class="profit-insights-dialog">
+    <!-- Header -->
+    <div class="dialog-header">
+      <h2 mat-dialog-title>
+        <i class="fa fa-chart-line" style="margin-right: 8px; color: #2196F3;"></i>
+        Profit Insights
+      </h2>
+      <button mat-icon-button (click)="onClose()" class="close-button">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Dialog Content -->
+    <mat-dialog-content class="dialog-content">
+      <!-- Invoice Info -->
+      <div class="invoice-info">
+        <h4>Invoice #{{data.invoiceId}} - {{data.clientName}}</h4>
+      </div>
+
+      <!-- Profit Summary Cards -->
+      <div class="profit-summary">
+        <div class="summary-cards">
+          <div class="summary-card revenue">
+            <div class="card-content">
+              <h3>{{formatCurrency(data.profitSummary.totalRevenue)}}</h3>
+              <p>Total Revenue</p>
+            </div>
+          </div>
+
+          <div class="summary-card cost">
+            <div class="card-content">
+              <h3>{{formatCurrency(data.profitSummary.totalCost)}}</h3>
+              <p>Total Cost</p>
+            </div>
+          </div>
+
+          <div class="summary-card profit">
+            <div class="card-content">
+              <h3 [style.color]="getProfitMarginColor()">
+                {{formatCurrency(data.profitSummary.totalProfit)}}
+              </h3>
+              <p>Total Profit</p>
+            </div>
+          </div>
+
+          <div class="summary-card margin">
+            <div class="card-content">
+              <h3 [style.color]="getProfitMarginColor()">
+                {{data.profitSummary.profitPercentage | number:'1.1-1'}}%
+              </h3>
+              <p>Profit Margin</p>
+              <span class="margin-status" [ngClass]="getProfitMarginStatus()">
+                {{getProfitMarginStatus() | titlecase}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Insights & Tips -->
+      <!-- <div class="insights-section" *ngIf="data.profitSummary.profitPercentage < 15">
+        <h4><i class="fa fa-lightbulb" style="color: #ff9800;"></i> Insights & Tips</h4>
+        <div class="insights-content">
+          <div class="insight-item" *ngIf="data.profitSummary.profitPercentage < 5">
+            <i class="fa fa-exclamation-triangle text-warning"></i>
+            <span>Low profit margin detected. Consider reviewing cost prices or selling prices.</span>
+          </div>
+          <div class="insight-item" *ngIf="data.profitSummary.profitPercentage >= 5 && data.profitSummary.profitPercentage < 15">
+            <i class="fa fa-info-circle text-info"></i>
+            <span>Moderate profit margin. There's room for optimization.</span>
+          </div>
+        </div>
+      </div> -->
+    </mat-dialog-content>
+
+    <!-- Dialog Actions -->
+    <mat-dialog-actions class="dialog-actions">
+      <button mat-flat-button color="primary" (click)="onClose()">
+        <i class="fa fa-check fa-fw"></i> Close
+      </button>
+    </mat-dialog-actions>
+  </div>
+</div>

@@ -38,12 +38,12 @@ export class InvoiceDetailsComponent implements OnInit {
 
   loadClientBill() {
     this.billingService.getInvoiceByClientId(this.clientId).subscribe(data => {
-      const sorted = data.sort(
+      const sorted = data.data.sort(
           (a, b) =>
             new Date(b.createdDate).getTime() -
             new Date(a.createdDate).getTime()
         );
-      this.invoice = data;
+      this.invoice = data.data;
       this.dataSource = new MatTableDataSource(sorted);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;

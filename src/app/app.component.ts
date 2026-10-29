@@ -20,14 +20,12 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('App Component initialized'); // Debug log
     
     // Refresh authentication state on app startup
     this.authService.refreshAuthState();
     
     // Subscribe to authentication state changes
     this.authService.currentUser.subscribe(user => {
-      console.log('Auth state changed:', !!user); // Debug log
       this.isAuthenticated = !!user;
       this.updateHeaderVisibility();
     });
@@ -36,7 +34,6 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-      console.log('Route changed:', event.url); // Debug log
       this.updateHeaderVisibility();
     });
 
@@ -51,11 +48,5 @@ export class AppComponent implements OnInit {
     // Show header only if user is authenticated and not on login page
     this.showHeader = this.isAuthenticated && !isLoginPage;
     
-    console.log('Header visibility:', { 
-      currentRoute, 
-      isLoginPage, 
-      isAuthenticated: this.isAuthenticated, 
-      showHeader: this.showHeader 
-    }); // Debug log
   }
 }

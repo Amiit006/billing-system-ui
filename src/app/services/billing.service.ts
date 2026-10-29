@@ -28,13 +28,14 @@ export class BillingService {
   }
 
   createInvoice(payload) {
-    return this.httpClient.post<StringResponse>(environment.baseUrl + "invoice/createBill", payload);
+    // return this.httpClient.post<StringResponse>(environment.baseUrl + "invoice/createBill", payload);
+    return this.httpClient.post<StringResponse>(environment.baseUrl + "invoice/enhanced/createBillWithProfit", payload);
   }
 
   getInvoiceByClientId(clientId) {
     let params = new HttpParams();
     params = params.append('clientId', clientId.toString());
-    return this.httpClient.get<Payment[]>(environment.baseUrl + "invoice/client", { params: params });
+    return this.httpClient.get<any>(environment.baseUrl + `invoice/enhanced/client/${clientId.toString()}/withProfit`);
   }
 
   getInvoiceByInvoiceId(invoiceId) {

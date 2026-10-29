@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PurchaseService } from '../../services/purchase.service';
 import { PaymentsComponent } from '../payments/payments.component';
@@ -34,14 +34,23 @@ export class PurchasesComponent implements OnInit {
   dataSource = new MatTableDataSource();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  purchasesBySeasonList: any[] = [];
 
   expandedElement: any | null;
 
-  constructor(private purchaseService: PurchaseService, public dialog: MatDialog, private activeRoute: ActivatedRoute, private toastrService: ToastrService) { }
+  constructor(private purchaseService: PurchaseService, public dialog: MatDialog, private activeRoute: ActivatedRoute, 
+    private toastrService: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
     const seasonId = this.activeRoute.snapshot.paramMap.get('seasonId');
     this.getPurchasesBySeason(seasonId);
+    this.getPurchasesWithProductsBySeason(seasonId);
+  }
+
+  getPurchasesWithProductsBySeason(seasonId) {
+    this.purchaseService.getPurchasesWithProductsBySeason(seasonId).subscribe((data: any) => {
+      this.purchasesBySeasonList = data.data || [];  
+    });
   }
 
   getPurchasesBySeason(seasonId) {
@@ -89,6 +98,18 @@ export class PurchasesComponent implements OnInit {
         this.getPurchasesBySeason(seasonId);
       }
     });
+  }
+
+  showPurchaseButtonVisible(purchaseId: number): boolean {
+    return this.purchasesBySeasonList.find(p => p.purchaseId === purchaseId).purchaseProducts.length > 0;
+  }
+
+  openShowPurchase(purchaseId: number) {
+    const seasonId = this.activeRoute.snapshot.paramMap.get('seasonId');
+    this.router.navigate(
+      ['/purchase/season', seasonId, 'addPurchase'],
+      { queryParams: { mode: 'view', purchaseId } }
+    );
   }
 
 }

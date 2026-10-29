@@ -31,6 +31,14 @@ export class TradeBookComponent implements OnInit {
   };
   cardColor: string = '#232837';
 
+  presetEnd = new Date();
+  get presetStart(): Date {
+    const y = this.presetEnd.getFullYear();
+    const april1 = new Date(y, 3, 1);
+    return this.presetEnd < april1 ? new Date(y - 1, 3, 1) : april1;
+  }
+  rangeDefault = { start: this.presetStart, end: this.presetEnd };
+
   constructor(private fb: FormBuilder, private reportService: ReportService
     , private dashboardService: DashboardService) { }
 

@@ -1,8 +1,22 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <button class="btn btn-sm" (click)="onClickReturnToClient()"><i class="fa fa-arrow-left t-plus-1 fa-fw fa-lg"></i> Return to Client Details</button>
-            <button class="mt-2 mb-2 ml-2" matTooltipPosition="right" mat-flat-button color="primary" (click)="onAddDiscountClick(invoiceId)">Add Discount</button>
+            <button class="btn btn-sm" (click)="onClickReturnToClient()">
+                <i class="fa fa-arrow-left t-plus-1 fa-fw fa-lg"></i> Return to Client Details
+            </button>
+            <button class="mt-2 mb-2 ml-2" matTooltipPosition="right" mat-flat-button color="primary" 
+                    (click)="onAddDiscountClick(invoiceId)">
+                Add Discount
+            </button>
+            <!-- NEW: Profit Insights Button - Only show if profitSummary is available -->
+            <button *ngIf="hasProfitSummary()" 
+                    class="mt-2 mb-2 ml-2" 
+                    matTooltipPosition="right" 
+                    mat-flat-button 
+                    color="accent" 
+                    matTooltip="View profit breakdown and insights"
+                    (click)="onProfitInsightsClick()"> Insights
+            </button>
         </div>
     </div>
     <div class="row">
